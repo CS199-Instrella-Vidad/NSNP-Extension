@@ -1,0 +1,33 @@
+.subHeader {
+  background-color: rgb(20, 24, 34);
+  border-radius: 0 0 5px 5px;
+  width: 50px;
+}
+.subheaderbutton {
+  border: 1px solid rgb(20, 24, 34);
+  border-radius: 5px;
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+
+.subheaderbutton:hover {
+  background-color: rgb(50, 53, 60);
+  color: #fff;
+  transition: all 0.3s ease;
+  /* change mouse cursor */
+  cursor: pointer;
+}
+
+/* clicked button */
+
+.subheaderbutton:active {
+  background-color: rgb(33, 37, 41);
+  color: #fff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.timestep {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

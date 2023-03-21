@@ -3,19 +3,50 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "typings": "dist/index",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fortawesome/fontawesome-free": "^6.3.0",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.13",
+    "@popperjs/core": "^2.11.6",
+    "@types/react-cytoscapejs": "^1.2.2",
+    "bootstrap": "^5.2.3",
+    "cytoscape": "^3.23.0",
+    "cytoscape-cose-bilkent": "^4.1.0",
+    "cytoscape-grid-guide": "^2.3.3",
+    "file-saver": "^2.0.5",
+    "mathjax": "^3.2.2",
+    "mathjax-full": "^3.2.2",
+    "mathjax-react": "^2.0.1",
+    "mdb-react-ui-kit": "^5.1.0",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-bootstrap": "^2.7.2",
+    "react-bootstrap-icons": "^1.10.2",
+    "react-burger-menu": "^3.0.9",
+    "react-cytoscapejs": "^2.0.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.2",
+    "react-select": "^5.7.0",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
+    "@types/node": "^18.14.6",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
-    "vite": "^4.2.0"
+    "gh-pages": "^5.0.0",
+    "sass": "^1.58.3",
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0"
   }
 }

@@ -1,0 +1,13 @@
+.Row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 1 auto;
+  padding: 2rem;
+  text-align: center;
+}
+.workspace {
+  height: max-content;
+  /* background-color: rgb(20, 24, 34); */
+}
