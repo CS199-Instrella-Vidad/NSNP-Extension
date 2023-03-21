@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import "./fonts/Peace Sans.otf";
 import cytoscape from "cytoscape";
 import gridGuide from "cytoscape-grid-guide";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";

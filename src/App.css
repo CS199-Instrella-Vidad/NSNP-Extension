@@ -1,3 +1,81 @@
 body {
   background-color: white;
 }
+@font-face {
+  font-family: "PeaceSans";
+  src: local("PeaceSans"), url("./fonts/Peace Sans.otf") format("opentype");
+  font-weight: normal;
+}
+
+.welcome {
+  width: 100%;
+  flex: 100%;
+  height: 100%;
+  text-align: center;
+  vertical-align: middle;
+  margin: auto;
+  color: var(--primary);
+  background-color: #f3efff;
+}
+/* #root {
+  width: 100%;
+  display: contents;
+} */
+.greet {
+  height: 30vh;
+  padding: 1% 5% 5% 5%;
+  font-size: larger;
+}
+.LinkContainer {
+  width: 100%;
+  display: flex;
+  padding: 0 30% 0 30%;
+  margin: 0;
+  height: 65vh;
+}
+.divide {
+  width: 50%;
+}
+.divide-rside {
+  border-left: 1px solid black;
+}
+.divide-lside img {
+  width: 100%;
+  transition: transform 1s ease-in-out, opacity 1s ease-out;
+  opacity: 0;
+  transform: translateX(+2vw);
+}
+.divide-rside img {
+  width: 100%;
+  transition: transform 1s ease-in-out, opacity 1s ease-out;
+  opacity: 0;
+  transform: translateX(-2vw);
+}
+.divide-lside:hover img {
+  transform: translateX(0vw);
+}
+.divide-rside:hover img {
+  transform: translateX(0vw);
+}
+.divide-rside a,
+.divide-lside a {
+  transition: opacity 1s ease-out;
+  opacity: 0;
+}
+.divide-rside:hover img,
+.divide-lside:hover img {
+  opacity: 1;
+}
+.divide-rside:hover a,
+.divide-lside:hover a {
+  opacity: 1;
+}
+a,
+a:link,
+a:hover {
+  text-decoration: none;
+  color: var(--primary);
+}
+.greet h1 {
+  font-family: "PeaceSans";
+}
