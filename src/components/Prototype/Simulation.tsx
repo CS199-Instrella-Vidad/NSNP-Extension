@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useState, useMemo } from "react";
 import "./Simulation.css";
 import { MathComponent } from "mathjax-react";
-import generateConfigurations from "../utils/SimAlgs/generateConfiguration.js";
+import generateConfigurations from "../../utils/SimAlgs/generateConfiguration.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./Header/Header";
 import SubHeader from "./SubHeader/SubHeader";
@@ -14,9 +14,9 @@ import WorkSpace from "./WorkSpace/WorkSpace";
 import Graph from "./Graph/Graph";
 import saveAs from "file-saver";
 import convert from "xml-js";
-import { useViewer } from "../utils/hooks/useViewer";
-import { useMatrixData } from "../utils/hooks/useMatrixData";
-import { saveSystem, loadSystem } from "../utils/saveload";
+import { useViewer } from "../../utils/hooks/useViewer";
+import { useMatrixData } from "../../utils/hooks/useMatrixData";
+import { saveSystem, loadSystem } from "../../utils/saveload";
 
 function Simulation() {
   // Control States

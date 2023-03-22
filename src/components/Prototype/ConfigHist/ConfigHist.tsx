@@ -1,12 +1,11 @@
 import * as React from "react";
-import StyledBurgerMenu from "../StyledBurgerMenu/StyledBurgerMenu";
 import "./ConfigHist.css";
-import { slide as BurgerMenu } from "react-burger-menu";
+import reactBurgerMenu from "react-burger-menu";
 import { MathComponent } from "mathjax-react";
 
 export default function ConfigHist(props) {
   return (
-    <BurgerMenu
+    <reactBurgerMenu.slide
       right
       isOpen={props.open}
       onClose={props.onClose}
@@ -31,7 +30,7 @@ export default function ConfigHist(props) {
           );
         })}
       </div>
-    </BurgerMenu>
+    </reactBurgerMenu.slide>
   );
 }
 function matrixToString(matrix: number[][]) {

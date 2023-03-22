@@ -2,10 +2,11 @@ import cytoscape, { Stylesheet, StylesheetCSS } from "cytoscape";
 import CytoscapeComponent from "react-cytoscapejs";
 import { useEffect, useRef, useState } from "react";
 import { ElementDefinition } from "cytoscape";
-import { createEnvNode, createNeuron } from "../../utils/helper";
+import { createEnvNode, createNeuron } from "../../../utils/helper";
 import ButtonBar from "./ButtonBar";
 import stylesheet from "./stylesheet";
 import NewNodeForm from "../forms/NewNodeForm";
+import React from "react";
 
 export default function Graph(props) {
   // Cytoscape reference

@@ -1,12 +1,10 @@
 import * as React from "react";
-import StyledBurgerMenu from "../StyledBurgerMenu/StyledBurgerMenu";
 import "./Settings.css";
-import { slide as BurgerMenu } from "react-burger-menu";
-import useLocalStorage from "../../utils/hooks/useLocalStorage";
+import reactBurgerMenu from "react-burger-menu";
 
 export default function ConfigHist(props) {
   return (
-    <BurgerMenu
+    <reactBurgerMenu.slide
       left
       isOpen={props.open}
       onClose={props.onClose}
@@ -48,6 +46,6 @@ export default function ConfigHist(props) {
           <h4>Help</h4>
         </div>
       </div>
-    </BurgerMenu>
+    </reactBurgerMenu.slide>
   );
 }

@@ -1,5 +1,5 @@
 import cytoscape from "cytoscape";
-import { mathJaxSvg } from "../../utils/mathJaxsvg";
+import { mathJaxSvg } from "../../../utils/mathJaxsvg";
 
 let svg_math = mathJaxSvg("\\sum^N_i x_i+y_i \\xrightarrow{3}");
 
