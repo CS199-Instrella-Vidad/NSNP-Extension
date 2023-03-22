@@ -1,4 +1,6 @@
-/* color scheme */
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap");
+body {
+} /* color scheme */
 
 /* for custom buttons */
 
@@ -64,10 +66,12 @@ td {
   background-color: white;
   z-index: 100;
   height: 10vh;
+  font-family: "Raleway", sans-serif;
 }
 .bodymodal {
   height: 60vh;
   overflow: auto;
+  font-family: "Raleway", sans-serif;
 }
 .modalcustom {
   overflow: hidden;

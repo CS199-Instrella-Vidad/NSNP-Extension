@@ -1,4 +1,5 @@
 /* color scheme */
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap");
 
 :root {
   --c1: #f49097;
@@ -6,6 +7,28 @@
   --c3: #f5e960;
   --c4: #f2f5ff;
   --c5: #55d6c2;
+}
+
+.websnapse-title {
+  color: #786fa6;
+}
+
+.slider-title {
+  color: #ffffff;
+}
+
+.MuiSlider-thumb {
+  color: white;
+}
+.MuiSlider-rail {
+  color: white;
+}
+.MuiSlider-track {
+  color: black;
+}
+
+.container {
+  width: 100vw;
 }
 .body {
   width: 100vw;

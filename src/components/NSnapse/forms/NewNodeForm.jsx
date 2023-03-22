@@ -147,7 +147,6 @@ const NewNodeForm = ({ handleCloseModal, props = [] }) => {
               <label>Number of Variables:</label>
               <Slider
                 track="normal"
-                color="secondary"
                 min={1}
                 max={30}
                 vdefaultValue={1}
@@ -185,7 +184,6 @@ const NewNodeForm = ({ handleCloseModal, props = [] }) => {
               <label>Number of Functions</label>
 
               <Slider
-                color="secondary"
                 min={1}
                 max={30}
                 defaultValue={1}
