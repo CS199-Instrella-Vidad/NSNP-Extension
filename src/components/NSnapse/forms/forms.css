@@ -2,32 +2,30 @@
 
 /* for custom buttons */
 
-.btn{
-    font-weight: bold;
+.btn {
+  font-weight: bold;
 }
-
-
 /* end of custom buttons */
-.sliders{
-    width: 80%;
-    display: grid;
-    grid-template-columns: 15vw auto;
-    background-color: var(--c5);
-    padding:1em;
-    color:white;
-    border-radius: 15px 15px 15px 15px;
+.sliders {
+  width: 80%;
+  display: grid;
+  grid-template-columns: 15vw auto;
+  background-color: var(--c5);
+  padding: 1em;
+  color: white;
+  border-radius: 15px 15px 15px 15px;
 }
 div.modal-content {
-    overflow-x: auto;
-    overflow-y: auto;
-    max-height: 600px;
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 600px;
 }
-.vargrid{
-    display: grid;
-    grid-template-columns:auto auto auto auto;
-    gap: 2%;
-    max-height: 28vh;
-    overflow-y: auto;
+.vargrid {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 2%;
+  max-height: 28vh;
+  overflow-y: auto;
 }
 /* remove the increment and decrement arrows of number input */
 /* Chrome, Safari, Edge, Opera */
@@ -38,38 +36,39 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
-th,td{
-    width: 175px;
-    padding: 1em;
-    min-width: 175px;
+th,
+td {
+  width: 175px;
+  padding: 1em;
+  min-width: 175px;
 }
 /* for MUI slider */
-.MuiSlider-track{
-    background-color: aqua;
+.MuiSlider-track {
+  background-color: aqua;
 }
 /* for sections breaks */
-.section{
-    border-bottom: 1px solid darkslategray;
-    padding-bottom: 1vh;
+.section {
+  border-bottom: 1px solid darkslategray;
+  padding-bottom: 1vh;
 }
-.fxn{
-    overflow: auto;
-    max-height: 28vh;
+.fxn {
+  overflow: auto;
+  max-height: 28vh;
 }
-.sticktop{
-    position: sticky;
-    top:0;
-    background-color: white;
-    z-index: 100;
-    height: 10vh;
+.sticktop {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 100;
+  height: 10vh;
 }
-.bodymodal{
-    height: 60vh;
-    overflow: auto;
+.bodymodal {
+  height: 60vh;
+  overflow: auto;
 }
-.modalcustom{
-    overflow: hidden;
+.modalcustom {
+  overflow: hidden;
 }

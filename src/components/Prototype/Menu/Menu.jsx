@@ -1,3 +1,4 @@
+import "./Menu.css";
 import React from "react";
 import { slide as BMenu } from "react-burger-menu";
 import { useState, useEffect, useRef } from "react";
@@ -11,7 +12,6 @@ import {
 } from "react-bootstrap";
 import { Save2, ClockHistory } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
-import "./Menu.css";
 
 function Menu(props) {
   const [fileName, setFileName] = useState("asd");
@@ -21,15 +21,13 @@ function Menu(props) {
       id="side-bar-menu"
       // isOpen={props.showSideBarMenu}
       disableCloseOnEsc
-      disableOverlayClick
-      noOverlay
     >
       <center>
         <Form className="menuform">
           <Form.Control
             type="file"
             id="custom-file"
-            label={fileName ? fileName : "Load file..."}
+            title={fileName ? fileName : "Load file..."}
             onChange={(e) => {
               console.log("A");
             }}
@@ -83,7 +81,7 @@ function Menu(props) {
           </Link>
         </div>
         <div>
-          <Form>
+          <Form className="menuform">
             <Form.Check
               type="checkbox"
               label="Display details when hovering"

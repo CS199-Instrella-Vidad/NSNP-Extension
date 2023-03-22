@@ -13,7 +13,7 @@
   color: white;
 }
 .menuform {
-  width: 100%;
+  width: 85%;
 }
 /* Position and sizing of burger button */
 .bm-burger-button {
@@ -59,6 +59,7 @@
   background: #373a47;
   font-size: 1em;
   padding-top: 5vh;
+  font-family: "Raleway", sans-serif;
 }
 
 /* Morph shape necessary with bubble or elastic */
