@@ -7,7 +7,7 @@
   "typings": "dist/index",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "echo nsnp.snapse.website > ./dist/CNAME && gh-pages -d dist"
