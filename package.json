@@ -7,10 +7,10 @@
   "typings": "dist/index",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "echo snp.snapse.website > ./dist/CNAME && gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
