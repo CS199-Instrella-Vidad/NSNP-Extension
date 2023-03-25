@@ -76,7 +76,7 @@ function Menu(props) {
           </Link>
         </div>
         <div className="btncontainer">
-          <Link to="/">
+          <Link to="https://snapse.website/">
             <div className="btnMode">Return to Main Menu</div>
           </Link>
         </div>
