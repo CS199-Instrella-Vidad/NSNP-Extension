@@ -1,6 +1,7 @@
 {
   "name": "nsnp-for-websnapse",
   "private": true,
+  "homepage": "https://nsnp.snapse.website/",
   "version": "0.0.0",
   "type": "module",
   "typings": "dist/index",
