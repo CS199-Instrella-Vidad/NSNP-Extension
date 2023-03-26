@@ -52,6 +52,7 @@ export default function Graph(props) {
         };
       });
       localStorage.setItem("positions", JSON.stringify(positions));
+      props.setNeuronPositions(positions);
     });
     (cy as any).gridGuide({
       guidelinesStyle: {
