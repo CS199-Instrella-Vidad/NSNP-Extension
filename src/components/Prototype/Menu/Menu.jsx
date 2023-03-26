@@ -29,7 +29,7 @@ function Menu(props) {
             id="custom-file"
             title={fileName ? fileName : "Load file..."}
             onChange={(e) => {
-              console.log("A");
+              props.load(e.target, props);
             }}
           />
         </Form>
@@ -39,7 +39,7 @@ function Menu(props) {
             id="save-btn"
             variant="primary"
             // disabled={props.time > 0 ? true : false}
-            // onClick={handleSave}
+            onClick={props.handleSave}
           >
             <div className="btnMode">
               <Save2 /> Save

@@ -221,9 +221,10 @@ function NewNodeForm(props) {
             </div>
             <div className="vargrid">
               {Array.from(Array(numVars).keys()).map((i) => {
+                console.log("i", i);
                 return (
                   <div>
-                    <label>x{props.L.length + i}</label>
+                    <label>x{props.VL.length + i + 1}</label>
                     <br />
                     <input
                       className="inputs"

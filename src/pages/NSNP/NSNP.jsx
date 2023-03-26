@@ -199,7 +199,7 @@ function NSNP() {
 
   return (
     <>
-      <Menu />
+      <Menu load={handleLoad} {...matrixProps} save={handleSave} />
 
       <div className="body">
         <div className="nsnpheader">
