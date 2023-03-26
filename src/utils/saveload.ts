@@ -16,7 +16,7 @@ function saveSystem(props) {
 
   const blob = new Blob([xml], { type: "text/xml;charset=utf-8" });
   let filename = JSON.stringify(props.C);
-  saveAs(blob, filename + ".nsnp");
+  saveAs(blob, filename + ".json");
 }
 
 function loadSystem(target, props) {
