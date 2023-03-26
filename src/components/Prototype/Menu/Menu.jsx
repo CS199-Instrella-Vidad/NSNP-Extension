@@ -39,7 +39,9 @@ function Menu(props) {
             id="save-btn"
             variant="primary"
             // disabled={props.time > 0 ? true : false}
-            onClick={props.save(props)}
+            onClick={(e) => {
+              props.save(props);
+            }}
           >
             <div className="btnMode">
               <Save2 /> Save
