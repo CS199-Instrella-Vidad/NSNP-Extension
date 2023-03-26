@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
 import { Slider } from "@mui/material";
-import './forms.css';
-import { Modal,Button, ModalBody, ModalFooter } from "react-bootstrap";
+import "./forms.css";
+import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
-const NewNodeForm=({handleCloseModal, Node=0,props=[]})=> {
+const NewNodeForm = ({ handleCloseModal, selectedNode }) => {
   const [numVars, setNumVars] = useState(1);
   const [numFuncs, setNumFuncs] = useState(1);
   const [nodeOptions, setNodeOptions] = useState([]);
@@ -13,35 +13,38 @@ const NewNodeForm=({handleCloseModal, Node=0,props=[]})=> {
   const [inputFuncs, setInputFuncs] = useState([]);
   const [inputSynOut, setInputSynOut] = useState([]);
   const [inputSynIn, setInputSynIn] = useState([]);
-  
+
   //const neuronNumber = props.L[0].length + 1;
 
   //for modals
   const [showModal, setShow] = useState(false);
   const handleClose = () => {
     handleCloseModal();
-    setShow(false);};
-  const handleShow = () => {setShow(true);setNumVars(1);
-    setNumFuncs(1);};
+    setShow(false);
+  };
+  const handleShow = () => {
+    setShow(true);
+    setNumVars(1);
+    setNumFuncs(1);
+  };
 
   //for button
-  let disabledbutton=true;
-  const [isdisabled, setAble]=useState(true);
-  function checkEmpty(){
-    const tb=document.getElementsByClassName("inputs");
-    let empty=false;
-    for(let i=0;i<tb.length;i++){
-      if (tb.item(i).value==''){
-        empty=true;
+  let disabledbutton = true;
+  const [isdisabled, setAble] = useState(true);
+  function checkEmpty() {
+    const tb = document.getElementsByClassName("inputs");
+    let empty = false;
+    for (let i = 0; i < tb.length; i++) {
+      if (tb.item(i).value == "") {
+        empty = true;
         break;
       }
     }
-    if (empty==true){
-      document.getElementById("submitbutton").disabled=true;
+    if (empty == true) {
+      document.getElementById("submitbutton").disabled = true;
       setAble(true);
-    }
-    else{
-      document.getElementById("submitbutton").disabled=false;
+    } else {
+      document.getElementById("submitbutton").disabled = false;
       setAble(false);
     }
   }
@@ -120,118 +123,156 @@ const NewNodeForm=({handleCloseModal, Node=0,props=[]})=> {
   //   }
   //   setNodeOptions(newOptions);
   // }, []);
-  
-  return (
-      <><Button variant="c2" onClick={handleShow}>
-      Edit Node {Node}
-    </Button>
-      <Modal dialogclassName='modalcustom' keyboard={false} size='xl' backdrop='static' show={showModal} onHide={handleClose}>
-      <ModalHeader closeButton className="sticktop"><h1>Node {Node}</h1></ModalHeader>
-      <ModalBody className="bodymodal">
-      <div className='section'>
-        <h4>Variables</h4>
-        <div className="sliders">
-          <label>Number of Variables:</label>
-          <Slider track="normal"color='secondary' min={1} max={30}vdefaultValue={1} aria-label="Default" valueLabelDisplay="on" 
-          onChangeCommitted={(e,v) => {
-              // Set the number of variables to the value of the input
-             setNumVars(parseInt(v));
-              checkEmpty();
-            }}/>
-        </div>
-        <div className="vargrid">
-          {Array.from(Array(numVars).keys()).map((i) => {
-            return (
-              <div>
-                <label>Variable {i + 1}</label><br/>
-                <input
-                  className="inputs"
-                  type="number"
-                  onChange={(e) => {
-                    handleAddVars(i, parseInt(e.target.value));
-                    checkEmpty();
-                  }}
-                />
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className='section'>
-        <h4>Functions</h4>
-        <div className="sliders">
-          <label>Number of Functions</label>
-          
-          <Slider color='secondary' min={1} max={30} defaultValue={1} aria-label="Default" valueLabelDisplay="on" 
-          onChangeCommitted={(e,v) => {
-              // Set the number of variables to the value of the input
-              setNumFuncs(parseInt(v));
-              checkEmpty();
-            }}/>
-        </div>
-        <div>
-          <div className='fxn'>
-            {/* // Add a function selector based on the number of variables the neuron has */}
-            <table > 
-              <tbody>
-                {Array.from(Array(numFuncs).keys()).map((i) => {
-                  return (
-                    <tr>
-                      <th>
-                        <label className="h4">Function {i + 1}</label>
-                      </th>
-                      {Array.from(Array(numVars).keys()).map((j) => {
-                        return (
-                          <td>
-                            <input
-                              type="number"
-                              className="inputs"
-                              onChange={(e) => {
-                                handleAddFuncs(i, j, parseInt(e.target.value));
-                                checkEmpty();
-                              }}
-                            />
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div className="section">
-        <h4>Connections</h4>
-        <div>
-          <label>Outgoing Connections</label>
 
-          <Select
-            options={nodeOptions}
-            isMulti={true}
-            onChange={(e) => {
-              handleAddSynOut(e);
-            }}
-          />
-        </div>
-        <div>
-          <label>Incoming Connections</label>
-          <Select
-            options={nodeOptions}
-            isMulti={true}
-            onChange={(e) => {
-              handleAddSynIn(e);
-            }}
-          />
-        </div>
-      </div>
-      
-      </ModalBody>
-      <ModalFooter><Button disabled={isdisabled} onClick={addNewNeuron} id='submitbutton' variant='c5' >Add Neuron</Button></ModalFooter>
+  return (
+    <>
+      <Button variant="c2" onClick={handleShow}>
+        Edit {selectedNode}
+      </Button>
+      <Modal
+        dialogclassname="modalcustom"
+        keyboard={false}
+        size="xl"
+        backdrop="static"
+        show={showModal}
+        onHide={handleClose}
+      >
+        <ModalHeader closeButton className="sticktop">
+          <h1>Edit {selectedNode}</h1>
+        </ModalHeader>
+        <ModalBody className="bodymodal">
+          <div className="section">
+            <h4>Variables</h4>
+            <div className="sliders">
+              <label>Number of Variables:</label>
+              <Slider
+                track="normal"
+                color="secondary"
+                min={1}
+                max={30}
+                vdefaultvalue={1}
+                aria-label="Default"
+                valueLabelDisplay="on"
+                onChangeCommitted={(e, v) => {
+                  // Set the number of variables to the value of the input
+                  setNumVars(parseInt(v));
+                  checkEmpty();
+                }}
+              />
+            </div>
+            <div className="vargrid">
+              {Array.from(Array(numVars).keys()).map((i) => {
+                return (
+                  <div>
+                    <label>Variable {i + 1}</label>
+                    <br />
+                    <input
+                      className="inputs"
+                      type="number"
+                      onChange={(e) => {
+                        handleAddVars(i, parseInt(e.target.value));
+                        checkEmpty();
+                      }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="section">
+            <h4>Functions</h4>
+            <div className="sliders">
+              <label>Number of Functions</label>
+
+              <Slider
+                color="secondary"
+                min={1}
+                max={30}
+                defaultValue={1}
+                aria-label="Default"
+                valueLabelDisplay="on"
+                onChangeCommitted={(e, v) => {
+                  // Set the number of variables to the value of the input
+                  setNumFuncs(parseInt(v));
+                  checkEmpty();
+                }}
+              />
+            </div>
+            <div>
+              <div className="fxn">
+                {/* // Add a function selector based on the number of variables the neuron has */}
+                <table>
+                  <tbody>
+                    {Array.from(Array(numFuncs).keys()).map((i) => {
+                      return (
+                        <tr>
+                          <th>
+                            <label className="h4">Function {i + 1}</label>
+                          </th>
+                          {Array.from(Array(numVars).keys()).map((j) => {
+                            return (
+                              <td>
+                                <input
+                                  type="number"
+                                  className="inputs"
+                                  onChange={(e) => {
+                                    handleAddFuncs(
+                                      i,
+                                      j,
+                                      parseInt(e.target.value)
+                                    );
+                                    checkEmpty();
+                                  }}
+                                />
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div className="section">
+            <h4>Connections</h4>
+            <div>
+              <label>Outgoing Connections</label>
+
+              <Select
+                options={nodeOptions}
+                isMulti={true}
+                onChange={(e) => {
+                  handleAddSynOut(e);
+                }}
+              />
+            </div>
+            <div>
+              <label>Incoming Connections</label>
+              <Select
+                options={nodeOptions}
+                isMulti={true}
+                onChange={(e) => {
+                  handleAddSynIn(e);
+                }}
+              />
+            </div>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            disabled={isdisabled}
+            onClick={addNewNeuron}
+            id="submitbutton"
+            variant="c5"
+          >
+            Add Neuron
+          </Button>
+        </ModalFooter>
       </Modal>
-      </>
+    </>
   );
-}
+};
 
 export default NewNodeForm;

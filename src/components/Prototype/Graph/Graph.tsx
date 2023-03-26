@@ -3,16 +3,12 @@ import CytoscapeComponent from "react-cytoscapejs";
 import { useEffect, useRef, useState } from "react";
 import { ElementDefinition } from "cytoscape";
 import { createEnvNode, createNeuron } from "../../../utils/helper";
-import ButtonBar from "./ButtonBar";
 import stylesheet from "./stylesheet";
-import NewNodeForm from "../forms/NewNodeForm";
-import React from "react";
 
 export default function Graph(props) {
   // Cytoscape reference
   const cyRef = useRef(cytoscape());
   const [elements, setElements] = useState(new Array<ElementDefinition>());
-  const [selectedNode, setSelectedNode] = useState<string>("");
 
   // Modal states
   const [showNewNode, setShowNewNode] = useState(false);
@@ -31,18 +27,19 @@ export default function Graph(props) {
 
       if (evtTarget === cy) {
         console.log("tap on background");
-        setSelectedNode("");
+        props.setSelectedNode("");
       } else {
         console.log("tap on : " + evtTarget.id());
         // If the element is a node, set the selected node to the id of the node
         if (evtTarget.isNode()) {
-          setSelectedNode(evtTarget.id());
+          if (evtTarget.id() !== "Environment") {
+            props.setSelectedNode(evtTarget.id());
+          }
         }
         // If the element is an edge, set the selected node to the id of the edge
         else if (evtTarget.isEdge()) {
           console.log("Edge");
         }
-        setSelectedNode(evtTarget.id());
       }
     });
 
@@ -128,15 +125,6 @@ export default function Graph(props) {
   }
   return (
     <>
-      <ButtonBar
-        selectedNode={selectedNode}
-        setSelectedNode={setSelectedNode}
-        showNewNode={showNewNode}
-        setShowNewNode={setShowNewNode}
-      />
-      {showNewNode && (
-        <NewNodeForm {...props} setShowNewNode={setShowNewNode} />
-      )}
       <CytoscapeComponent
         elements={elements}
         boxSelectionEnabled={false}
