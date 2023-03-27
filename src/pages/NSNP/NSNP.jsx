@@ -40,7 +40,7 @@ function NSNP() {
   const [timeSteps, setTimeSteps] = useState(0);
   const [guidedMode, setGuidedMode] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
-  const[isDev,setDev]=useState(false);
+  const [isDev, setDev] = useState(false);
   // States for the History
   const [CHist, setCHist] = useState([]);
   const [SHist, setSHist] = useState([]);
@@ -197,9 +197,18 @@ function NSNP() {
     loadSystem(target, matrixProps);
   }
 
+  function handleShowGraph() {
+    setShowGraph(!showGraph);
+  }
+
+  function handleEditMatrices() {
+    setShowNonSimMatrices(!showNonSimMatrices);
+    setShowSPMatrices(!showSPMatrices);
+  }
+
   return (
     <>
-      <Menu load={handleLoad} {...matrixProps} save={handleSave} set={setDev}/>
+      <Menu load={handleLoad} {...matrixProps} save={handleSave} set={setDev} />
 
       <div className="body">
         <div className="nsnpheader">
@@ -220,20 +229,22 @@ function NSNP() {
             />
             <DeleteForm />
           </div>
-            <SubHeader
-              forward={handleGeneration}
-              reset={handleReset}
-              undo={handleUndo}
-              number={timeSteps}
-              checked={showGraph}
-              dev={isDev}
-            />
+          <SubHeader
+            forward={handleGeneration}
+            reset={handleReset}
+            undo={handleUndo}
+            edit={handleEditMatrices}
+            number={timeSteps}
+            checked={showGraph}
+            checkbox={handleShowGraph}
+            dev={isDev}
+          />
         </div>
 
         {/* Matrix Inputs */}
         {showNonSimMatrices && <Matrices {...matrixProps} />}
         {/* Graph Workspace */}
-        {
+        {!showNonSimMatrices && showGraph && (
           <Graph
             {...matrixProps}
             envValue={envValue}
@@ -241,7 +252,7 @@ function NSNP() {
             selectedNode={selectedNode}
             setSelectedNode={setSelectedNode}
           />
-        }
+        )}
         {/* Matrix Outputs */}
         {showSPMatrices && !showGraph && <WorkSpace C={C} SV={SV} PM={PM} />}
       </div>
