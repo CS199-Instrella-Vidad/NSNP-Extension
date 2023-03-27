@@ -4,15 +4,15 @@
   width: 50px;
 }
 .subheaderbutton {
-  border: 1px solid rgb(20, 24, 34);
+  border: 1px solid rgba(189, 41, 243, 0.0);
   border-radius: 5px;
   padding: 10px;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .subheaderbutton:hover {
-  background-color: rgb(50, 53, 60);
-  color: #fff;
+  background-color: rgba(189, 41, 243, 0.1);
+  border: 1px solid var(--c2);
   transition: all 0.3s ease;
   /* change mouse cursor */
   cursor: pointer;
@@ -30,4 +30,37 @@
 .timestep {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+.play-area{
+  margin: 1em 0 1em 0;
+  align-items: center;
+  width: 100%;
+  /* background-color: yellow; */
+  display:flex;
+  justify-content: space-between;
+}
+.main-area{
+  display:flex;
+}
+.try{
+  color: yellow;
+}
+
+.play{
+  font-size: 3em;
+  color:var(--c2);
+}
+
+.play-area .btn-c2, .play-area .btn-c2:active{
+  
+  background-color: var(--c2);
+  color: white;
+  cursor: pointer;
+  padding: 0.5em;
+  border-radius: 0.3em 0.3em 0.3em 0.3em;
+  transition: hover 0.3 ease-in-out;
+}
+.play-area .btn-c2:hover{
+  background-color: rgb(157, 81, 192);
+  color: white;
 }

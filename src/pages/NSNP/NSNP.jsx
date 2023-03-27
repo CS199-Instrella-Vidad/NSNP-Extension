@@ -220,13 +220,13 @@ function NSNP() {
             />
             <DeleteForm />
           </div>
-          <SubHeader
-            forward={handleGeneration}
-            reset={handleReset}
-            undo={handleUndo}
-            number={timeSteps}
-            checked={showGraph}
-          />
+            <SubHeader
+              forward={handleGeneration}
+              reset={handleReset}
+              undo={handleUndo}
+              number={timeSteps}
+              checked={showGraph}
+            />
         </div>
 
         {/* Matrix Inputs */}
