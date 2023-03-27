@@ -8,10 +8,11 @@ import {
   Alert,
   Form,
   Dropdown,
-  DropdownButton,
+  DropdownButton, 
 } from "react-bootstrap";
 import { Save2, ClockHistory } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
+import Switch from "@mui/material/Switch";
 
 function Menu(props) {
   const [fileName, setFileName] = useState("asd");
@@ -94,7 +95,14 @@ function Menu(props) {
 
           </Form>
         </div>
-        <input type='checkbox' onChange={(e)=>{props.set(e.target.checked)}} />Dev Mode
+        <Switch
+  onChange={(e)=>{
+    props.set(e.target.checked);
+    if (!(e.target.checked)){
+      props.reset();
+    }
+  }} 
+  />Dev Mode
       </center>
     </BMenu>
   );

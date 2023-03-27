@@ -205,10 +205,15 @@ function NSNP() {
     setShowNonSimMatrices(!showNonSimMatrices);
     setShowSPMatrices(!showSPMatrices);
   }
+  function resetDev(){
+    setShowGraph(true);
+    setShowNonSimMatrices(false);
+    setShowSPMatrices(false);
+  }
 
   return (
     <>
-      <Menu load={handleLoad} {...matrixProps} save={handleSave} set={setDev} />
+      <Menu load={handleLoad} {...matrixProps} save={handleSave} set={setDev} reset={resetDev}/>
 
       <div className="body">
         <div className="nsnpheader">
