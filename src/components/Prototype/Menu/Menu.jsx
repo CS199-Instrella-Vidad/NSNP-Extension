@@ -8,7 +8,7 @@ import {
   Alert,
   Form,
   Dropdown,
-  DropdownButton, 
+  DropdownButton,
 } from "react-bootstrap";
 import { Save2, ClockHistory } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
@@ -92,17 +92,26 @@ function Menu(props) {
                 // props.isHover = !props.isHover;
               }}
             />
-
           </Form>
         </div>
-        <Switch
-  onChange={(e)=>{
-    props.set(e.target.checked);
-    if (!(e.target.checked)){
-      props.reset();
-    }
-  }} 
-  />Dev Mode
+        <div>
+          <Switch
+            onChange={(e) => {
+              props.set(e.target.checked);
+              if (!e.target.checked) {
+                props.reset();
+              }
+            }}
+          />
+          Dev Mode
+        </div>
+        <div className="btncontainer">
+          <Link to="https://forms.gle/2hg7RcyN5AbHCNDdA">
+            <div className="btnMode">
+              <b>SUBMIT COMMENTS/SUGGESTIONS</b>
+            </div>
+          </Link>
+        </div>
       </center>
     </BMenu>
   );
