@@ -56,21 +56,22 @@ function SubHeader(props) {
           <SkipNextIcon fontSize="small" sx={{ color: green[500] }} />
         </div>
         </div>
-        
+        <div className='flexbox'>
         <div>
           <h4 className="timestep mx-2">Step Counter: {props.number}</h4>
         </div>
-        {/* <div
+        {props.dev&&<><div
           className="d-flex align-items-center subheaderbutton mx-1"
           onClick={props.edit}
         >
           <EditIcon fontSize="large" sx={{ color: yellow[500] }} />
-        </div> */}
-        {/* <Checkbox
+        </div>
+        <Checkbox
           checked={props.checked}
           onChange={props.checkbox}
           sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
-        /> */}
+        /></> }
+        </div>
       </div>
   );
 }

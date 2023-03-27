@@ -40,7 +40,7 @@ function NSNP() {
   const [timeSteps, setTimeSteps] = useState(0);
   const [guidedMode, setGuidedMode] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
-
+  const[isDev,setDev]=useState(false);
   // States for the History
   const [CHist, setCHist] = useState([]);
   const [SHist, setSHist] = useState([]);
@@ -199,7 +199,7 @@ function NSNP() {
 
   return (
     <>
-      <Menu load={handleLoad} {...matrixProps} save={handleSave} />
+      <Menu load={handleLoad} {...matrixProps} save={handleSave} set={setDev}/>
 
       <div className="body">
         <div className="nsnpheader">
@@ -226,6 +226,7 @@ function NSNP() {
               undo={handleUndo}
               number={timeSteps}
               checked={showGraph}
+              dev={isDev}
             />
         </div>
 

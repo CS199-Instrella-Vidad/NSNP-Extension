@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 
 function Menu(props) {
   const [fileName, setFileName] = useState("asd");
-
   return (
     <BMenu
       id="side-bar-menu"
@@ -92,8 +91,10 @@ function Menu(props) {
                 // props.isHover = !props.isHover;
               }}
             />
+
           </Form>
         </div>
+        <input type='checkbox' onChange={(e)=>{props.set(e.target.checked)}} />Dev Mode
       </center>
     </BMenu>
   );

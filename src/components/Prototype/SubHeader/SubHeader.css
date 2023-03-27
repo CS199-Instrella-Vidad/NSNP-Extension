@@ -64,3 +64,6 @@
   background-color: rgb(157, 81, 192);
   color: white;
 }
+.flexbox{
+  display: flex;
+}
