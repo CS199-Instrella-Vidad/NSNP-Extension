@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
-import { Slider } from "@mui/material";
+import { Slider,Box,Grid, Input} from "@mui/material";
 import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
@@ -8,14 +8,33 @@ function NewNodeForm(props) {
   const [numVars, setNumVars] = useState(1);
   const [numFuncs, setNumFuncs] = useState(1);
   const [nodeOptions, setNodeOptions] = useState([]);
-
   const [inputVars, setInputVars] = useState([]);
   const [inputFuncs, setInputFuncs] = useState([]);
   const [inputSynOut, setInputSynOut] = useState([]);
   const [inputSynIn, setInputSynIn] = useState([]);
 
   const neuronNumber = props.L[0].length + 1;
+  //for slider with tb 
+  const [varVal, setValue] = useState(1);
 
+  const handlevarSliderChange = async (event, newValue) => {
+    await setValue(newValue);
+    setNumVars(parseInt(varVal));
+    checkEmpty();
+  };
+
+  const handlevarInputChange = async (event) => {
+    await setValue(event.target.value === '' ? '' : Number(event.target.value));
+    setNumVars(parseInt(varVal));
+    checkEmpty();
+    
+  };
+
+  const handleBlur = () => {
+    if (value < 1) {
+      setValue(1);
+    } 
+  };
   //for modals
   const [showModal, setShow] = useState(false);
   const handleClose = () => {
@@ -27,7 +46,6 @@ function NewNodeForm(props) {
     setNumVars(1);
     setNumFuncs(1);
   };
-
   //for button
   let disabledbutton = true;
   const [isdisabled, setAble] = useState(true);
@@ -205,19 +223,51 @@ function NewNodeForm(props) {
             <h4>Variables</h4>
             <div className="sliders">
               <label>Number of Variables:</label>
-              <Slider
+              
+              {/* <Slider
+                id='varsl'
                 track="normal"
                 min={1}
                 max={30}
-                vdefaultvalue={1}
+                defaultvalue={1}
                 aria-label="Default"
                 valueLabelDisplay="on"
                 onChangeCommitted={(e, v) => {
                   // Set the number of variables to the value of the input
-                  setNumVars(parseInt(v));
+                  varVal=parseInt(v)%31;
+                  setNumVars(parseInt(varVal));
                   checkEmpty();
+                  e.value=varVal;
+                  document.getElementById('vartb').value=varVal;
                 }}
-              />
+              /> */}
+              <Grid container spacing={2} alignItems="center">
+        
+        <Grid item xs>
+          <Slider
+            value={typeof varVal=== 'number' ? varVal : 1}
+            min={1}
+            max={5}
+            onChange={handlevarSliderChange}
+            aria-labelledby="input-slider"
+          />
+        </Grid>
+        <Grid item>
+          <Input
+            value={varVal}
+            margin="dense"
+            onChange={handlevarInputChange}
+            onBlur={handleBlur}
+            inputProps={{
+              min: 1,
+              max: 30,
+              type: 'number',
+              'aria-labelledby': 'input-slider',
+            }}
+          />
+        </Grid>
+      </Grid>
+              
             </div>
             <div className="vargrid">
               {Array.from(Array(numVars).keys()).map((i) => {
