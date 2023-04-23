@@ -112,6 +112,13 @@ function Menu(props) {
             </div>
           </Link>
         </div>
+        <div className="btncontainer">
+          <Link to="https://github.com/CS199-Instrella-Vidad">
+            <div className="btnMode">
+              <b>GITHUB LINK</b>
+            </div>
+          </Link>
+        </div>
       </center>
     </BMenu>
   );
