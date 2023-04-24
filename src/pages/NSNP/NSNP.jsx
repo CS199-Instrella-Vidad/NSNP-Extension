@@ -91,9 +91,7 @@ function NSNP() {
   };
   // Use Effect for reloading matrix data from local storage
   useEffect(() => {
-    console.log("Old C", C);
     localStorageMatrices(matrixProps);
-    console.log("New C", C);
   }, []);
 
   //States for Viewing WorkSpace components
@@ -205,7 +203,7 @@ function NSNP() {
     setShowNonSimMatrices(!showNonSimMatrices);
     setShowSPMatrices(!showSPMatrices);
   }
-  function resetDev(){
+  function resetDev() {
     setShowGraph(true);
     setShowNonSimMatrices(false);
     setShowSPMatrices(false);
@@ -213,7 +211,13 @@ function NSNP() {
 
   return (
     <>
-      <Menu load={handleLoad} {...matrixProps} save={handleSave} set={setDev} reset={resetDev}/>
+      <Menu
+        load={handleLoad}
+        {...matrixProps}
+        save={handleSave}
+        set={setDev}
+        reset={resetDev}
+      />
 
       <div className="body">
         <div className="nsnpheader">
@@ -232,7 +236,7 @@ function NSNP() {
               handleCloseModal={handleCloseEdit}
               selectedNode={selectedNode}
             />
-            <DeleteForm />
+            <DeleteForm {...matrixProps} selectedNode={selectedNode} />
           </div>
           <SubHeader
             forward={handleGeneration}

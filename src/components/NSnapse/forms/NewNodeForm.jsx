@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
-import { Slider,Box,Grid, Input} from "@mui/material";
+import { Slider, Box, Grid, Input } from "@mui/material";
 import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
@@ -14,7 +14,7 @@ function NewNodeForm(props) {
   const [inputSynIn, setInputSynIn] = useState([]);
 
   const neuronNumber = props.L[0].length + 1;
-  //for slider with tb 
+  //for slider with tb
   const [varVal, setValue] = useState(1);
 
   const handlevarSliderChange = async (event, newValue) => {
@@ -24,16 +24,15 @@ function NewNodeForm(props) {
   };
 
   const handlevarInputChange = async (event) => {
-    await setValue(event.target.value === '' ? '' : Number(event.target.value));
+    await setValue(event.target.value === "" ? "" : Number(event.target.value));
     setNumVars(parseInt(varVal));
     checkEmpty();
-    
   };
 
   const handleBlur = () => {
     if (value < 1) {
       setValue(1);
-    } 
+    }
   };
   //for modals
   const [showModal, setShow] = useState(false);
@@ -73,6 +72,7 @@ function NewNodeForm(props) {
     let newC = props.C;
     newC = newC.concat(inputVars);
     props.setC(newC);
+    console.log(props.C);
 
     // Change VL
     let neuronNum = props.L[0].length + 1;
@@ -136,6 +136,18 @@ function NewNodeForm(props) {
     setInputSynIn([]);
     handleClose();
     console.log("added Neuron");
+    const json = {
+      C: newC,
+      VL: newVL,
+      F: newF,
+      L: newL,
+      T: props.T,
+      syn: newSyn,
+      envSyn: props.envSyn,
+      neuronPositions: props.neuronPositions,
+    };
+    console.log(json);
+    localStorage.setItem("Matrices", JSON.stringify(json));
   }
 
   function handleAddVars(i, value) {
@@ -194,7 +206,6 @@ function NewNodeForm(props) {
   }, [numFuncs]);
 
   useEffect(() => {
-    console.log("props", props);
     let newOptions = [];
     for (let i = 0; i < props.L[0].length; i++) {
       newOptions.push({ value: i, label: "Node " + (i + 1) });
@@ -223,7 +234,7 @@ function NewNodeForm(props) {
             <h4>Variables</h4>
             <div className="sliders">
               <label>Number of Variables:</label>
-              
+
               {/* <Slider
                 id='varsl'
                 track="normal"
@@ -242,36 +253,33 @@ function NewNodeForm(props) {
                 }}
               /> */}
               <Grid container spacing={2} alignItems="center">
-        
-        <Grid item xs>
-          <Slider
-            value={typeof varVal=== 'number' ? varVal : 1}
-            min={1}
-            max={5}
-            onChange={handlevarSliderChange}
-            aria-labelledby="input-slider"
-          />
-        </Grid>
-        <Grid item>
-          <Input
-            value={varVal}
-            margin="dense"
-            onChange={handlevarInputChange}
-            onBlur={handleBlur}
-            inputProps={{
-              min: 1,
-              max: 30,
-              type: 'number',
-              'aria-labelledby': 'input-slider',
-            }}
-          />
-        </Grid>
-      </Grid>
-              
+                <Grid item xs>
+                  <Slider
+                    value={typeof varVal === "number" ? varVal : 1}
+                    min={1}
+                    max={5}
+                    onChange={handlevarSliderChange}
+                    aria-labelledby="input-slider"
+                  />
+                </Grid>
+                <Grid item>
+                  <Input
+                    value={varVal}
+                    margin="dense"
+                    onChange={handlevarInputChange}
+                    onBlur={handleBlur}
+                    inputProps={{
+                      min: 1,
+                      max: 30,
+                      type: "number",
+                      "aria-labelledby": "input-slider",
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </div>
             <div className="vargrid">
               {Array.from(Array(numVars).keys()).map((i) => {
-                console.log("i", i);
                 return (
                   <div>
                     <label>x{props.VL.length + i + 1}</label>
