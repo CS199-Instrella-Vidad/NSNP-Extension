@@ -10,11 +10,7 @@ function App() {
   return (
     <>
       <div className="App">
-        {/* <Header /> */}
-        {/* <ConfigHist /> */}
         <NSNP />
-        {/* <Simulation /> */}
-        {/* <Graph /> */}
       </div>
     </>
   );
