@@ -23,7 +23,8 @@ function DeleteForm(props) {
 
     newNeuronPositions = newNeuronPositions.filter(
       (item) =>
-        item.id != "Neuron " + neuron && item.id != "neuron-contents" + neuron
+        item.id != "Neuron " + neuron &&
+        item.id != "neuron-contents" + neuron - 1
     );
 
     // For all objects in neuronPositions, if the id format is "Neuron x" or "neuron-contentsx", change the x to x-1 if x > neuron
@@ -45,7 +46,6 @@ function DeleteForm(props) {
         }
       }
     }
-
     return newNeuronPositions;
   }
 
@@ -127,13 +127,24 @@ function DeleteForm(props) {
       neuron,
       props.neuronPositions
     );
-    console.log(newNeuronPositions);
     props.setNeuronPositions(newNeuronPositions);
     props.setVL(newVL);
     props.setL(newL);
     props.setC(newC);
     props.setEnvSyn(newEnvSyn);
     props.setSyn(newSyn);
+    const json = {
+      C: newC,
+      VL: newVL,
+      F: newF,
+      L: newL,
+      T: props.T,
+      syn: newSyn,
+      envSyn: newEnvSyn,
+      neuronPositions: newNeuronPositions,
+    };
+    localStorage.setItem("Matrices", JSON.stringify(json));
+    localStorage.setItem("positions", JSON.stringify(newNeuronPositions));
   }
   return (
     <>
