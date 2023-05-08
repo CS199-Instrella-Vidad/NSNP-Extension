@@ -17,7 +17,16 @@ export default function Graph(props) {
   useEffect(() => {
     setElements([]);
     createSystem();
-  }, [props.C, props.VL, props.F, props.L, props.T, props.syn, props.envSyn]);
+  }, [
+    props.C,
+    props.VL,
+    props.F,
+    props.L,
+    props.T,
+    props.syn,
+    props.envSyn,
+    props.neuronPositions,
+  ]);
 
   // Track events on the graph
   useEffect(() => {
@@ -121,7 +130,7 @@ export default function Graph(props) {
     }
 
     // set elements to newElements
-    console.log(newElements);
+    // console.log(newElements);
     setElements(newElements);
   }
   return (
