@@ -85,7 +85,9 @@ export default function Graph(props) {
       for (let i = 0; i < max + 1; i++) {
         // Create a neuron for each variable
         if (i === max) {
-          newElements.push(...createEnvNode(props.envValue, i));
+          if (props.envSyn !== 0) {
+            newElements.push(...createEnvNode(props.envValue, i));
+          }
         } else {
           newElements.push(
             ...createNeuron(props.VL, props.C, props.F, props.L, i, props.T)
@@ -106,18 +108,21 @@ export default function Graph(props) {
         };
       });
 
-      let outputSource = "Neuron " + props.envSyn;
-      let outputEdge = {
-        data: {
-          id: "Synapse " + outputSource + "-Environment",
-          source: outputSource,
-          target: "Environment",
-          label: "Output",
-          classes: "edge",
-        },
-      };
-      edges.push(outputEdge);
-      // Add the edges to the list of elements
+      if (props.envSyn !== 0) {
+        let outputSource = "Neuron " + props.envSyn;
+        let outputEdge = {
+          data: {
+            id: "Synapse " + outputSource + "-Environment",
+            source: outputSource,
+            target: "Environment",
+            label: "Output",
+            classes: "edge",
+          },
+        };
+        edges.push(outputEdge);
+        // Add the edges to the list of elements
+      }
+
       newElements.push(...edges);
 
       let storedPositions = localStorage.getItem("positions");

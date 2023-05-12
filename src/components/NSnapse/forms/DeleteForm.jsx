@@ -119,9 +119,6 @@ function DeleteForm(props) {
     let newEnvSyn = props.envSyn;
     if (newEnvSyn > neuron - 1) {
       newEnvSyn = newEnvSyn - 1;
-      if (newEnvSyn == 0) {
-        newEnvSyn = 1;
-      }
     }
 
     // Change neuron Positions

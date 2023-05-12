@@ -59,7 +59,7 @@ function ClearAllForm(props) {
 
     //TODO: CHANGE T
 
-    let newEnvSyn = 1;
+    let newEnvSyn = 0;
 
     // Change neuron Positions
     let newNeuronPositions = [];
