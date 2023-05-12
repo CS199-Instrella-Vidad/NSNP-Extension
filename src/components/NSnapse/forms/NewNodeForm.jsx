@@ -4,6 +4,7 @@ import { Slider, Box, Grid, Input } from "@mui/material";
 import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
+import { PersonPlusFill } from "react-bootstrap-icons";
 function NewNodeForm(props) {
   const [numVars, setNumVars] = useState(1);
   const [numFuncs, setNumFuncs] = useState(1);
@@ -13,7 +14,7 @@ function NewNodeForm(props) {
   const [inputSynOut, setInputSynOut] = useState([]);
   const [inputSynIn, setInputSynIn] = useState([]);
 
-  const neuronNumber = props.L[0].length + 1;
+  const neuronNumber = props.L.length === 0 ? 1 : props.L[0].length + 1;
   //for slider with tb
   const [varVal, setValue] = useState(1);
 
@@ -75,7 +76,7 @@ function NewNodeForm(props) {
     console.log(props.C);
 
     // Change VL
-    let neuronNum = props.L[0].length + 1;
+    let neuronNum = props.L.length === 0 ? 1 : props.L[0].length + 1;
     let newVL = props.VL;
     for (let i = 0; i < numVars; i++) {
       newVL.push(neuronNum);
@@ -84,39 +85,60 @@ function NewNodeForm(props) {
 
     // Change F
     let newF = props.F;
-    for (let i = 0; i < newF.length; i++) {
-      for (let j = 0; j < numVars; j++) {
-        newF[i].push(0);
+    if (newF.length > 0) {
+      for (let i = 0; i < newF.length; i++) {
+        for (let j = 0; j < numVars; j++) {
+          newF[i].push(0);
+        }
+      } //Push an array the length of the number of elements in a row of newF
+      for (let i = 0; i < numFuncs; i++) {
+        let newFRow = [];
+        for (let i = 0; i < newF[0].length; i++) {
+          newFRow.push(0);
+        }
+        for (let j = 0; j < numVars; j++) {
+          newFRow[newFRow.length - numVars + j] = inputFuncs[i][j];
+        }
+        newF.push(newFRow);
+      }
+    } else {
+      for (let i = 0; i < numFuncs; i++) {
+        let newFRow = [];
+        for (let j = 0; j < numVars; j++) {
+          newFRow.push(inputFuncs[i][j]);
+        }
+
+        newF.push(newFRow);
       }
     }
-    //Push an array the length of the number of elements in a row of newF
-    for (let i = 0; i < numFuncs; i++) {
-      let newFRow = [];
-      for (let i = 0; i < newF[0].length; i++) {
-        newFRow.push(0);
-      }
-      for (let j = 0; j < numVars; j++) {
-        newFRow[newFRow.length - numVars + j] = inputFuncs[i][j];
-      }
-      newF.push(newFRow);
-    }
+
     props.setF(newF);
 
     // Change L
     let newL = props.L;
-    // Create a new column in L for the new neuron
-    for (let i = 0; i < newL.length; i++) {
-      newL[i].push(0);
-    }
-    //Push an array the length of the number of elements in a row of newF
-    for (let i = 0; i < numFuncs; i++) {
-      let newLRow = [];
-      for (let i = 0; i < newL[0].length; i++) {
-        newLRow.push(0);
+    if (newL.length > 0) {
+      for (let i = 0; i < newL.length; i++) {
+        newL[i].push(0);
       }
-      newLRow[newLRow.length - 1] = 1;
-      newL.push(newLRow);
+      for (let i = 0; i < numFuncs; i++) {
+        let newLRow = [];
+        for (let i = 0; i < newL[0].length; i++) {
+          newLRow.push(0);
+        }
+        newLRow[newLRow.length - 1] = 1;
+        newL.push(newLRow);
+      }
+    } else {
+      for (let i = 0; i < numFuncs; i++) {
+        let newLRow = [];
+        newLRow.push(1);
+        newL.push(newLRow);
+      }
     }
+    // Create a new column in L for the new neuron
+
+    //Push an array the length of the number of elements in a row of newF
+
     props.setL(newL);
 
     //Change syn
@@ -207,9 +229,12 @@ function NewNodeForm(props) {
 
   useEffect(() => {
     let newOptions = [];
-    for (let i = 0; i < props.L[0].length; i++) {
-      newOptions.push({ value: i, label: "Node " + (i + 1) });
+    if (props.L.length > 0) {
+      for (let i = 0; i < props.L[0].length; i++) {
+        newOptions.push({ value: i, label: "Node " + (i + 1) });
+      }
     }
+
     setNodeOptions(newOptions);
   }, [props]);
 
