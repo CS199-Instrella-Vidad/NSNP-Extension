@@ -180,6 +180,7 @@ function NewNodeForm(props) {
 
   function handleAddFuncs(i, j, e) {
     let newFuncs = inputFuncs;
+    console.log(inputFuncs);
     newFuncs[i][j] = e;
     setInputFuncs(newFuncs);
   }
@@ -225,7 +226,7 @@ function NewNodeForm(props) {
     }
 
     setInputFuncs(newInputFuncs);
-  }, [numFuncs]);
+  }, [numFuncs, showModal]);
 
   useEffect(() => {
     let newOptions = [];

@@ -7,12 +7,12 @@ import {
 
 import { React, useState } from "react";
 import { Button } from "react-bootstrap";
-function DeleteForm(props) {
+function ClearAllForm(props) {
   const [status, setStatus] = useState(false);
   const show = () => setStatus(true);
   const hide = () => setStatus(false);
   const todelete = () => {
-    deleteNeuron();
+    deleteAll();
     hide();
   };
 
@@ -48,88 +48,23 @@ function DeleteForm(props) {
     return newNeuronPositions;
   }
 
-  function deleteNeuron() {
-    let neuron = parseInt(props.selectedNode.slice(7));
-    let indices = [];
-    let idx = props.VL.indexOf(neuron);
-    while (idx != -1) {
-      indices.push(idx);
-      idx = props.VL.indexOf(neuron, idx + 1);
-    }
+  function deleteAll() {
+    let newVL = [];
+    let newF = [];
+    let newC = [];
 
-    // CHANGE VL
-    let newVL = props.VL.filter((item) => item != neuron);
-    // adjust the VL array so that no number is skipped
-    for (let i = 0; i < newVL.length; i++) {
-      if (newVL[i] > neuron) {
-        newVL[i] = newVL[i] - 1;
-      }
-    }
+    let newL = [];
 
-    // Delete Variables in C and F
-    let newF = props.F;
-    let newC = props.C;
-    for (let i = 0; i < indices.length; i++) {
-      newC.splice(indices[i] - i, 1);
-      for (let j = 0; j < newF.length; j++) {
-        newF[j].splice(indices[i] - i, 1);
-      }
-    }
+    let newSyn = [];
 
-    // Delete Functions in F based on L
-    let fIndices = [];
-    for (let i = 0; i < props.L.length; i++) {
-      // for each row
-      if (props.L[i][neuron - 1] == 1) {
-        fIndices.push(i);
-      }
-    }
-    console.log(fIndices);
-    newF = newF.filter((item, index) => !fIndices.includes(index));
-    props.setF(newF);
+    //TODO: CHANGE T
 
-    // Adjust function locations L
-    let newL = props.L;
-    newL = newL.filter((item, index) => !fIndices.includes(index));
-
-    for (let i = 0; i < newL.length; i++) {
-      // for each row
-      if (props.L[i][neuron - 1] == 1) {
-        newL[i].splice(neuron - 1, 1);
-      }
-    }
-
-    // CHANGE syn
-    let newSyn = props.syn;
-    // remove all elements that contain neuron
-    newSyn = newSyn.filter((item) => !item.includes(neuron));
-    console.log("newSyn", newSyn);
-    // adjust the syn array so that no number is skipped
-    for (let i = 0; i < newSyn.length; i++) {
-      for (let j = 0; j < newSyn[i].length; j++) {
-        if (newSyn[i][j] > neuron) {
-          newSyn[i][j] = newSyn[i][j] - 1;
-        }
-      }
-    }
-
-    // CHANGE T
-
-    // Adjust envsyn
-    let newEnvSyn = props.envSyn;
-    if (newEnvSyn > neuron - 1) {
-      newEnvSyn = newEnvSyn - 1;
-      if (newEnvSyn == 0) {
-        newEnvSyn = 1;
-      }
-    }
+    let newEnvSyn = 1;
 
     // Change neuron Positions
-    let newNeuronPositions = adjustNeuronPositions(
-      neuron,
-      props.neuronPositions
-    );
+    let newNeuronPositions = [];
     props.setNeuronPositions(newNeuronPositions);
+    props.setF(newF);
     props.setVL(newVL);
     props.setL(newL);
     props.setC(newC);
@@ -151,7 +86,7 @@ function DeleteForm(props) {
   return (
     <>
       <Button variant="c1" onClick={show}>
-        Delete {props.selectedNode}
+        Clear All
       </Button>
       <Dialog open={status} onClose={hide}>
         <DialogTitle>Alert: Deleting a Node</DialogTitle>
@@ -168,4 +103,4 @@ function DeleteForm(props) {
     </>
   );
 }
-export default DeleteForm;
+export default ClearAllForm;

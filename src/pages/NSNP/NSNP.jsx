@@ -17,6 +17,7 @@ import Graph from "../../components/Prototype/Graph/Graph";
 import SubHeader from "../../components/Prototype/SubHeader/SubHeader";
 import generateConfigurations from "../../utils/SimAlgs/generateConfiguration";
 import { loadSystem, saveSystem } from "../../utils/saveload";
+import ClearAllForm from "../../components/NSnapse/forms/ClearAllForm";
 
 function NSNP() {
   // modals
@@ -237,6 +238,7 @@ function NSNP() {
               selectedNode={selectedNode}
             />
             <DeleteForm {...matrixProps} selectedNode={selectedNode} />
+            <ClearAllForm {...matrixProps} selectedNode={selectedNode} />
           </div>
           <SubHeader
             forward={handleGeneration}
