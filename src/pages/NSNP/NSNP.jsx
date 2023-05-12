@@ -18,11 +18,14 @@ import SubHeader from "../../components/Prototype/SubHeader/SubHeader";
 import generateConfigurations from "../../utils/SimAlgs/generateConfiguration";
 import { loadSystem, saveSystem } from "../../utils/saveload";
 import ClearAllForm from "../../components/NSnapse/forms/ClearAllForm";
+import NewOutputForm from "../../components/NSnapse/forms/NewOutputForm";
 
 function NSNP() {
   // modals
   const [showNewNodeModal, setShowNewNodeModal] = useState(false);
   const [showNewInputNodeModal, setShowNewInputNodeModal] = useState(false);
+  const [showNewOutputNodeModal, setShowNewOutputNodeModal] = useState(false);
+
   const [showDelete, setDelete] = useState(false);
   const [showEdit, setshowEdit] = useState(false);
 
@@ -30,6 +33,7 @@ function NSNP() {
   const handleClose = () => setShowNewNodeModal(false);
   const handleShow = () => setShowNewNodeModal(true);
   const handleNewInputClose = () => setShowNewInputNodeModal(false);
+  const handleNewOutputClose = () => setShowNewOutputNodeModal(false);
   const handleNewInputShow = () => setShowNewInputNodeModal(true);
   const handleOutputShow = () => alert("Added new Output Neuron");
   const handleDeleteClose = () => setDelete(false);
@@ -228,9 +232,10 @@ function NSNP() {
           <div className="actionselector">
             <NewNodeForm {...matrixProps} handleCloseModal={handleClose} />
             <NewInputForm handleCloseModal={handleNewInputClose} />
-            <Button variant="c5" onClick={handleOutputShow}>
-              New Output Neuron
-            </Button>
+            <NewOutputForm
+              {...matrixProps}
+              handleCloseModal={handleNewOutputClose}
+            />
             {/* place holders */}
 
             <EditNodeForm

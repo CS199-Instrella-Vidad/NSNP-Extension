@@ -232,7 +232,7 @@ function NewNodeForm(props) {
     let newOptions = [];
     if (props.L.length > 0) {
       for (let i = 0; i < props.L[0].length; i++) {
-        newOptions.push({ value: i, label: "Node " + (i + 1) });
+        newOptions.push({ value: i, label: "Neuron " + (i + 1) });
       }
     }
 
