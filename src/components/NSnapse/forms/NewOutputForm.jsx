@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
-import { Slider } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,
+} from "@mui/material";
 import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
@@ -9,6 +14,24 @@ const NewOutputForm = (props) => {
   const [nodeOptions, setNodeOptions] = useState([]);
   const [outputSynIn, setOutputSynIn] = useState([]);
   const [isdisabled, setAble] = useState(true);
+
+  const [status, setStatus] = useState(false);
+  const show = () => setStatus(true);
+  const hide = () => setStatus(false);
+  const toAssign = () => {
+    assignNeuron();
+    hide();
+  };
+
+  function assignNeuron() {
+    let neuron = parseInt(props.selectedNode.slice(7));
+    props.setEnvSyn(neuron);
+    let matrices = JSON.parse(localStorage.getItem("Matrices"));
+    matrices.envSyn = neuron;
+    localStorage.setItem("Matrices", JSON.stringify(matrices));
+    console.log(props.envSyn);
+  }
+
   function checkEmpty() {
     const tb = document.getElementsByClassName("inputs");
     let empty = false;
@@ -33,6 +56,7 @@ const NewOutputForm = (props) => {
     let matrices = JSON.parse(localStorage.getItem("Matrices"));
     matrices.envSyn = outputSynIn.value + 1;
     localStorage.setItem("Matrices", JSON.stringify(matrices));
+    console.log(props.envSyn);
 
     handleClose();
   };
@@ -49,6 +73,8 @@ const NewOutputForm = (props) => {
   const handleShow = () => {
     setShow(true);
   };
+
+  // Load the neuron options for making a synapse
   useEffect(() => {
     let newOptions = [];
     console.log(props.L);
@@ -61,50 +87,73 @@ const NewOutputForm = (props) => {
     setNodeOptions(newOptions);
   }, [props]);
 
-  return (
-    <>
-      <Button onClick={handleShow} variant="c5">
-        Assign Output Neuron
-      </Button>
-      <Modal
-        dialogclassname="modalcustom"
-        keyboard={false}
-        centered
-        backdrop="static"
-        show={showModal}
-        onHide={handleClose}
-      >
-        <ModalHeader closeButton className="sticktop">
-          <h3>Assign Output Neuron</h3>
-        </ModalHeader>
-        <ModalBody>
-          <div className="section">
-            <h5>Select neuron to assign</h5>
-            <Select
-              options={nodeOptions}
-              isMulti={false}
-              onChange={(e) => {
-                checkEmpty();
-                handleAddSynIn(e);
-              }}
-            />
-            <br />
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          <ModalFooter>
-            <Button
-              disabled={isdisabled}
-              onClick={addOutputNeuron}
-              id="submitbutton"
-              variant="c5"
-            >
-              Assign
+  if (props.selectedNode !== "") {
+    return (
+      <>
+        <Button variant="c1" onClick={show}>
+          Assign {props.selectedNode} as Output Neuron
+        </Button>
+        <Dialog open={status} onClose={hide}>
+          <DialogTitle>Assign as Output Neuron</DialogTitle>
+          <DialogContent>
+            You are about to assign {props.selectedNode} as an output neuron.
+            This means that this neuron will send values to the environment.
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={hide}>Disagree</Button>
+            <Button onClick={toAssign} autoFocus>
+              Agree
             </Button>
+          </DialogActions>
+        </Dialog>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Button onClick={handleShow} variant="c5">
+          Assign Output Neuron
+        </Button>
+        <Modal
+          dialogclassname="modalcustom"
+          keyboard={false}
+          centered
+          backdrop="static"
+          show={showModal}
+          onHide={handleClose}
+        >
+          <ModalHeader closeButton className="sticktop">
+            <h3>Assign Output Neuron</h3>
+          </ModalHeader>
+          <ModalBody>
+            <div className="section">
+              <h5>Select neuron to assign</h5>
+              <Select
+                options={nodeOptions}
+                isMulti={false}
+                onChange={(e) => {
+                  checkEmpty();
+                  handleAddSynIn(e);
+                }}
+              />
+              <br />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <ModalFooter>
+              <Button
+                disabled={isdisabled}
+                onClick={addOutputNeuron}
+                id="submitbutton"
+                variant="c5"
+              >
+                Assign
+              </Button>
+            </ModalFooter>
           </ModalFooter>
-        </ModalFooter>
-      </Modal>
-    </>
-  );
+        </Modal>
+      </>
+    );
+  }
 };
 export default NewOutputForm;

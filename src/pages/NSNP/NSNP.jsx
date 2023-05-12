@@ -235,6 +235,7 @@ function NSNP() {
             <NewOutputForm
               {...matrixProps}
               handleCloseModal={handleNewOutputClose}
+              selectedNode={selectedNode}
             />
             {/* place holders */}
 
