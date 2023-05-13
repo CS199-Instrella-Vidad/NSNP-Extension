@@ -73,7 +73,6 @@ function NewNodeForm(props) {
     let newC = props.C;
     newC = newC.concat(inputVars);
     props.setC(newC);
-    console.log(props.C);
 
     // Change VL
     let neuronNum = props.L.length === 0 ? 1 : props.L[0].length + 1;
@@ -149,7 +148,6 @@ function NewNodeForm(props) {
     for (let i = 0; i < inputSynOut.length; i++) {
       newSyn.push([neuronNumber, inputSynOut[i].value + 1]);
     }
-    console.log("adding Neuron");
     setNumVars(1);
     setNumFuncs(1);
     setInputVars([]);
@@ -157,7 +155,6 @@ function NewNodeForm(props) {
     setInputSynOut([]);
     setInputSynIn([]);
     handleClose();
-    console.log("added Neuron");
     const json = {
       C: newC,
       VL: newVL,
@@ -168,7 +165,6 @@ function NewNodeForm(props) {
       envSyn: props.envSyn,
       neuronPositions: props.neuronPositions,
     };
-    console.log(json);
     localStorage.setItem("Matrices", JSON.stringify(json));
   }
 
@@ -180,7 +176,6 @@ function NewNodeForm(props) {
 
   function handleAddFuncs(i, j, e) {
     let newFuncs = inputFuncs;
-    console.log(inputFuncs);
     newFuncs[i][j] = e;
     setInputFuncs(newFuncs);
   }

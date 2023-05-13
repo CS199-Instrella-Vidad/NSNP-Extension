@@ -16,7 +16,6 @@ function matrixToString(matrix: number[][]) {
     }
   }
   string += ` \\end{array}\\right)`;
-  console.log(string);
   return string;
 }
 

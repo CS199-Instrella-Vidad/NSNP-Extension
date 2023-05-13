@@ -17,16 +17,7 @@ export default function Graph(props) {
   useEffect(() => {
     setElements([]);
     createSystem();
-  }, [
-    props.C,
-    props.VL,
-    props.F,
-    props.L,
-    props.T,
-    props.syn,
-    props.envSyn,
-    props.neuronPositions,
-  ]);
+  }, [props]);
 
   // Track events on the graph
   useEffect(() => {
@@ -35,10 +26,10 @@ export default function Graph(props) {
       var evtTarget = event.target;
 
       if (evtTarget === cy) {
-        console.log("tap on background");
+        console.log("Tap on background");
         props.setSelectedNode("");
       } else {
-        console.log("tap on : " + evtTarget.id());
+        console.log("Tap on : " + evtTarget.id());
         // If the element is a node, set the selected node to the id of the node
         if (evtTarget.isNode()) {
           if (evtTarget.id() !== "Environment") {
@@ -47,7 +38,7 @@ export default function Graph(props) {
         }
         // If the element is an edge, set the selected node to the id of the edge
         else if (evtTarget.isEdge()) {
-          console.log("Edge");
+          console.log("Tap on Edge");
         }
       }
     });

@@ -6,9 +6,6 @@ import HistoryIcon from "@mui/icons-material/History";
 import "./Header.css";
 
 function Header(props) {
-  function handleClick() {
-    console.log("Clicked");
-  }
   return (
     <div className="d-flex col justify-content-between align-items-center text-center p-4 bg-dark text-white">
       <div
