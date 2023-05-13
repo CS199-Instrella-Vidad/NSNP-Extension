@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
+import Select from "react-select";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogActions,
 } from "@mui/material";
+import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
-import Select from "react-select";
-import "./forms.css";
-import { saveSystem } from "../../../utils/saveload";
 
 function DeleteForm(props) {
   const [nodeOptions, setNodeOptions] = useState([]);
@@ -41,6 +40,24 @@ function DeleteForm(props) {
     deleteNeuron(neuron);
     hide();
   };
+
+  function checkEmpty() {
+    const tb = document.getElementsByClassName("inputs");
+    let empty = false;
+    for (let i = 0; i < tb.length; i++) {
+      if (tb.item(i).value == "") {
+        empty = true;
+        break;
+      }
+    }
+    if (empty == true) {
+      document.getElementById("submitbutton").disabled = true;
+      setAble(true);
+    } else {
+      document.getElementById("submitbutton").disabled = false;
+      setAble(false);
+    }
+  }
 
   function massDelete() {
     console.log("toDelete", toDelete);
@@ -84,7 +101,6 @@ function DeleteForm(props) {
   }
 
   function deleteNeuron(neuron) {
-    console.log(neuron);
     let indices = [];
     let idx = newVL.indexOf(neuron);
     while (idx != -1) {
@@ -200,24 +216,6 @@ function DeleteForm(props) {
     });
     console.log(sortedArray);
     setToDelete(sortedArray);
-  }
-
-  function checkEmpty() {
-    const tb = document.getElementsByClassName("inputs");
-    let empty = false;
-    for (let i = 0; i < tb.length; i++) {
-      if (tb.item(i).value == "") {
-        empty = true;
-        break;
-      }
-    }
-    if (empty == true) {
-      document.getElementById("submitbutton").disabled = true;
-      setAble(true);
-    } else {
-      document.getElementById("submitbutton").disabled = false;
-      setAble(false);
-    }
   }
 
   // Load the neuron options for the dropdown menu
