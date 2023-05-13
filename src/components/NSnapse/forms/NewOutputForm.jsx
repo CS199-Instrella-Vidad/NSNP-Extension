@@ -28,7 +28,19 @@ const NewOutputForm = (props) => {
     let neuron = parseInt(props.selectedNode.slice(7));
     props.setEnvSyn(neuron);
     let matrices = JSON.parse(localStorage.getItem("Matrices"));
-    matrices.envSyn = neuron;
+    if (matrices) {
+      matrices.envSyn = neuron;
+    } else {
+      matrices = {
+        F: props.F,
+        C: props.C,
+        L: props.L,
+        syn: props.syn,
+        VL: props.C,
+        T: props.T,
+        envSyn: neuron,
+      };
+    }
     localStorage.setItem("Matrices", JSON.stringify(matrices));
     props.setSelectedNode("");
   }
@@ -52,17 +64,28 @@ const NewOutputForm = (props) => {
   }
 
   const addOutputNeuron = () => {
-    // do somethign here
-    props.setEnvSyn(outputSynIn.value + 1);
+    props.setEnvSyn(outputSynIn);
     let matrices = JSON.parse(localStorage.getItem("Matrices"));
-    matrices.envSyn = outputSynIn.value + 1;
+    if (matrices) {
+      matrices.envSyn = outputSynIn;
+    } else {
+      matrices = {
+        F: props.F,
+        C: props.C,
+        L: props.L,
+        syn: props.syn,
+        VL: props.C,
+        T: props.T,
+        envSyn: outputSynIn,
+      };
+    }
     localStorage.setItem("Matrices", JSON.stringify(matrices));
 
     handleClose();
   };
 
   function handleAddSynIn(e) {
-    setOutputSynIn(e);
+    setOutputSynIn(e[0].value + 1);
   }
 
   const handleClose = () => {
