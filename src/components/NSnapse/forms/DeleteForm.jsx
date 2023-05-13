@@ -56,7 +56,7 @@ function DeleteForm(props) {
       indices.push(idx);
       idx = props.VL.indexOf(neuron, idx + 1);
     }
-
+    console.log("Neuron", neuron);
     // CHANGE VL
     let newVL = props.VL.filter((item) => item != neuron);
     // adjust the VL array so that no number is skipped
@@ -84,26 +84,25 @@ function DeleteForm(props) {
         fIndices.push(i);
       }
     }
-    console.log(fIndices);
+
+    // Filter newF
     newF = newF.filter((item, index) => !fIndices.includes(index));
     props.setF(newF);
 
-    // Adjust function locations L
+    // Adjust function locations (L)
     let newL = props.L;
-    newL = newL.filter((item, index) => !fIndices.includes(index));
 
     for (let i = 0; i < newL.length; i++) {
-      // for each row
-      if (props.L[i][neuron - 1] == 1) {
-        newL[i].splice(neuron - 1, 1);
-      }
+      newL[i].splice(neuron - 1, 1);
     }
+
+    // Adjust neuron locations in L
+    newL = newL.filter((item, index) => !fIndices.includes(index));
 
     // CHANGE syn
     let newSyn = props.syn;
     // remove all elements that contain neuron
     newSyn = newSyn.filter((item) => !item.includes(neuron));
-    console.log("newSyn", newSyn);
     // adjust the syn array so that no number is skipped
     for (let i = 0; i < newSyn.length; i++) {
       for (let j = 0; j < newSyn[i].length; j++) {
@@ -132,6 +131,7 @@ function DeleteForm(props) {
     props.setC(newC);
     props.setEnvSyn(newEnvSyn);
     props.setSyn(newSyn);
+    props.setSelectedNode("");
     const json = {
       C: newC,
       VL: newVL,
@@ -144,6 +144,7 @@ function DeleteForm(props) {
     };
     localStorage.setItem("Matrices", JSON.stringify(json));
     localStorage.setItem("positions", JSON.stringify(newNeuronPositions));
+    console.log("System", json);
   }
   return (
     <>

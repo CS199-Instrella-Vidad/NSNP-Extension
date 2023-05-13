@@ -236,15 +236,25 @@ function NSNP() {
               {...matrixProps}
               handleCloseModal={handleNewOutputClose}
               selectedNode={selectedNode}
+              setSelectedNode={setSelectedNode}
             />
             {/* place holders */}
 
             <EditNodeForm
               handleCloseModal={handleCloseEdit}
               selectedNode={selectedNode}
+              setSelectedNode={setSelectedNode}
             />
-            <DeleteForm {...matrixProps} selectedNode={selectedNode} />
-            <ClearAllForm {...matrixProps} selectedNode={selectedNode} />
+            <DeleteForm
+              {...matrixProps}
+              selectedNode={selectedNode}
+              setSelectedNode={setSelectedNode}
+            />
+            <ClearAllForm
+              {...matrixProps}
+              selectedNode={selectedNode}
+              setSelectedNode={setSelectedNode}
+            />
           </div>
           <SubHeader
             forward={handleGeneration}
