@@ -48,6 +48,7 @@ function DeleteForm(props) {
     for (let i = 0; i < toDelete.length; i++) {
       deleteNeuron(toDelete[i]);
     }
+    handleClose();
   }
 
   function adjustNeuronPositions(neuron, neuronPositions) {
@@ -238,7 +239,7 @@ function DeleteForm(props) {
           Delete {props.selectedNode}
         </Button>
         <Dialog open={status} onClose={hide}>
-          <DialogTitle>Alert: Deleting a Node</DialogTitle>
+          <DialogTitle>Alert: Deleting a Neuron</DialogTitle>
           <DialogContent>
             You are about to Delete {props.selectedNode}
           </DialogContent>
@@ -255,7 +256,7 @@ function DeleteForm(props) {
     return (
       <>
         <Button onClick={handleShow} variant="c5">
-          Delete
+          Delete Neurons
         </Button>
         <Modal
           dialogclassname="modalcustom"
