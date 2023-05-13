@@ -29,7 +29,7 @@ const NewOutputForm = (props) => {
     let matrices = JSON.parse(localStorage.getItem("Matrices"));
     matrices.envSyn = neuron;
     localStorage.setItem("Matrices", JSON.stringify(matrices));
-    console.log(props.envSyn);
+    props.setSelectedNode("");
   }
 
   function checkEmpty() {
@@ -56,7 +56,6 @@ const NewOutputForm = (props) => {
     let matrices = JSON.parse(localStorage.getItem("Matrices"));
     matrices.envSyn = outputSynIn.value + 1;
     localStorage.setItem("Matrices", JSON.stringify(matrices));
-    console.log(props.envSyn);
 
     handleClose();
   };
@@ -77,7 +76,6 @@ const NewOutputForm = (props) => {
   // Load the neuron options for making a synapse
   useEffect(() => {
     let newOptions = [];
-    console.log(props.L);
     if (props.L.length > 0) {
       for (let i = 0; i < props.L[0].length; i++) {
         newOptions.push({ value: i, label: "Neuron " + (i + 1) });
