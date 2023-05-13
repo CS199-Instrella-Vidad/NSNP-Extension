@@ -237,7 +237,7 @@ function NewNodeForm(props) {
   return (
     <>
       <Button variant="c5" onClick={handleShow}>
-        New Node
+        New Neuron
       </Button>
       <Modal
         dialogclassname="modalcustom"
