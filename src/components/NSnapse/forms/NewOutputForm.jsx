@@ -125,8 +125,12 @@ const NewOutputForm = (props) => {
             <h3>Assign Output Neuron</h3>
           </ModalHeader>
           <ModalBody>
-            <div className="section">
-              <h5>Select neuron to assign</h5>
+            <div>
+              <h5>Select neuron to assign as Output Neuron</h5>
+              <p>
+                The selected neuron will be the one to send spikes to the
+                environment.
+              </p>
               <Select
                 options={nodeOptions}
                 isMulti={true}
@@ -135,7 +139,6 @@ const NewOutputForm = (props) => {
                   handleAddSynIn(e);
                 }}
               />
-              <br />
             </div>
           </ModalBody>
           <ModalFooter>

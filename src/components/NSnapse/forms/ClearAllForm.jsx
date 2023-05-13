@@ -89,9 +89,9 @@ function ClearAllForm(props) {
         Clear All
       </Button>
       <Dialog open={status} onClose={hide}>
-        <DialogTitle>Alert: Deleting a Node</DialogTitle>
+        <DialogTitle>Alert: Deleting all Neurons</DialogTitle>
         <DialogContent>
-          You are about to Delete {props.selectedNode}
+          You are about to delete all neurons and synapses connected to them.
         </DialogContent>
         <DialogActions>
           <Button onClick={hide}>Disagree</Button>

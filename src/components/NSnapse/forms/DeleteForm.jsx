@@ -239,7 +239,8 @@ function DeleteForm(props) {
         <Dialog open={status} onClose={hide}>
           <DialogTitle>Alert: Deleting a Neuron</DialogTitle>
           <DialogContent>
-            You are about to Delete {props.selectedNode}
+            You are about to delete {props.selectedNode} and synapses connected
+            to it.
           </DialogContent>
           <DialogActions>
             <Button onClick={hide}>Disagree</Button>
@@ -268,8 +269,12 @@ function DeleteForm(props) {
             <h3>Delete Neurons</h3>
           </ModalHeader>
           <ModalBody>
-            <div className="section">
+            <div>
               <h5>Select neuron/s to delete</h5>
+              <p>
+                You can delete multiple neurons. Deleting neurons will also
+                delete synapses connected to them.
+              </p>
               <Select
                 options={nodeOptions}
                 isMulti={true}
@@ -278,20 +283,17 @@ function DeleteForm(props) {
                   handleAddtoDelete(e);
                 }}
               />
-              <br />
             </div>
           </ModalBody>
           <ModalFooter>
-            <ModalFooter>
-              <Button
-                disabled={isdisabled}
-                onClick={massDelete}
-                id="submitbutton"
-                variant="c5"
-              >
-                Delete
-              </Button>
-            </ModalFooter>
+            <Button
+              disabled={isdisabled}
+              onClick={massDelete}
+              id="submitbutton"
+              variant="c5"
+            >
+              Delete
+            </Button>
           </ModalFooter>
         </Modal>
       </>
