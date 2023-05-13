@@ -25,6 +25,7 @@ function NSNP() {
   const [showNewNodeModal, setShowNewNodeModal] = useState(false);
   const [showNewInputNodeModal, setShowNewInputNodeModal] = useState(false);
   const [showNewOutputNodeModal, setShowNewOutputNodeModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const [showDelete, setDelete] = useState(false);
   const [showEdit, setshowEdit] = useState(false);
@@ -34,6 +35,8 @@ function NSNP() {
   const handleShow = () => setShowNewNodeModal(true);
   const handleNewInputClose = () => setShowNewInputNodeModal(false);
   const handleNewOutputClose = () => setShowNewOutputNodeModal(false);
+  const handleEditClose = () => setShowDeleteModal(false);
+
   const handleNewInputShow = () => setShowNewInputNodeModal(true);
   const handleOutputShow = () => alert("Added new Output Neuron");
   const handleDeleteClose = () => setDelete(false);
@@ -247,6 +250,7 @@ function NSNP() {
             />
             <DeleteForm
               {...matrixProps}
+              handleCloseModal={handleEditClose}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
             />

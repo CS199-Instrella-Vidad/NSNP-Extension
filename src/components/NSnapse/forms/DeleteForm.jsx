@@ -1,20 +1,54 @@
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogActions,
 } from "@mui/material";
+import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
+import ModalHeader from "react-bootstrap/esm/ModalHeader";
+import Select from "react-select";
+import "./forms.css";
+import { saveSystem } from "../../../utils/saveload";
 
-import { React, useState } from "react";
-import { Button } from "react-bootstrap";
 function DeleteForm(props) {
+  const [nodeOptions, setNodeOptions] = useState([]);
   const [status, setStatus] = useState(false);
+  const [toDelete, setToDelete] = useState([]);
+  const [isdisabled, setAble] = useState(true);
+  const [showModal, setShow] = useState(false);
+
+  let newF = props.F;
+  let newC = props.C;
+  let newL = props.L;
+  let newSyn = props.syn;
+  let newVL = props.VL;
+  let newEnvSyn = props.envSyn;
+
   const show = () => setStatus(true);
   const hide = () => setStatus(false);
+  const handleClose = () => {
+    props.handleCloseModal();
+    setShow(false);
+  };
+
+  const handleShow = () => {
+    setShow(true);
+  };
+
   const todelete = () => {
-    deleteNeuron();
+    let neuron = parseInt(props.selectedNode.slice(7));
+    deleteNeuron(neuron);
     hide();
   };
+
+  function massDelete() {
+    console.log("toDelete", toDelete);
+
+    for (let i = 0; i < toDelete.length; i++) {
+      deleteNeuron(toDelete[i]);
+    }
+  }
 
   function adjustNeuronPositions(neuron, neuronPositions) {
     // Change neuron Positions
@@ -48,17 +82,17 @@ function DeleteForm(props) {
     return newNeuronPositions;
   }
 
-  function deleteNeuron() {
-    let neuron = parseInt(props.selectedNode.slice(7));
+  function deleteNeuron(neuron) {
+    console.log(neuron);
     let indices = [];
-    let idx = props.VL.indexOf(neuron);
+    let idx = newVL.indexOf(neuron);
     while (idx != -1) {
       indices.push(idx);
-      idx = props.VL.indexOf(neuron, idx + 1);
+      idx = newVL.indexOf(neuron, idx + 1);
     }
     console.log("Neuron", neuron);
     // CHANGE VL
-    let newVL = props.VL.filter((item) => item != neuron);
+    newVL = newVL.filter((item) => item != neuron);
     // adjust the VL array so that no number is skipped
     for (let i = 0; i < newVL.length; i++) {
       if (newVL[i] > neuron) {
@@ -66,9 +100,7 @@ function DeleteForm(props) {
       }
     }
 
-    // Delete Variables in C and F
-    let newF = props.F;
-    let newC = props.C;
+    // Delete Variables in C and F\
     for (let i = 0; i < indices.length; i++) {
       newC.splice(indices[i] - i, 1);
       for (let j = 0; j < newF.length; j++) {
@@ -78,19 +110,17 @@ function DeleteForm(props) {
 
     // Delete Functions in F based on L
     let fIndices = [];
-    for (let i = 0; i < props.L.length; i++) {
+    for (let i = 0; i < newL.length; i++) {
       // for each row
-      if (props.L[i][neuron - 1] == 1) {
+      if (newL[i][neuron - 1] == 1) {
         fIndices.push(i);
       }
     }
 
     // Filter newF
     newF = newF.filter((item, index) => !fIndices.includes(index));
-    props.setF(newF);
 
     // Adjust function locations (L)
-    let newL = props.L;
 
     for (let i = 0; i < newL.length; i++) {
       newL[i].splice(neuron - 1, 1);
@@ -100,7 +130,6 @@ function DeleteForm(props) {
     newL = newL.filter((item, index) => !fIndices.includes(index));
 
     // CHANGE syn
-    let newSyn = props.syn;
     // remove all elements that contain neuron
     newSyn = newSyn.filter((item) => !item.includes(neuron));
     // adjust the syn array so that no number is skipped
@@ -115,7 +144,6 @@ function DeleteForm(props) {
     // CHANGE T
 
     // Adjust envsyn
-    let newEnvSyn = props.envSyn;
     if (newEnvSyn > neuron - 1) {
       newEnvSyn = newEnvSyn - 1;
     }
@@ -125,6 +153,19 @@ function DeleteForm(props) {
       neuron,
       props.neuronPositions
     );
+
+    saveSystem(newF, newL, newC, newVL, newSyn, newEnvSyn, newNeuronPositions);
+  }
+  function saveSystem(
+    newF,
+    newL,
+    newC,
+    newVL,
+    newSyn,
+    newEnvSyn,
+    newNeuronPositions
+  ) {
+    props.setF(newF);
     props.setNeuronPositions(newNeuronPositions);
     props.setVL(newVL);
     props.setL(newL);
@@ -146,24 +187,116 @@ function DeleteForm(props) {
     localStorage.setItem("positions", JSON.stringify(newNeuronPositions));
     console.log("System", json);
   }
-  return (
-    <>
-      <Button variant="c1" onClick={show}>
-        Delete {props.selectedNode}
-      </Button>
-      <Dialog open={status} onClose={hide}>
-        <DialogTitle>Alert: Deleting a Node</DialogTitle>
-        <DialogContent>
-          You are about to Delete {props.selectedNode}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={hide}>Disagree</Button>
-          <Button onClick={todelete} autoFocus>
-            Agree
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
-  );
+
+  function handleAddtoDelete(e) {
+    console.log(e);
+    let sortedArray = [];
+    for (let i = 0; i < e.length; i++) {
+      sortedArray.push(parseInt(e[i].value + 1));
+    }
+    sortedArray.sort(function (a, b) {
+      return b - a;
+    });
+    console.log(sortedArray);
+    setToDelete(sortedArray);
+  }
+
+  function checkEmpty() {
+    const tb = document.getElementsByClassName("inputs");
+    let empty = false;
+    for (let i = 0; i < tb.length; i++) {
+      if (tb.item(i).value == "") {
+        empty = true;
+        break;
+      }
+    }
+    if (empty == true) {
+      document.getElementById("submitbutton").disabled = true;
+      setAble(true);
+    } else {
+      document.getElementById("submitbutton").disabled = false;
+      setAble(false);
+    }
+  }
+
+  // Load the neuron options for the dropdown menu
+  useEffect(() => {
+    let newOptions = [];
+    if (newL.length > 0) {
+      for (let i = 0; i < newL[0].length; i++) {
+        newOptions.push({ value: i, label: "Neuron " + (i + 1) });
+      }
+    }
+
+    setNodeOptions(newOptions);
+  }, [props]);
+
+  if (props.selectedNode !== "") {
+    return (
+      <>
+        <Button variant="c1" onClick={show}>
+          Delete {props.selectedNode}
+        </Button>
+        <Dialog open={status} onClose={hide}>
+          <DialogTitle>Alert: Deleting a Node</DialogTitle>
+          <DialogContent>
+            You are about to Delete {props.selectedNode}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={hide}>Disagree</Button>
+            <Button onClick={todelete} autoFocus>
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Button onClick={handleShow} variant="c5">
+          Delete
+        </Button>
+        <Modal
+          dialogclassname="modalcustom"
+          keyboard={false}
+          centered
+          backdrop="static"
+          show={showModal}
+          onHide={handleClose}
+        >
+          <ModalHeader closeButton className="sticktop">
+            <h3>Delete Neurons</h3>
+          </ModalHeader>
+          <ModalBody>
+            <div className="section">
+              <h5>Select neuron/s to delete</h5>
+              <Select
+                options={nodeOptions}
+                isMulti={true}
+                onChange={(e) => {
+                  checkEmpty();
+                  handleAddtoDelete(e);
+                }}
+              />
+              <br />
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <ModalFooter>
+              <Button
+                disabled={isdisabled}
+                onClick={massDelete}
+                id="submitbutton"
+                variant="c5"
+              >
+                Delete
+              </Button>
+            </ModalFooter>
+          </ModalFooter>
+        </Modal>
+      </>
+    );
+  }
 }
 export default DeleteForm;

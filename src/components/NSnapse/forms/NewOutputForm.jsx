@@ -14,8 +14,9 @@ const NewOutputForm = (props) => {
   const [nodeOptions, setNodeOptions] = useState([]);
   const [outputSynIn, setOutputSynIn] = useState([]);
   const [isdisabled, setAble] = useState(true);
-
   const [status, setStatus] = useState(false);
+  const [showModal, setShow] = useState(false);
+
   const show = () => setStatus(true);
   const hide = () => setStatus(false);
   const toAssign = () => {
@@ -64,11 +65,11 @@ const NewOutputForm = (props) => {
     setOutputSynIn(e);
   }
 
-  const [showModal, setShow] = useState(false);
   const handleClose = () => {
     props.handleCloseModal();
     setShow(false);
   };
+
   const handleShow = () => {
     setShow(true);
   };
@@ -128,7 +129,7 @@ const NewOutputForm = (props) => {
               <h5>Select neuron to assign</h5>
               <Select
                 options={nodeOptions}
-                isMulti={false}
+                isMulti={true}
                 onChange={(e) => {
                   checkEmpty();
                   handleAddSynIn(e);
