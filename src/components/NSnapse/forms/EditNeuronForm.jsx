@@ -4,7 +4,7 @@ import { Slider } from "@mui/material";
 import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
-const NewNodeForm = ({ handleCloseModal, selectedNode }) => {
+const EditNeuronForm = ({ handleCloseModal, selectedNode }) => {
   const [numVars, setNumVars] = useState(1);
   const [numFuncs, setNumFuncs] = useState(1);
   const [nodeOptions, setNodeOptions] = useState([]);
@@ -275,4 +275,4 @@ const NewNodeForm = ({ handleCloseModal, selectedNode }) => {
   );
 };
 
-export default NewNodeForm;
+export default EditNeuronForm;
