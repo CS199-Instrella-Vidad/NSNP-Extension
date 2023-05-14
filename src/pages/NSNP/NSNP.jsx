@@ -2,7 +2,7 @@ import "../../scss/custom.scss";
 import "./NSNP.css";
 import NewNodeForm from "../../components/NSnapse/forms/NewNodeForm";
 import NewInputForm from "../../components/NSnapse/forms/NewInputForm";
-import EditNodeForm from "../../components/NSnapse/forms/EditNodeForm";
+import EditNodeForm from "../../components/NSnapse/forms/EditNeuronForm";
 import DeleteForm from "../../components/NSnapse/forms/DeleteForm";
 import { Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
