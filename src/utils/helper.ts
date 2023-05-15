@@ -1,3 +1,5 @@
+import { env } from "process";
+
 function functionToString(F: number[], j: number, vars, threshold) {
   let string = "";
 
@@ -78,7 +80,16 @@ export function createNeuron(VL, C, F, L, i, T) {
 
 export function createEnvNode(envValue, i) {
   let envText = `\\displaylines{`;
-  envText += envValue + "\\\\";
+
+  // Copy every 10 elements in envValue to envText
+  for (let j = 0; j < envValue.length; j++) {
+    if (j % 10 === 0 && j != 0) {
+      // Add a double backslash every 10 elements for newline in teX
+      envText += "\\\\";
+    }
+    envText += envValue[j] + "\\;";
+  }
+  envText += "\\\\";
   envText += "}";
   return [
     {
@@ -97,7 +108,7 @@ export function createEnvNode(envValue, i) {
         x: 100 * (2.5 * (i + 1)),
         y: 100 + 100,
       },
-      classes: "neuron-contents",
+      classes: "envi-contents",
     },
   ];
 }
