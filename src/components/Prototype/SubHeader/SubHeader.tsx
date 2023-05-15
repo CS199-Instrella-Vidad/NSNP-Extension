@@ -70,7 +70,6 @@ function SubHeader(props) {
                     step={0.01}
                     onChange={(e,v)=>{setSpeed(v as number)}}
                     aria-labelledby="input-slider"
-                    color="secondary"
                   />
         </div>
         {props.dev && (
