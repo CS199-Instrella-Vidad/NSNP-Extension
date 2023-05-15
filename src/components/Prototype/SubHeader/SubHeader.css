@@ -67,3 +67,9 @@
 .flexbox{
   display: flex;
 }
+.colored{
+  background-color: var(--c5);
+  padding:10%;
+  border-radius: 5% 5% 5% 5%;
+  width: 100%;
+}
