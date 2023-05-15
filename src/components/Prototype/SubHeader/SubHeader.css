@@ -67,3 +67,8 @@
 .flexbox{
   display: flex;
 }
+.speed{
+  background:var(--c5);
+  padding:1em;
+  border-radius: 15% 5% 15% 5%;
+}
