@@ -6,7 +6,7 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import EditIcon from "@mui/icons-material/Edit";
-import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
+import { Slider, Box, Grid, Input } from "@mui/material";
 import "./SubHeader.css";
 import { green, lightBlue, red, yellow } from "@mui/material/colors";
 import { Checkbox } from "@mui/material";
@@ -14,6 +14,7 @@ import { PlayCircleFill, PauseCircleFill } from "react-bootstrap-icons";
 import { useState } from "react";
 function SubHeader(props) {
   const [playing, setPlay] = useState(false);
+  const [speed,setSpeed]=useState(1);
   const handlePlay = () => setPlay(true);
   const handlePause = () => setPlay(false);
   const [speed, setSpeed]=useState(1);
@@ -61,6 +62,7 @@ function SubHeader(props) {
         </div>
       </div>
       <div className="flexbox">
+<<<<<<< HEAD
         <div className="colored">
           <h5>Speed: {speed}x <br/>Step Counter: {props.number}</h5>
         <Slider
@@ -68,6 +70,15 @@ function SubHeader(props) {
                     min={0.01}
                     max={4.00}
                     step={0.01}
+=======
+        <div className="speed">
+          <h6>Speed: {speed}x Step Counter: {props.number}</h6>
+          <Slider
+                    value={speed}
+                    min={0.1}
+                    max={4}
+                    step={0.1}
+>>>>>>> fb4231eb77106ba4b310d26f453eeb2a7e969e29
                     onChange={(e,v)=>{setSpeed(v as number)}}
                     aria-labelledby="input-slider"
                   />

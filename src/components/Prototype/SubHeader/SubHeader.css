@@ -67,9 +67,16 @@
 .flexbox{
   display: flex;
 }
+<<<<<<< HEAD
 .colored{
   background-color: var(--c5);
   padding:10%;
   border-radius: 5% 5% 5% 5%;
   width: 100%;
+=======
+.speed{
+  background:var(--c5);
+  padding:1em;
+  border-radius: 15% 5% 15% 5%;
+>>>>>>> fb4231eb77106ba4b310d26f453eeb2a7e969e29
 }

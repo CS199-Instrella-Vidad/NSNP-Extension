@@ -17,22 +17,37 @@ function NewNodeForm(props) {
   const neuronNumber = props.L.length === 0 ? 1 : props.L[0].length + 1;
   //for slider with tb
   const [varVal, setValue] = useState(1);
-
+  const [funcVal,setFunc]=useState(1);
   const handlevarSliderChange = async (event, newValue) => {
-    await setValue(newValue);
-    setNumVars(parseInt(varVal));
+    setNumVars(parseInt(newValue));
+    setValue(newValue);
     checkEmpty();
   };
 
   const handlevarInputChange = async (event) => {
-    await setValue(event.target.value === "" ? "" : Number(event.target.value));
-    setNumVars(parseInt(varVal));
+    event.target.value === "" ? setNumVars(1): setNumVars(parseInt(event.target.value));
+    setValue(event.target.value === "" ? "" : Number(event.target.value));
+    checkEmpty();
+  };
+  const handlefuncSliderChange = async (event, newValue) => {
+    setNumFuncs(parseInt(newValue));
+    setFunc(newValue);
     checkEmpty();
   };
 
+  const handlefuncInputChange = async (event) => {
+    event.target.value === "" ? setNumFuncs(1): setNumFuncs(parseInt(event.target.value));
+    setFunc(event.target.value === "" ? "" : Number(event.target.value));
+    checkEmpty();
+  };
   const handleBlur = () => {
     if (value < 1) {
       setValue(1);
+    }
+  };
+  const handlefuncBlur = () => {
+    if (value < 1) {
+      setFunc(1);
     }
   };
   //for modals
@@ -322,19 +337,31 @@ function NewNodeForm(props) {
             <h4>Functions</h4>
             <div className="sliders">
               <label>Number of Functions</label>
-
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs>
               <Slider
                 min={1}
                 max={30}
-                defaultValue={1}
+                defaultValue={funcVal}
                 aria-label="Default"
                 valueLabelDisplay="on"
-                onChangeCommitted={(e, v) => {
-                  // Set the number of variables to the value of the input
-                  setNumFuncs(parseInt(v));
-                  checkEmpty();
-                }}
+                onChangeCommitted={handlefuncSliderChange}
               />
+              </Grid>
+              <Grid item>
+              <Input
+                    value={funcVal}
+                    margin="dense"
+                    onChange={handlefuncInputChange}
+                    onBlur={handlefuncBlur}
+                    inputProps={{
+                      min: 1,
+                      max: 30,
+                      type: "number",
+                      "aria-labelledby": "input-slider",
+                    }}
+                  />
+                  </Grid></Grid>
             </div>
             <div>
               <div className="fxn">

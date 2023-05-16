@@ -57,6 +57,32 @@ let stylesheet: cytoscape.Stylesheet[] = [
       "text-margin-y": -5,
     },
   },
+  {
+    selector: ".envi-contents",
+    css: {
+      events: "no",
+      "text-wrap": "wrap",
+      "background-image": function (ele) {
+        return mathJaxSvg(ele.data("label"));
+      },
+      "background-fit": "contain",
+      "background-color": "white",
+      "background-opacity": 1,
+
+      shape: "roundrectangle",
+      width: function (ele) {
+        let numBackslashes = (ele.data("label").match(/\\\\/g) || []).length;
+        let tentLength = (ele.data("label").length / numBackslashes) * 5;
+        return tentLength;
+      },
+      height: function (ele) {
+        let numBackslashes = (ele.data("label").match(/\\\\/g) || []).length;
+
+        let tentLength = numBackslashes * 25;
+        return tentLength;
+      },
+    },
+  },
 ];
 
 export default stylesheet;
