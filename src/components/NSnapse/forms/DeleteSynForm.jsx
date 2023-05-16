@@ -28,6 +28,9 @@ function DeleteSynForm(props) {
   };
 
   const todelete = () => {
+    if (props.selectedSyn.split("-")[1] == "Environment") {
+      return;
+    }
     let neuron1 = parseInt(props.selectedSyn.split("-")[0].slice(7));
     let neuron2 = parseInt(props.selectedSyn.split("-")[1]);
     let remSyn = [neuron1, neuron2];
@@ -78,7 +81,10 @@ function DeleteSynForm(props) {
     // setSynOptions(newOptions);
   }, [props]);
 
-  if (props.selectedSyn !== "") {
+  if (
+    props.selectedSyn !== "" &&
+    props.selectedSyn.split("-")[1] !== "Environment"
+  ) {
     return (
       <>
         <Button variant="c1" onClick={show}>
@@ -98,14 +104,13 @@ function DeleteSynForm(props) {
         </Dialog>
       </>
     );
-  }
-  // else {
-  //   return (
-  //     <>
-  //       <Button onClick={handleShow} variant="c5">
-  //         Delete Synapses
-  //       </Button>
-  //       <Modal
+  } else {
+    return (
+      <>
+        <Button onClick={handleShow} variant="c5">
+          Delete Synapses
+        </Button>
+        {/* //       <Modal
   //         dialogclassname="modalcustom"
   //         keyboard={false}
   //         centered
@@ -143,9 +148,9 @@ function DeleteSynForm(props) {
   //             Delete
   //           </Button>
   //         </ModalFooter>
-  //       </Modal>
-  //     </>
-  //   );
-  // }
+  //       </Modal> */}
+      </>
+    );
+  }
 }
 export default DeleteSynForm;
