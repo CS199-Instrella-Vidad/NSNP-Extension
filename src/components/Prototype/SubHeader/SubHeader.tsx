@@ -62,23 +62,14 @@ function SubHeader(props) {
         </div>
       </div>
       <div className="flexbox">
-<<<<<<< HEAD
+
         <div className="colored">
           <h5>Speed: {speed}x <br/>Step Counter: {props.number}</h5>
-        <Slider
-                    value={speed}
-                    min={0.01}
-                    max={4.00}
-                    step={0.01}
-=======
-        <div className="speed">
-          <h6>Speed: {speed}x Step Counter: {props.number}</h6>
-          <Slider
+        
                     value={speed}
                     min={0.1}
                     max={4}
                     step={0.1}
->>>>>>> fb4231eb77106ba4b310d26f453eeb2a7e969e29
                     onChange={(e,v)=>{setSpeed(v as number)}}
                     aria-labelledby="input-slider"
                   />

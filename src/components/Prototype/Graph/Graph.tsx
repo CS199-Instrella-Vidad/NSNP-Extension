@@ -10,9 +10,6 @@ export default function Graph(props) {
   const cyRef = useRef(cytoscape());
   const [elements, setElements] = useState(new Array<ElementDefinition>());
 
-  // Modal states
-  const [showNewNode, setShowNewNode] = useState(false);
-
   // Create the system when the component is mounted
   useEffect(() => {
     setElements([]);
@@ -28,6 +25,7 @@ export default function Graph(props) {
       if (evtTarget === cy) {
         console.log("Tap on background");
         props.setSelectedNode("");
+        props.setSelectedSyn("");
       } else {
         console.log("Tap on : " + evtTarget.id());
         // If the element is a node, set the selected node to the id of the node
@@ -39,6 +37,7 @@ export default function Graph(props) {
         // If the element is an edge, set the selected node to the id of the edge
         else if (evtTarget.isEdge()) {
           console.log("Tap on Edge");
+          props.setSelectedSyn(evtTarget.id());
         }
       }
     });
