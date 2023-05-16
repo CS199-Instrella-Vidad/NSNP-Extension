@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import icons from mui
-import { Slider, Box, Grid, Input } from "@mui/material";
 import ReplayIcon from "@mui/icons-material/Replay";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
@@ -14,19 +13,15 @@ import { PlayCircleFill, PauseCircleFill } from "react-bootstrap-icons";
 import { useState } from "react";
 function SubHeader(props) {
   const [playing, setPlay] = useState(false);
-  const [speed,setSpeed]=useState(1);
+  const [speed, setSpeed] = useState(1);
   const handlePlay = () => setPlay(true);
   const handlePause = () => setPlay(false);
-  const [speed, setSpeed]=useState(1);
-  const handleSpeed=()=>{
-    setSpeed(1);
-  }
   const handleToggle = () => {
     playing ? setPlay(false) : setPlay(true);
   };
   useEffect(() => {
     if (playing) {
-      const timer = setTimeout(() => props.forward(), 1000/speed);
+      const timer = setTimeout(() => props.forward(), 1000 / speed);
       return () => clearTimeout(timer);
     }
   });
@@ -62,17 +57,20 @@ function SubHeader(props) {
         </div>
       </div>
       <div className="flexbox">
-
-        <div className="colored">
-          <h5>Speed: {speed}x <br/>Step Counter: {props.number}</h5>
-        
-                    value={speed}
-                    min={0.1}
-                    max={4}
-                    step={0.1}
-                    onChange={(e,v)=>{setSpeed(v as number)}}
-                    aria-labelledby="input-slider"
-                  />
+        <div className="speed">
+          <h6>
+            Speed: {speed}x Step Counter: {props.number}
+          </h6>
+          <Slider
+            value={speed}
+            min={0.1}
+            max={4}
+            step={0.1}
+            onChange={(e, v) => {
+              setSpeed(v as number);
+            }}
+            aria-labelledby="input-slider"
+          />
         </div>
         {props.dev && (
           <>
