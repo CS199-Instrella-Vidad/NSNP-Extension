@@ -45,6 +45,7 @@ const AddSynapse = (props) => {
   }
 
   const addSynapse = () => {
+    //TODO: Prevent adding a new synapse if one already exists
     let newSyns = [synSource, synDest];
     props.setSyn([...props.syn, newSyns]);
     console.log(props.syn);
@@ -58,7 +59,7 @@ const AddSynapse = (props) => {
         C: props.C,
         L: props.L,
         syn: props.syn,
-        VL: props.C,
+        VL: props.VL,
         T: props.T,
         envSyn: props.envSyn,
       };
