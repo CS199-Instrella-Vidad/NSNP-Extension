@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import icons from mui
+import { Slider, Box, Grid, Input } from "@mui/material";
 import ReplayIcon from "@mui/icons-material/Replay";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
@@ -16,6 +17,10 @@ function SubHeader(props) {
   const [speed,setSpeed]=useState(1);
   const handlePlay = () => setPlay(true);
   const handlePause = () => setPlay(false);
+  const [speed, setSpeed]=useState(1);
+  const handleSpeed=()=>{
+    setSpeed(1);
+  }
   const handleToggle = () => {
     playing ? setPlay(false) : setPlay(true);
   };
@@ -57,9 +62,10 @@ function SubHeader(props) {
         </div>
       </div>
       <div className="flexbox">
-        <div className="speed">
-          <h6>Speed: {speed}x Step Counter: {props.number}</h6>
-          <Slider
+
+        <div className="colored">
+          <h5>Speed: {speed}x <br/>Step Counter: {props.number}</h5>
+        
                     value={speed}
                     min={0.1}
                     max={4}
