@@ -19,6 +19,7 @@ import generateConfigurations from "../../utils/SimAlgs/generateConfiguration";
 import { loadSystem, saveSystem } from "../../utils/saveload";
 import ClearAllForm from "../../components/NSnapse/forms/ClearAllForm";
 import NewOutputForm from "../../components/NSnapse/forms/NewOutputForm";
+import AddSynapse from "../../components/NSnapse/forms/AddSynapse";
 
 function NSNP() {
   // modals
@@ -117,6 +118,7 @@ function NSNP() {
   } = useViewer();
 
   const [selectedNode, setSelectedNode] = useState("");
+  const [selectedSyn, setSelectedSyn] = useState("");
 
   function handleGeneration() {
     let matrices = generateConfigurations(
@@ -260,6 +262,15 @@ function NSNP() {
               setSelectedNode={setSelectedNode}
             />
           </div>
+          <div className="actionselector">
+            <AddSynapse
+              {...matrixProps}
+              selectedNode={selectedNode}
+              setSelectedNode={setSelectedNode}
+              setSelectedSyn={setSelectedSyn}
+              selectedSyn={selectedSyn}
+            />
+          </div>
           <SubHeader
             forward={handleGeneration}
             reset={handleReset}
@@ -281,7 +292,9 @@ function NSNP() {
             envValue={envValue}
             setEnvValue={setEnvValue}
             selectedNode={selectedNode}
+            selectedSyn={selectedSyn}
             setSelectedNode={setSelectedNode}
+            setSelectedSyn={setSelectedSyn}
           />
         )}
         {/* Matrix Outputs */}
