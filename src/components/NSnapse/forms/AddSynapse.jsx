@@ -45,9 +45,13 @@ const AddSynapse = (props) => {
   }
 
   const addSynapse = () => {
-    //TODO: Prevent adding a new synapse if one already exists
     let newSyns = [synSource, synDest];
-    props.setSyn([...props.syn, newSyns]);
+    props.setSyn([
+      ...props.syn.filter((syn) => {
+        return !(syn[0] == newSyns[0] && syn[1] == newSyns[1]);
+      }),
+      newSyns,
+    ]);
     console.log(props.syn);
     // Saving the matrices to local storage
     let matrices = JSON.parse(localStorage.getItem("Matrices"));
