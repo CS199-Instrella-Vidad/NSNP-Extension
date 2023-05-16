@@ -2,7 +2,6 @@ import { env } from "process";
 
 function functionToString(F: number[], j: number, vars, threshold) {
   let string = "";
-  console.log("Vars", vars);
   string += "f_{" + j + "}(";
   for (let i = 0; i < vars.length; i++) {
     string += "x_" + (i + 1) + ", ";
@@ -28,7 +27,6 @@ function functionToString(F: number[], j: number, vars, threshold) {
   if (threshold != 0) {
     string += "\\,|_" + threshold;
   }
-  console.log(string);
   return string;
 }
 
