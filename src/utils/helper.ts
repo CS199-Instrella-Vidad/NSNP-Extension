@@ -11,8 +11,6 @@ function functionToString(F: number[], j: number, vars, threshold) {
   string += ") = ";
   let varCounter = 1;
   for (let i = 0; i < F.length; i++) {
-    // TODO: Instead of checking if each element is 1, cross reference Function Location and Variable Location to see if the variable is in the function
-
     if (F[i] != 0) {
       string +=
         (F[i] > 1 ? F[i] : F[i] < 1 ? F[i] : "") + "x_{" + varCounter + "} + ";
