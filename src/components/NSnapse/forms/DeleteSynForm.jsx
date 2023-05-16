@@ -55,7 +55,7 @@ function DeleteSynForm(props) {
     };
 
     localStorage.setItem("Matrices", JSON.stringify(matrices));
-
+    props.setSelectedSyn("");
     hide();
   };
   const massDelete = () => {};
