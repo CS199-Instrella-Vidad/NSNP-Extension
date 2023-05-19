@@ -10,6 +10,7 @@ import Menu from "../../components/Prototype/Menu/Menu";
 
 import { useViewer } from "../../utils/hooks/useViewer";
 import { useMatrixData } from "../../utils/hooks/useMatrixData";
+import { useSystemHistory } from "../../utils/hooks/useSystemHistory";
 import localStorageMatrices from "../../utils/hooks/useLocalStorage";
 import Matrices from "../../components/Prototype/Matrices/Matrices";
 import WorkSpace from "../../components/Prototype/WorkSpace/WorkSpace";
@@ -34,7 +35,6 @@ function NSNP() {
   const [PHist, setPHist] = useState([]);
 
   // State for System History
-  const [systemHistory, setSystemHistory] = useState([]);
 
   // States for the System
   const {
@@ -79,10 +79,16 @@ function NSNP() {
     setCHist: setCHist,
     setNeuronPositions: setNeuronPositions,
   };
-  // Use Effect for reloading matrix data from local storage
-  useEffect(() => {
-    localStorageMatrices(matrixProps);
-  }, []);
+
+  const {
+    systemStack,
+    positionStack,
+    systemStackMessage,
+    systemStackPointer,
+    pushSystem,
+    undoSystemChange,
+    redoSystemChange,
+  } = useSystemHistory(matrixProps);
 
   //States for Viewing WorkSpace components
   const {
@@ -216,7 +222,7 @@ function NSNP() {
             <h1>NSN P Simulator</h1>
           </center>
           <div className="actionselector">
-            <NewNodeForm {...matrixProps} />
+            <NewNodeForm {...matrixProps} pushSystem={pushSystem} />
             <NewInputForm />
             <NewOutputForm
               {...matrixProps}

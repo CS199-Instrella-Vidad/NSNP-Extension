@@ -1,27 +1,17 @@
 import { useState } from "react";
-
+import localStorageMatrices from "./useLocalStorage";
 export function useMatrixData() {
-  const [C, setC] = useState([1, 1, 2]);
-  const [VL, setVL] = useState([1, 1, 2]);
-  const [F, setF] = useState([
-    [1, 1, 0],
-    [0.5, 0.5, 0],
-    [0, 0, 1],
-    [0, 0, 0.5],
-  ]);
-  const [L, setL] = useState([
-    [1, 0],
-    [1, 0],
-    [0, 1],
-    [0, 1],
-  ]);
-  const [T, setT] = useState([[4, 4]]);
-  const [syn, setSyn] = useState([
-    [1, 2],
-    [2, 1],
-  ]);
+  let storedMatrices = localStorage.getItem("Matrices");
+  let json = storedMatrices !== null ? JSON.parse(storedMatrices) : "";
+
+  const [C, setC] = useState(json.C);
+  const [VL, setVL] = useState(json.VL);
+  const [F, setF] = useState(json.F);
+  const [L, setL] = useState(json.L);
+  const [T, setT] = useState(json.T);
+  const [syn, setSyn] = useState(json.syn);
   const [envValue, setEnvValue] = useState<number[]>([]);
-  const [envSyn, setEnvSyn] = useState<number>(VL[VL.length - 1]);
+  const [envSyn, setEnvSyn] = useState<number>(json.envSyn);
 
   const [SV, setSV] = useState<number[][]>([[]]);
   const [PM, setPM] = useState<number[][]>([[]]);
