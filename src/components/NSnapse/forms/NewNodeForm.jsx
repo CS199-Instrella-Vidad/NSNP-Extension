@@ -86,20 +86,30 @@ function NewNodeForm(props) {
   }
   function addNewNeuron() {
     // Add new neuron to the system
-    let system = {
+    const oldC = props.C;
+    const oldF = props.F;
+    const oldL = props.L;
+    const oldVL = props.VL;
+    const oldT = props.T;
+    const oldSyn = props.syn;
+    const oldEnvSyn = props.envSyn;
+
+    const system = {
       matrices: {
-        C: props.C,
-        F: props.F,
-        L: props.L,
-        VL: props.VL,
-        T: props.T,
-        syn: props.syn,
-        envSyn: props.envSyn,
+        C: JSON.parse(JSON.stringify(oldC)),
+        F: JSON.parse(JSON.stringify(oldF)),
+        L: JSON.parse(JSON.stringify(oldL)),
+        VL: JSON.parse(JSON.stringify(oldVL)),
+        T: JSON.parse(JSON.stringify(oldT)),
+        syn: JSON.parse(JSON.stringify(oldSyn)),
+        envSyn: JSON.parse(JSON.stringify(oldEnvSyn)),
       },
       positions: { neuronPositions: props.neuronPositions },
       message: "",
     };
 
+    system.message = "Added new neuron";
+    props.pushSystem(system.matrices, system.positions);
     // Change C
     let newC = props.C;
     newC = newC.concat(inputVars);
@@ -197,8 +207,6 @@ function NewNodeForm(props) {
       neuronPositions: props.neuronPositions,
     };
     localStorage.setItem("Matrices", JSON.stringify(json));
-    system.message = "Added new neuron";
-    props.pushSystem(system);
   }
 
   function handleAddVars(i, value) {

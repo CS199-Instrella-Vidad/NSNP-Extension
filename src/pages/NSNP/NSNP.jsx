@@ -80,15 +80,39 @@ function NSNP() {
     setNeuronPositions: setNeuronPositions,
   };
 
-  const {
-    systemStack,
-    positionStack,
-    systemStackMessage,
-    systemStackPointer,
-    pushSystem,
-    undoSystemChange,
-    redoSystemChange,
-  } = useSystemHistory(matrixProps);
+  // States for system history
+  const [systemStack, setSystemStack] = useState([]);
+  const [positionStack, setPositionStack] = useState([]);
+  const [systemStackMessage, setSystemStackMessage] = useState([]);
+  const [systemStackPointer, setSystemStackPointer] = useState(0);
+
+  function pushSystem(matrices, positions) {
+    // Remove all elements after the current pointer
+
+    setSystemStack([...systemStack, matrices]);
+    setPositionStack([...positionStack, positions]);
+    setSystemStackPointer(systemStack.length - 1);
+    console.log("Pushed matrices", matrices);
+    console.log("Current Stack:", systemStack);
+  }
+  function pushMessage(message) {
+    setSystemStackMessage([
+      ...systemStackMessage.slice(0, systemStackPointer),
+      system.message,
+    ]);
+  }
+
+  function undoSystemChange() {
+    if (systemStackPointer > 0) {
+      setSystemStackPointer(systemStackPointer - 1);
+    }
+  }
+
+  function redoSystemChange() {
+    if (systemStackPointer < systemStack.length - 1) {
+      setSystemStackPointer(systemStackPointer + 1);
+    }
+  }
 
   //States for Viewing WorkSpace components
   const {
