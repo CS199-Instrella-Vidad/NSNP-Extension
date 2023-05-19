@@ -89,7 +89,6 @@ const NewOutputForm = (props) => {
   }
 
   const handleClose = () => {
-    props.handleCloseModal();
     setShow(false);
   };
 

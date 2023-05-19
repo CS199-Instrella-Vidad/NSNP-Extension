@@ -27,7 +27,6 @@ function DeleteForm(props) {
   const show = () => setStatus(true);
   const hide = () => setStatus(false);
   const handleClose = () => {
-    props.handleCloseModal();
     setShow(false);
   };
 

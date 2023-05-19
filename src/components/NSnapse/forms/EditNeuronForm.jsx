@@ -19,7 +19,6 @@ const EditNeuronForm = ({ handleCloseModal, selectedNode }) => {
   //for modals
   const [showModal, setShow] = useState(false);
   const handleClose = () => {
-    handleCloseModal();
     setShow(false);
   };
   const handleShow = () => {

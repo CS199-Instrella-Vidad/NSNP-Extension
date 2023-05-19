@@ -4,7 +4,7 @@ import { Slider } from "@mui/material";
 import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
-const NewInputForm = ({ handleCloseModal, props = [] }) => {
+const NewInputForm = (props) => {
   const [nodeOptions, setNodeOptions] = useState([]);
   const [inputSynOut, setInputSynOut] = useState([]);
   const [isdisabled, setAble] = useState(true);
@@ -37,7 +37,6 @@ const NewInputForm = ({ handleCloseModal, props = [] }) => {
 
   const [showModal, setShow] = useState(false);
   const handleClose = () => {
-    handleCloseModal();
     setShow(false);
   };
   const handleShow = () => {

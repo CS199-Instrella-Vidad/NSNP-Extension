@@ -17,7 +17,7 @@ function NewNodeForm(props) {
   const neuronNumber = props.L.length === 0 ? 1 : props.L[0].length + 1;
   //for slider with tb
   const [varVal, setValue] = useState(1);
-  const [funcVal,setFunc]=useState(1);
+  const [funcVal, setFunc] = useState(1);
   const handlevarSliderChange = async (event, newValue) => {
     setNumVars(parseInt(newValue));
     setValue(newValue);
@@ -25,7 +25,9 @@ function NewNodeForm(props) {
   };
 
   const handlevarInputChange = async (event) => {
-    event.target.value === "" ? setNumVars(1): setNumVars(parseInt(event.target.value));
+    event.target.value === ""
+      ? setNumVars(1)
+      : setNumVars(parseInt(event.target.value));
     setValue(event.target.value === "" ? "" : Number(event.target.value));
     checkEmpty();
   };
@@ -36,7 +38,9 @@ function NewNodeForm(props) {
   };
 
   const handlefuncInputChange = async (event) => {
-    event.target.value === "" ? setNumFuncs(1): setNumFuncs(parseInt(event.target.value));
+    event.target.value === ""
+      ? setNumFuncs(1)
+      : setNumFuncs(parseInt(event.target.value));
     setFunc(event.target.value === "" ? "" : Number(event.target.value));
     checkEmpty();
   };
@@ -53,7 +57,6 @@ function NewNodeForm(props) {
   //for modals
   const [showModal, setShow] = useState(false);
   const handleClose = () => {
-    props.handleCloseModal();
     setShow(false);
   };
   const handleShow = () => {
@@ -339,17 +342,17 @@ function NewNodeForm(props) {
               <label>Number of Functions</label>
               <Grid container spacing={2} alignItems="center">
                 <Grid item xs>
-              <Slider
-                min={1}
-                max={30}
-                defaultValue={funcVal}
-                aria-label="Default"
-                valueLabelDisplay="on"
-                onChangeCommitted={handlefuncSliderChange}
-              />
-              </Grid>
-              <Grid item>
-              <Input
+                  <Slider
+                    min={1}
+                    max={30}
+                    defaultValue={funcVal}
+                    aria-label="Default"
+                    valueLabelDisplay="on"
+                    onChangeCommitted={handlefuncSliderChange}
+                  />
+                </Grid>
+                <Grid item>
+                  <Input
                     value={funcVal}
                     margin="dense"
                     onChange={handlefuncInputChange}
@@ -361,7 +364,8 @@ function NewNodeForm(props) {
                       "aria-labelledby": "input-slider",
                     }}
                   />
-                  </Grid></Grid>
+                </Grid>
+              </Grid>
             </div>
             <div>
               <div className="fxn">

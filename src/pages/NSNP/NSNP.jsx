@@ -23,29 +23,6 @@ import AddSynapse from "../../components/NSnapse/forms/AddSynapse";
 import DeleteSynForm from "../../components/NSnapse/forms/DeleteSynForm";
 
 function NSNP() {
-  // modals
-  const [showNewNodeModal, setShowNewNodeModal] = useState(false);
-  const [showNewInputNodeModal, setShowNewInputNodeModal] = useState(false);
-  const [showNewOutputNodeModal, setShowNewOutputNodeModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const [showDelete, setDelete] = useState(false);
-  const [showEdit, setshowEdit] = useState(false);
-
-  //Modal handlers
-  const handleClose = () => setShowNewNodeModal(false);
-  const handleShow = () => setShowNewNodeModal(true);
-  const handleNewInputClose = () => setShowNewInputNodeModal(false);
-  const handleNewOutputClose = () => setShowNewOutputNodeModal(false);
-  const handleEditClose = () => setShowDeleteModal(false);
-
-  const handleNewInputShow = () => setShowNewInputNodeModal(true);
-  const handleOutputShow = () => alert("Added new Output Neuron");
-  const handleDeleteClose = () => setDelete(false);
-  const handleDeleteShow = () => setDelete(true);
-  const handleShowEdit = () => setshowEdit(true);
-  const handleCloseEdit = () => setshowEdit(false);
-
   // Control States
   const [timeSteps, setTimeSteps] = useState(0);
   const [guidedMode, setGuidedMode] = useState(false);
@@ -55,6 +32,9 @@ function NSNP() {
   const [CHist, setCHist] = useState([]);
   const [SHist, setSHist] = useState([]);
   const [PHist, setPHist] = useState([]);
+
+  // State for System History
+  const [systemHistory, setSystemHistory] = useState([]);
 
   // States for the System
   const {
@@ -236,24 +216,21 @@ function NSNP() {
             <h1>NSN P Simulator</h1>
           </center>
           <div className="actionselector">
-            <NewNodeForm {...matrixProps} handleCloseModal={handleClose} />
-            <NewInputForm handleCloseModal={handleNewInputClose} />
+            <NewNodeForm {...matrixProps} />
+            <NewInputForm />
             <NewOutputForm
               {...matrixProps}
-              handleCloseModal={handleNewOutputClose}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
             />
             {/* place holders */}
 
             <EditNodeForm
-              handleCloseModal={handleCloseEdit}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
             />
             <DeleteForm
               {...matrixProps}
-              handleCloseModal={handleEditClose}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
             />
