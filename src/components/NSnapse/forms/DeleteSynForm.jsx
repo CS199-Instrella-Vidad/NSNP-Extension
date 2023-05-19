@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import Select from "react-select";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -7,25 +6,13 @@ import {
   DialogActions,
 } from "@mui/material";
 import "./forms.css";
-import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
-import ModalHeader from "react-bootstrap/esm/ModalHeader";
+import { Button } from "react-bootstrap";
 
 function DeleteSynForm(props) {
-  const [synOptions, setSynOptions] = useState([]);
+  // Modal visibility
   const [status, setStatus] = useState(false);
-  const [toDelete, setToDelete] = useState([]);
-  const [isdisabled, setAble] = useState(true);
-  const [showModal, setShow] = useState(false);
-
   const show = () => setStatus(true);
   const hide = () => setStatus(false);
-  const handleClose = () => {
-    setShow(false);
-  };
-
-  const handleShow = () => {
-    setShow(true);
-  };
 
   const todelete = () => {
     if (props.selectedSyn.split("-")[1] == "Environment") {
@@ -37,12 +24,13 @@ function DeleteSynForm(props) {
     let newSyn = props.syn.filter((syn) => {
       return !(syn[0] == remSyn[0] && syn[1] == remSyn[1]);
     });
+
+    // Setting of synapse
     props.setSyn(
       props.syn.filter((syn) => {
         return !(syn[0] == remSyn[0] && syn[1] == remSyn[1]);
       })
     );
-    console.log(props.syn);
 
     let matrices = {
       F: props.F,
@@ -58,28 +46,6 @@ function DeleteSynForm(props) {
     props.setSelectedSyn("");
     hide();
   };
-  const massDelete = () => {};
-
-  function checkEmpty() {
-    // if (synSourceLabel && synDestLabel) {
-    //   setAble(false);
-    // } else {
-    //   setAble(true);
-    // }
-  }
-
-  function deleteSynapse(syn) {}
-
-  // Load the synapse options for the dropdown menu
-  useEffect(() => {
-    // let newOptions = [];
-    // if (newL.length > 0) {
-    //   for (let i = 0; i < newL[0].length; i++) {
-    //     newOptions.push({ value: i, label: "Neuron " + (i + 1) });
-    //   }
-    // }
-    // setSynOptions(newOptions);
-  }, [props]);
 
   if (
     props.selectedSyn !== "" &&
@@ -107,48 +73,9 @@ function DeleteSynForm(props) {
   } else {
     return (
       <>
-        <Button onClick={handleShow} variant="c5">
-          Delete Synapses
+        <Button variant="c5" disabled={true}>
+          Delete Synapse
         </Button>
-        {/* //       <Modal
-  //         dialogclassname="modalcustom"
-  //         keyboard={false}
-  //         centered
-  //         backdrop="static"
-  //         show={showModal}
-  //         onHide={handleClose}
-  //       >
-  //         <ModalHeader closeButton className="sticktop">
-  //           <h3>Delete Synapses</h3>
-  //         </ModalHeader>
-  //         <ModalBody>
-  //           <div>
-  //             <h5>Select synapse/s to delete</h5>
-  //             <p>
-  //               You can delete multiple synapses. Deleting synapses will not
-  //               delete the Neurons they are connecting.
-  //             </p>
-  //             <Select
-  //               options={synOptions}
-  //               isMulti={true}
-  //               onChange={(e) => {
-  //                 checkEmpty();
-  //                 handleAddtoDelete(e);
-  //               }}
-  //             />
-  //           </div>
-  //         </ModalBody>
-  //         <ModalFooter>
-  //           <Button
-  //             disabled={isdisabled}
-  //             onClick={massDelete}
-  //             id="submitbutton"
-  //             variant="c5"
-  //           >
-  //             Delete
-  //           </Button>
-  //         </ModalFooter>
-  //       </Modal> */}
       </>
     );
   }
