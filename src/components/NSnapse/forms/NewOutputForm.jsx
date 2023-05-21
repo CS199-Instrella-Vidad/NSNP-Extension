@@ -9,6 +9,8 @@ import {
 import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
+import { systemStackPush } from "../../../utils/systemStackPush";
+import saveSystemtoStorage from "../../../utils/saveSystemtoStorage";
 
 const NewOutputForm = (props) => {
   const [nodeOptions, setNodeOptions] = useState([]);
@@ -25,23 +27,28 @@ const NewOutputForm = (props) => {
   };
 
   function assignNeuron() {
+    // Adding to history
+    let system = systemStackPush(props);
+    props.pushSystem(
+      system.matrices,
+      system.positions,
+      "Assigned an Output Neuron"
+    );
+
     let neuron = parseInt(props.selectedNode.slice(7));
     props.setEnvSyn(neuron);
-    let matrices = JSON.parse(localStorage.getItem("Matrices"));
-    if (matrices) {
-      matrices.envSyn = neuron;
-    } else {
-      matrices = {
-        F: props.F,
-        C: props.C,
-        L: props.L,
-        syn: props.syn,
-        VL: props.C,
-        T: props.T,
-        envSyn: neuron,
-      };
-    }
-    localStorage.setItem("Matrices", JSON.stringify(matrices));
+
+    saveSystemtoStorage(
+      props,
+      props.F,
+      props.L,
+      props.C,
+      props.VL,
+      props.syn,
+      outputSynIn,
+      props.neuronPositions,
+      props.T
+    );
     props.setSelectedNode("");
   }
 
@@ -65,21 +72,24 @@ const NewOutputForm = (props) => {
 
   const addOutputNeuron = () => {
     props.setEnvSyn(outputSynIn);
-    let matrices = JSON.parse(localStorage.getItem("Matrices"));
-    if (matrices) {
-      matrices.envSyn = outputSynIn;
-    } else {
-      matrices = {
-        F: props.F,
-        C: props.C,
-        L: props.L,
-        syn: props.syn,
-        VL: props.C,
-        T: props.T,
-        envSyn: outputSynIn,
-      };
-    }
-    localStorage.setItem("Matrices", JSON.stringify(matrices));
+    // Adding to history
+    let system = systemStackPush(props);
+    props.pushSystem(
+      system.matrices,
+      system.positions,
+      "Assigned an Output Neuron"
+    );
+    saveSystemtoStorage(
+      props,
+      props.F,
+      props.L,
+      props.C,
+      props.VL,
+      props.syn,
+      outputSynIn,
+      props.neuronPositions,
+      props.T
+    );
 
     handleClose();
   };

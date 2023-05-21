@@ -4,6 +4,9 @@ import { Slider } from "@mui/material";
 import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
+import { systemStackPush } from "../../../utils/systemStackPush";
+import saveSystemtoStorage from "../../../utils/saveSystemtoStorage";
+
 const EditNeuronForm = ({ handleCloseModal, selectedNode }) => {
   const [numVars, setNumVars] = useState(1);
   const [numFuncs, setNumFuncs] = useState(1);

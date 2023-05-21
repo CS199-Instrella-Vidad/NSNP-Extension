@@ -1,0 +1,136 @@
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 36px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #373a47;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: #a90000;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+.bm-menu-wrap {
+  position: fixed;
+  height: 100%;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #0f0f0f;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #1d1e25;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.ListPane {
+  text-align: center;
+  width: 100%;
+}
+h4 {
+  color: #fff;
+}
+.ListItem {
+  display: flex;
+  border-radius: 5px;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #23242c;
+  align-items: center;
+  margin: 1% 0 1% 0;
+  padding: 0 2% 0 10%;
+  transition: all 0.4s ease;
+}
+
+.ListItem:hover {
+  background-color: #1c1c1c;
+  color: #fff;
+  transition: all 0.1s ease;
+  /* change mouse cursor */
+  cursor: pointer;
+}
+.ListItem:active {
+  background-color: #2c2c2c;
+  color: #fff;
+  transition: all 0.1s ease;
+  /* change mouse cursor */
+  cursor: pointer;
+}
+
+.ListItemIndex {
+  font-weight: bold;
+}
+.Setting {
+  margin: 3% 0;
+  padding: 5%;
+}
+
+.ListPane h1 {
+  margin-bottom: 1em;
+}
+
+.HistoryPicker {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+}
+
+.HistoryType {
+  background-color: var(--c5);
+  border: 0.1em solid var(--c5);
+  color: white;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 5px 15px;
+  margin: 5px 0;
+}
+.HistoryType:hover {
+  color: var(--c5);
+  background-color: white;
+  transition: all 0.1s ease;
+}

@@ -7,6 +7,9 @@ import {
 
 import { React, useState } from "react";
 import { Button } from "react-bootstrap";
+import { systemStackPush } from "../../../utils/systemStackPush";
+import saveSystemtoStorage from "../../../utils/saveSystemtoStorage";
+
 function ClearAllForm(props) {
   const [status, setStatus] = useState(false);
   const show = () => setStatus(true);
@@ -49,6 +52,10 @@ function ClearAllForm(props) {
   }
 
   function deleteAll() {
+    // Adding to history
+    let system = systemStackPush(props);
+    props.pushSystem(system.matrices, system.positions, "Cleared All");
+
     let newVL = [];
     let newF = [];
     let newC = [];
@@ -57,9 +64,8 @@ function ClearAllForm(props) {
 
     let newSyn = [];
 
-    //TODO: CHANGE T
-
     let newEnvSyn = 0;
+    let newT = [];
 
     // Change neuron Positions
     let newNeuronPositions = [];
@@ -70,18 +76,19 @@ function ClearAllForm(props) {
     props.setC(newC);
     props.setEnvSyn(newEnvSyn);
     props.setSyn(newSyn);
-    const json = {
-      C: newC,
-      VL: newVL,
-      F: newF,
-      L: newL,
-      T: props.T,
-      syn: newSyn,
-      envSyn: newEnvSyn,
-      neuronPositions: newNeuronPositions,
-    };
-    localStorage.setItem("Matrices", JSON.stringify(json));
-    localStorage.setItem("positions", JSON.stringify(newNeuronPositions));
+    props.setT(newT);
+
+    saveSystemtoStorage(
+      props,
+      newF,
+      newL,
+      newC,
+      newVL,
+      newSyn,
+      newEnvSyn,
+      props.neuronPositions,
+      newT
+    );
   }
   return (
     <>

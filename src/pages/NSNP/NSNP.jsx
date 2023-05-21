@@ -20,7 +20,9 @@ import DeleteSynForm from "../../components/NSnapse/forms/DeleteSynForm";
 import generateConfigurations from "../../utils/SimAlgs/generateConfiguration";
 import { loadSystem, saveSystem } from "../../utils/saveload";
 import { useViewer } from "../../utils/hooks/useViewer";
+import localStorageMatrices from "../../utils/hooks/useLocalStorage";
 import { useMatrixData } from "../../utils/hooks/useMatrixData";
+import HistoryMenu from "../../components/NSnapse/HistoryMenu/HistoryMenu";
 
 function NSNP() {
   // Control States
@@ -32,8 +34,6 @@ function NSNP() {
   const [CHist, setCHist] = useState([]);
   const [SHist, setSHist] = useState([]);
   const [PHist, setPHist] = useState([]);
-
-  // State for System History
 
   // States for the System
   const {
@@ -78,6 +78,10 @@ function NSNP() {
     setCHist: setCHist,
     setNeuronPositions: setNeuronPositions,
   };
+  // Use Effect for reloading matrix data from local storage
+  useEffect(() => {
+    localStorageMatrices(matrixProps);
+  }, []);
 
   // States for system history
   const [systemStack, setSystemStack] = useState([]);
@@ -86,24 +90,41 @@ function NSNP() {
   const [systemStackPointer, setSystemStackPointer] = useState(0);
 
   function pushSystem(matrices, positions, message) {
-    // Remove all elements after the current pointer
+    console.log("Stack Pointer: " + systemStackPointer);
+    console.log("Stack Length: " + systemStack.length);
+    // If systemStackPointer is not at the end of the stack, remove all the elements after it
+    setSystemStackPointer(systemStack.length);
 
-    setSystemStack([...systemStack, matrices]);
-    setPositionStack([...positionStack, positions]);
-    setSystemStackMessage([...systemStackMessage, message]);
-    setSystemStackPointer(systemStack.length - 1);
-  }
-
-  function undoSystemChange() {
-    if (systemStackPointer > 0) {
-      setSystemStackPointer(systemStackPointer - 1);
-    }
-  }
-
-  function redoSystemChange() {
     if (systemStackPointer < systemStack.length - 1) {
-      setSystemStackPointer(systemStackPointer + 1);
+      setSystemStack([...systemStack.slice(0, systemStackPointer), matrices]);
+      setPositionStack([
+        ...positionStack.slice(0, systemStackPointer),
+        positions,
+      ]);
+      setSystemStackMessage([
+        ...systemStackMessage.slice(0, systemStackPointer),
+        message,
+      ]);
+    } else {
+      setSystemStack([...systemStack, matrices]);
+      setPositionStack([...positionStack, positions]);
+      setSystemStackMessage([...systemStackMessage, message]);
     }
+  }
+
+  function handleRewind(index) {
+    handleReset();
+    let newSystem = systemStack[index];
+
+    setC(newSystem.C);
+    setVL(newSystem.VL);
+    setF(newSystem.F);
+    setL(newSystem.L);
+    setT(newSystem.T);
+    setSyn(newSystem.syn);
+    setEnvSyn(newSystem.envSyn);
+
+    setSystemStackPointer(index);
   }
 
   //States for Viewing WorkSpace components
@@ -122,7 +143,12 @@ function NSNP() {
 
   const [selectedNode, setSelectedNode] = useState("");
   const [selectedSyn, setSelectedSyn] = useState("");
-
+  function handleOpenHistory() {
+    setShowConfigHist(!showConfigHist);
+  }
+  function handleOpenSettings() {
+    setShowSettings(!showSettings);
+  }
   function handleGeneration() {
     let matrices = generateConfigurations(
       guidedMode,
@@ -183,23 +209,6 @@ function NSNP() {
     setTimeSteps(timeSteps - 1);
   }
 
-  function handleRewind(index) {
-    if (timeSteps == 0 || index > timeSteps) {
-      return;
-    }
-    let newC = CHist[index];
-    let newS = SHist[index];
-    let newP = PHist[index];
-    setC(newC);
-    setSV(newS);
-    setPM(newP);
-    setCHist(CHist.slice(0, index));
-    setPHist(PHist.slice(0, index));
-    setSHist(SHist.slice(0, index));
-    setEnvValue(envValue.slice(0, index));
-    setTimeSteps(index);
-  }
-
   function handleSave(matrixProps) {
     saveSystem(matrixProps);
   }
@@ -230,37 +239,63 @@ function NSNP() {
         save={handleSave}
         set={setDev}
         reset={resetDev}
+        showMenu={showSettings}
+        onClose={handleOpenSettings}
       />
-      {/* <ConfigHist /> */}
+
+      <HistoryMenu
+        open={showConfigHist}
+        onClose={handleOpenHistory}
+        list1={systemStackMessage}
+        list2={CHist}
+        list3={[]}
+        itemAction={handleRewind}
+      />
 
       <div className="body">
         <div className="nsnpheader">
-          <center>
+          <div className="top">
+            <button className="btn-c5 menubutton" onClick={handleOpenSettings}>
+              Options
+            </button>
+
             <h1>NSN P Simulator</h1>
-          </center>
+            <button className="btn-c5 menubutton" onClick={handleOpenHistory}>
+              History
+            </button>
+          </div>
           <div className="actionselector">
-            <NewNodeForm {...matrixProps} pushSystem={pushSystem} />
-            <NewInputForm />
+            <NewNodeForm
+              {...matrixProps}
+              pushSystem={pushSystem}
+              selectedNode={selectedNode}
+              setSelectedNode={setSelectedNode}
+            />
+            <NewInputForm pushSystem={pushSystem} />
             <NewOutputForm
               {...matrixProps}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
+              pushSystem={pushSystem}
             />
             {/* place holders */}
 
             <EditNodeForm
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
+              pushSystem={pushSystem}
             />
             <DeleteForm
               {...matrixProps}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
+              pushSystem={pushSystem}
             />
             <ClearAllForm
               {...matrixProps}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
+              pushSystem={pushSystem}
             />
           </div>
           <div className="actionselector">
@@ -270,11 +305,15 @@ function NSNP() {
               setSelectedNode={setSelectedNode}
               setSelectedSyn={setSelectedSyn}
               selectedSyn={selectedSyn}
+              pushSystem={pushSystem}
             />
             <DeleteSynForm
               {...matrixProps}
+              selectedNode={selectedNode}
               selectedSyn={selectedSyn}
+              setSelectedNode={setSelectedNode}
               setSelectedSyn={setSelectedSyn}
+              pushSystem={pushSystem}
             />
           </div>
           <SubHeader

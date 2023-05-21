@@ -5,6 +5,9 @@ import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
 import { PersonPlusFill } from "react-bootstrap-icons";
+import { systemStackPush } from "../../../utils/systemStackPush";
+import saveSystemtoStorage from "../../../utils/saveSystemtoStorage";
+
 function NewNodeForm(props) {
   const [numVars, setNumVars] = useState(1);
   const [numFuncs, setNumFuncs] = useState(1);
@@ -85,30 +88,9 @@ function NewNodeForm(props) {
     }
   }
   function addNewNeuron() {
-    // Add new neuron to the system
-    const oldC = props.C;
-    const oldF = props.F;
-    const oldL = props.L;
-    const oldVL = props.VL;
-    const oldT = props.T;
-    const oldSyn = props.syn;
-    const oldEnvSyn = props.envSyn;
+    let system = systemStackPush(props);
+    props.pushSystem(system.matrices, system.positions, "Added New Neuron");
 
-    const system = {
-      matrices: {
-        C: JSON.parse(JSON.stringify(oldC)),
-        F: JSON.parse(JSON.stringify(oldF)),
-        L: JSON.parse(JSON.stringify(oldL)),
-        VL: JSON.parse(JSON.stringify(oldVL)),
-        T: JSON.parse(JSON.stringify(oldT)),
-        syn: JSON.parse(JSON.stringify(oldSyn)),
-        envSyn: JSON.parse(JSON.stringify(oldEnvSyn)),
-      },
-      positions: { neuronPositions: props.neuronPositions },
-      message: "Added new neuron",
-    };
-
-    props.pushSystem(system.matrices, system.positions, system.message);
     // Change C
     let newC = props.C;
     newC = newC.concat(inputVars);
@@ -188,6 +170,10 @@ function NewNodeForm(props) {
     for (let i = 0; i < inputSynOut.length; i++) {
       newSyn.push([neuronNumber, inputSynOut[i].value + 1]);
     }
+
+    //TODO: Change T
+    let newT = props.T;
+
     setNumVars(1);
     setNumFuncs(1);
     setInputVars([]);
@@ -195,17 +181,17 @@ function NewNodeForm(props) {
     setInputSynOut([]);
     setInputSynIn([]);
     handleClose();
-    const json = {
-      C: newC,
-      VL: newVL,
-      F: newF,
-      L: newL,
-      T: props.T,
-      syn: newSyn,
-      envSyn: props.envSyn,
-      neuronPositions: props.neuronPositions,
-    };
-    localStorage.setItem("Matrices", JSON.stringify(json));
+    saveSystemtoStorage(
+      props,
+      newF,
+      newL,
+      newC,
+      newVL,
+      newSyn,
+      props.envSyn,
+      props.neuronPositions,
+      newT
+    );
   }
 
   function handleAddVars(i, value) {
