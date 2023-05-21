@@ -162,7 +162,7 @@ const EditNeuronForm = ({ handleCloseModal, selectedNode }) => {
             <div className="vargrid">
               {Array.from(Array(numVars).keys()).map((i) => {
                 return (
-                  <div>
+                  <div key={i}>
                     <label>Variable {i + 1}</label>
                     <br />
                     <input
@@ -204,13 +204,13 @@ const EditNeuronForm = ({ handleCloseModal, selectedNode }) => {
                   <tbody>
                     {Array.from(Array(numFuncs).keys()).map((i) => {
                       return (
-                        <tr>
+                        <tr key={i}>
                           <th>
                             <label className="h4">Function {i + 1}</label>
                           </th>
                           {Array.from(Array(numVars).keys()).map((j) => {
                             return (
-                              <td>
+                              <td key={j}>
                                 <input
                                   type="number"
                                   className="inputs"

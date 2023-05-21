@@ -105,11 +105,10 @@ function NewNodeForm(props) {
         envSyn: JSON.parse(JSON.stringify(oldEnvSyn)),
       },
       positions: { neuronPositions: props.neuronPositions },
-      message: "",
+      message: "Added new neuron",
     };
 
-    system.message = "Added new neuron";
-    props.pushSystem(system.matrices, system.positions);
+    props.pushSystem(system.matrices, system.positions, system.message);
     // Change C
     let newC = props.C;
     newC = newC.concat(inputVars);
@@ -343,7 +342,7 @@ function NewNodeForm(props) {
             <div className="vargrid">
               {Array.from(Array(numVars).keys()).map((i) => {
                 return (
-                  <div>
+                  <div key={i}>
                     <label>x{props.VL.length + i + 1}</label>
                     <br />
                     <input
@@ -397,13 +396,13 @@ function NewNodeForm(props) {
                   <tbody>
                     {Array.from(Array(numFuncs).keys()).map((i) => {
                       return (
-                        <tr>
+                        <tr key={i}>
                           <th>
                             <label className="h4">Function {i + 1}</label>
                           </th>
                           {Array.from(Array(numVars).keys()).map((j) => {
                             return (
-                              <td>
+                              <td key={j}>
                                 <input
                                   type="number"
                                   className="inputs"
