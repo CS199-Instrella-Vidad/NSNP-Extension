@@ -1,27 +1,26 @@
 import "../../scss/custom.scss";
 import "./NSNP.css";
+
+import { useState, useEffect } from "react";
+import Menu from "../../components/NSnapse/Menu/Menu";
+import Matrices from "../../components/NSnapse/Matrices/Matrices";
+import WorkSpace from "../../components/NSnapse/WorkSpace/WorkSpace";
+import Graph from "../../components/NSnapse/Graph/Graph";
+import SubHeader from "../../components/NSnapse/SubHeader/SubHeader";
+
 import NewNodeForm from "../../components/NSnapse/forms/NewNodeForm";
 import NewInputForm from "../../components/NSnapse/forms/NewInputForm";
 import EditNodeForm from "../../components/NSnapse/forms/EditNeuronForm";
 import DeleteForm from "../../components/NSnapse/forms/DeleteForm";
-import { Button } from "react-bootstrap";
-import { useState, useEffect } from "react";
-import Menu from "../../components/Prototype/Menu/Menu";
-
-import { useViewer } from "../../utils/hooks/useViewer";
-import { useMatrixData } from "../../utils/hooks/useMatrixData";
-import { useSystemHistory } from "../../utils/hooks/useSystemHistory";
-import localStorageMatrices from "../../utils/hooks/useLocalStorage";
-import Matrices from "../../components/Prototype/Matrices/Matrices";
-import WorkSpace from "../../components/Prototype/WorkSpace/WorkSpace";
-import Graph from "../../components/Prototype/Graph/Graph";
-import SubHeader from "../../components/Prototype/SubHeader/SubHeader";
-import generateConfigurations from "../../utils/SimAlgs/generateConfiguration";
-import { loadSystem, saveSystem } from "../../utils/saveload";
 import ClearAllForm from "../../components/NSnapse/forms/ClearAllForm";
 import NewOutputForm from "../../components/NSnapse/forms/NewOutputForm";
 import AddSynapse from "../../components/NSnapse/forms/AddSynapse";
 import DeleteSynForm from "../../components/NSnapse/forms/DeleteSynForm";
+
+import generateConfigurations from "../../utils/SimAlgs/generateConfiguration";
+import { loadSystem, saveSystem } from "../../utils/saveload";
+import { useViewer } from "../../utils/hooks/useViewer";
+import { useMatrixData } from "../../utils/hooks/useMatrixData";
 
 function NSNP() {
   // Control States
@@ -86,20 +85,13 @@ function NSNP() {
   const [systemStackMessage, setSystemStackMessage] = useState([]);
   const [systemStackPointer, setSystemStackPointer] = useState(0);
 
-  function pushSystem(matrices, positions) {
+  function pushSystem(matrices, positions, message) {
     // Remove all elements after the current pointer
 
     setSystemStack([...systemStack, matrices]);
     setPositionStack([...positionStack, positions]);
+    setSystemStackMessage([...systemStackMessage, message]);
     setSystemStackPointer(systemStack.length - 1);
-    console.log("Pushed matrices", matrices);
-    console.log("Current Stack:", systemStack);
-  }
-  function pushMessage(message) {
-    setSystemStackMessage([
-      ...systemStackMessage.slice(0, systemStackPointer),
-      system.message,
-    ]);
   }
 
   function undoSystemChange() {
@@ -239,6 +231,7 @@ function NSNP() {
         set={setDev}
         reset={resetDev}
       />
+      {/* <ConfigHist /> */}
 
       <div className="body">
         <div className="nsnpheader">

@@ -62,9 +62,12 @@ function Menu(props) {
         </div>
         <div>
           <DropdownButton id="file-dropdown" title="Download samples">
-            {/* <Dropdown.Item href="./samples/ex1 - 3k+3 spiker.xmp" download>
+            <Dropdown.Item
+              href="../../../../samples/[1,1,1,0,0,2].json"
+              download
+            >
               Ex1 - 3k+3 Spiker
-            </Dropdown.Item> */}
+            </Dropdown.Item>
           </DropdownButton>
         </div>
         <div className="btncontainer">
