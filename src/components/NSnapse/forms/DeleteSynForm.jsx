@@ -43,9 +43,10 @@ function DeleteSynForm(props) {
       props.T,
       newSyn,
       props.envSyn,
-      props.neuronPositions
+      props.neuronPositions,
+      "Deleted a Synapse"
     );
-    props.pushSystem(system.matrices, system.positions, "Deleted a Synapse");
+    props.pushSystem(system);
 
     saveSystemtoStorage(
       props,

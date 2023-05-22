@@ -27,17 +27,21 @@ const NewOutputForm = (props) => {
   };
 
   function assignNeuron() {
-    // Adding to history
-    let system = systemStackPush(props);
-    props.pushSystem(
-      system.matrices,
-      system.positions,
-      "Assigned an Output Neuron"
-    );
-
     let neuron = parseInt(props.selectedNode.slice(7));
     props.setEnvSyn(neuron);
-
+    // Adding to history
+    let system = systemStackPush(
+      props.C,
+      props.F,
+      props.L,
+      props.VL,
+      props.T,
+      props.syn,
+      neuron,
+      props.neuronPositions,
+      "Assigned an Output Neuron"
+    );
+    props.pushSystem(system);
     saveSystemtoStorage(
       props,
       props.F,
@@ -45,7 +49,7 @@ const NewOutputForm = (props) => {
       props.C,
       props.VL,
       props.syn,
-      outputSynIn,
+      neuron,
       props.neuronPositions,
       props.T
     );
@@ -81,13 +85,10 @@ const NewOutputForm = (props) => {
       props.T,
       props.syn,
       outputSynIn,
-      props.neuronPositions
-    );
-    props.pushSystem(
-      system.matrices,
-      system.positions,
+      props.neuronPositions,
       "Assigned an Output Neuron"
     );
+    props.pushSystem(system);
     saveSystemtoStorage(
       props,
       props.F,

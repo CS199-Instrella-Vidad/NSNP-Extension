@@ -83,9 +83,10 @@ function ClearAllForm(props) {
       newT,
       newSyn,
       newEnvSyn,
-      props.neuronPositions
+      props.neuronPositions,
+      "Cleared All"
     );
-    props.pushSystem(system.matrices, system.positions, "Cleared All");
+    props.pushSystem(system);
 
     saveSystemtoStorage(
       props,

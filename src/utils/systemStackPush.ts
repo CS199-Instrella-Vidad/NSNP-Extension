@@ -6,7 +6,8 @@ export function systemStackPush(
   newT,
   newSyn,
   newEnvSyn,
-  newNeuronPositions
+  newNeuronPositions,
+  message
 ) {
   // Add new neuron to the system
 
@@ -21,6 +22,7 @@ export function systemStackPush(
       envSyn: newEnvSyn,
     },
     positions: { neuronPositions: newNeuronPositions },
+    message,
   };
 
   return system;

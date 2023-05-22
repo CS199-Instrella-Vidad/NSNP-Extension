@@ -87,9 +87,10 @@ const AddSynapse = (props) => {
         newSyns,
       ],
       props.envSyn,
-      props.neuronPositions
+      props.neuronPositions,
+      "Added a Synapse"
     );
-    props.pushSystem(system.matrices, system.positions, "Added a Synapse");
+    props.pushSystem(system);
     setSynDestLabel(null);
     setSynSourceLabel(null);
     setSynSource(0);

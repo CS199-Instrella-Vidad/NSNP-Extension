@@ -86,45 +86,40 @@ function NSNP() {
 
   // States for system history
   const [systemStack, setSystemStack] = useState([
-    systemStackPush(C, F, L, VL, T, syn, envSyn, neuronPositions).matrices,
-  ]);
-  const [positionStack, setPositionStack] = useState([]);
-  const [systemStackMessage, setSystemStackMessage] = useState([
-    "Initial System",
+    systemStackPush(
+      C,
+      F,
+      L,
+      VL,
+      T,
+      syn,
+      envSyn,
+      neuronPositions,
+      "Initial System"
+    ),
   ]);
   const [systemStackPointer, setSystemStackPointer] = useState(1);
   console.log("System Stack: ", systemStack);
 
-  function pushSystem(matrices, positions, message) {
-    // TODO: set positions as well
+  function pushSystem(system) {
     console.log("Stack Pointer: " + systemStackPointer);
     console.log("Stack Length: " + systemStack.length);
     // If systemStackPointer is not at the end of the stack, remove all the elements after it
     setSystemStackPointer(systemStack.length);
 
     if (systemStackPointer < systemStack.length - 1) {
-      setSystemStack([...systemStack.slice(0, systemStackPointer), matrices]);
-      setPositionStack([
-        ...positionStack.slice(0, systemStackPointer),
-        positions,
-      ]);
-      setSystemStackMessage([
-        ...systemStackMessage.slice(0, systemStackPointer),
-        message,
-      ]);
+      setSystemStack([...systemStack.slice(0, systemStackPointer), system]);
     } else {
-      setSystemStack([...systemStack, matrices]);
-      setPositionStack([...positionStack, positions]);
-      setSystemStackMessage([...systemStackMessage, message]);
+      setSystemStack([...systemStack, system]);
     }
   }
 
   function handleRewind(index) {
     handleReset();
-    let newSystem = systemStack[index];
+    let newSystem = systemStack[index].matrices;
+    let newPositions = systemStack[index].positions;
     console.log("System Stack: ", systemStack);
     console.log("Index: ", index);
-
     setC(newSystem.C);
     setVL(newSystem.VL);
     setF(newSystem.F);
@@ -132,7 +127,8 @@ function NSNP() {
     setT(newSystem.T);
     setSyn(newSystem.syn);
     setEnvSyn(newSystem.envSyn);
-    // TODO3: Save to Localstorage as well
+    setNeuronPositions(newPositions);
+    // TODO1: Save to Localstorage as well
 
     setSystemStackPointer(index);
   }
@@ -256,7 +252,7 @@ function NSNP() {
       <HistoryMenu
         open={showConfigHist}
         onClose={handleOpenHistory}
-        list1={systemStackMessage}
+        list1={systemStack}
         list2={CHist}
         list3={[]}
         itemAction={handleRewind}

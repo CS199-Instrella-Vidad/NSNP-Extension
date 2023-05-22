@@ -52,9 +52,10 @@ function DeleteForm(props) {
       newT,
       newSyn,
       newEnvSyn,
-      newNeuronPositions
+      newNeuronPositions,
+      "Deleted a Neuron"
     );
-    props.pushSystem(system.matrices, system.positions, "Deleted a Neuron");
+    props.pushSystem(system);
     hide();
   };
 
@@ -78,6 +79,9 @@ function DeleteForm(props) {
 
   function massDelete() {
     // Adding to history
+
+    let message =
+      toDelete.length > 1 ? "Deleted multiple neurons" : "Deleted a neuron";
     let system = systemStackPush(
       newC,
       newF,
@@ -86,15 +90,13 @@ function DeleteForm(props) {
       newT,
       newSyn,
       newEnvSyn,
-      newNeuronPositions
+      message
     );
-    let message =
-      toDelete.length > 1 ? "Deleted multiple neurons" : "Deleted a neuron";
 
     for (let i = 0; i < toDelete.length; i++) {
       deleteNeuron(toDelete[i]);
     }
-    props.pushSystem(system.matrices, system.positions, message);
+    props.pushSystem(system);
     handleClose();
   }
 

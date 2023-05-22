@@ -5,11 +5,19 @@ import { useState, useEffect, useRef } from "react";
 
 export default function HistoryMenu(props) {
   const [listType, setListType] = useState("System");
-  const [list, setList] = useState(props.list1);
+  const [list, setList] = useState(
+    props.list1.map((item) => {
+      return item.message;
+    })
+  );
 
   useEffect(() => {
-    if (listType === "System") setList(props.list1);
-    else if (listType === "Config") setList(props.list2);
+    if (listType === "System") {
+      let messageList = props.list1.map((item) => {
+        return item.message;
+      });
+      setList(messageList);
+    } else if (listType === "Config") setList(props.list2);
     else if (listType === "Choice") setList(props.list3);
   }, [props.list1, props.list2, props.list3, listType]);
 

@@ -186,9 +186,10 @@ function NewNodeForm(props) {
       newT,
       newSyn,
       props.envSyn,
-      props.neuronPositions
+      props.neuronPositions,
+      "Added new neuron"
     );
-    props.pushSystem(system.matrices, system.positions, "Added New Neuron");
+    props.pushSystem(system);
     handleClose();
     saveSystemtoStorage(
       props,
