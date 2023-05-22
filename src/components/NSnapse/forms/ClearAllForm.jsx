@@ -52,10 +52,6 @@ function ClearAllForm(props) {
   }
 
   function deleteAll() {
-    // Adding to history
-    let system = systemStackPush(props);
-    props.pushSystem(system.matrices, system.positions, "Cleared All");
-
     let newVL = [];
     let newF = [];
     let newC = [];
@@ -77,6 +73,19 @@ function ClearAllForm(props) {
     props.setEnvSyn(newEnvSyn);
     props.setSyn(newSyn);
     props.setT(newT);
+
+    // Adding to history
+    let system = systemStackPush(
+      newC,
+      newF,
+      newL,
+      newVL,
+      newT,
+      newSyn,
+      newEnvSyn,
+      props.neuronPositions
+    );
+    props.pushSystem(system.matrices, system.positions, "Cleared All");
 
     saveSystemtoStorage(
       props,

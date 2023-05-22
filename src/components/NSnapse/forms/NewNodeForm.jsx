@@ -88,9 +88,6 @@ function NewNodeForm(props) {
     }
   }
   function addNewNeuron() {
-    let system = systemStackPush(props);
-    props.pushSystem(system.matrices, system.positions, "Added New Neuron");
-
     // Change C
     let newC = props.C;
     newC = newC.concat(inputVars);
@@ -180,6 +177,18 @@ function NewNodeForm(props) {
     setInputFuncs([]);
     setInputSynOut([]);
     setInputSynIn([]);
+
+    let system = systemStackPush(
+      newC,
+      newF,
+      newL,
+      newVL,
+      newT,
+      newSyn,
+      props.envSyn,
+      props.neuronPositions
+    );
+    props.pushSystem(system.matrices, system.positions, "Added New Neuron");
     handleClose();
     saveSystemtoStorage(
       props,

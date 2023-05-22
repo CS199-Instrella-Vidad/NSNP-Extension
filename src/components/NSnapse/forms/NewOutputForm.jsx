@@ -73,7 +73,16 @@ const NewOutputForm = (props) => {
   const addOutputNeuron = () => {
     props.setEnvSyn(outputSynIn);
     // Adding to history
-    let system = systemStackPush(props);
+    let system = systemStackPush(
+      props.C,
+      props.F,
+      props.L,
+      props.VL,
+      props.T,
+      props.syn,
+      outputSynIn,
+      props.neuronPositions
+    );
     props.pushSystem(
       system.matrices,
       system.positions,

@@ -26,6 +26,7 @@ function DeleteForm(props) {
   let newVL = props.VL;
   let newEnvSyn = props.envSyn;
   let newT = props.T;
+  let newNeuronPositions = props.neuronPositions;
 
   const show = () => setStatus(true);
   const hide = () => setStatus(false);
@@ -40,11 +41,20 @@ function DeleteForm(props) {
   const todelete = () => {
     let neuron = parseInt(props.selectedNode.slice(7));
 
-    // Adding to history
-    let system = systemStackPush(props);
-    props.pushSystem(system.matrices, system.positions, "Deleted a Neuron");
-
     deleteNeuron(neuron);
+
+    // Adding to history
+    let system = systemStackPush(
+      newC,
+      newF,
+      newL,
+      newVL,
+      newT,
+      newSyn,
+      newEnvSyn,
+      newNeuronPositions
+    );
+    props.pushSystem(system.matrices, system.positions, "Deleted a Neuron");
     hide();
   };
 
@@ -67,8 +77,17 @@ function DeleteForm(props) {
   }
 
   function massDelete() {
-    console.log("toDelete", toDelete);
-    let system = systemStackPush(props);
+    // Adding to history
+    let system = systemStackPush(
+      newC,
+      newF,
+      newL,
+      newVL,
+      newT,
+      newSyn,
+      newEnvSyn,
+      newNeuronPositions
+    );
     let message =
       toDelete.length > 1 ? "Deleted multiple neurons" : "Deleted a neuron";
 
@@ -178,10 +197,7 @@ function DeleteForm(props) {
     }
 
     // Change neuron Positions
-    let newNeuronPositions = adjustNeuronPositions(
-      neuron,
-      props.neuronPositions
-    );
+    newNeuronPositions = adjustNeuronPositions(neuron, props.neuronPositions);
 
     saveSystemtoStorage(
       props,

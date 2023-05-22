@@ -17,10 +17,6 @@ function DeleteSynForm(props) {
   const hide = () => setStatus(false);
 
   const todelete = () => {
-    // Adding to history
-    let system = systemStackPush(props);
-    props.pushSystem(system.matrices, system.positions, "Deleted a Synapse");
-
     if (props.selectedSyn.split("-")[1] == "Environment") {
       return;
     }
@@ -38,6 +34,19 @@ function DeleteSynForm(props) {
       })
     );
 
+    // Adding to history
+    let system = systemStackPush(
+      props.C,
+      props.F,
+      props.L,
+      props.VL,
+      props.T,
+      newSyn,
+      props.envSyn,
+      props.neuronPositions
+    );
+    props.pushSystem(system.matrices, system.positions, "Deleted a Synapse");
+
     saveSystemtoStorage(
       props,
       props.F,
@@ -49,6 +58,7 @@ function DeleteSynForm(props) {
       props.neuronPositions,
       props.T
     );
+
     props.setSelectedSyn("");
 
     hide();

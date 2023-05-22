@@ -23,6 +23,7 @@ import { useViewer } from "../../utils/hooks/useViewer";
 import localStorageMatrices from "../../utils/hooks/useLocalStorage";
 import { useMatrixData } from "../../utils/hooks/useMatrixData";
 import HistoryMenu from "../../components/NSnapse/HistoryMenu/HistoryMenu";
+import { systemStackPush } from "../../utils/systemStackPush";
 
 function NSNP() {
   // Control States
@@ -84,12 +85,18 @@ function NSNP() {
   }, []);
 
   // States for system history
-  const [systemStack, setSystemStack] = useState([]);
+  const [systemStack, setSystemStack] = useState([
+    systemStackPush(C, F, L, VL, T, syn, envSyn, neuronPositions).matrices,
+  ]);
   const [positionStack, setPositionStack] = useState([]);
-  const [systemStackMessage, setSystemStackMessage] = useState([]);
-  const [systemStackPointer, setSystemStackPointer] = useState(0);
+  const [systemStackMessage, setSystemStackMessage] = useState([
+    "Initial System",
+  ]);
+  const [systemStackPointer, setSystemStackPointer] = useState(1);
+  console.log("System Stack: ", systemStack);
 
   function pushSystem(matrices, positions, message) {
+    // TODO: set positions as well
     console.log("Stack Pointer: " + systemStackPointer);
     console.log("Stack Length: " + systemStack.length);
     // If systemStackPointer is not at the end of the stack, remove all the elements after it
@@ -115,6 +122,8 @@ function NSNP() {
   function handleRewind(index) {
     handleReset();
     let newSystem = systemStack[index];
+    console.log("System Stack: ", systemStack);
+    console.log("Index: ", index);
 
     setC(newSystem.C);
     setVL(newSystem.VL);
@@ -123,6 +132,7 @@ function NSNP() {
     setT(newSystem.T);
     setSyn(newSystem.syn);
     setEnvSyn(newSystem.envSyn);
+    // TODO3: Save to Localstorage as well
 
     setSystemStackPointer(index);
   }

@@ -47,10 +47,6 @@ const AddSynapse = (props) => {
   }
 
   const addSynapse = () => {
-    // Adding to history
-    let system = systemStackPush(props);
-    props.pushSystem(system.matrices, system.positions, "Added a Synapse");
-
     let newSyns = [synSource, synDest];
     props.setSyn([
       ...props.syn.filter((syn) => {
@@ -77,6 +73,23 @@ const AddSynapse = (props) => {
       props.neuronPositions,
       props.T
     );
+    // Adding to history
+    let system = systemStackPush(
+      props.C,
+      props.F,
+      props.L,
+      props.VL,
+      props.T,
+      [
+        ...props.syn.filter((syn) => {
+          return !(syn[0] == newSyns[0] && syn[1] == newSyns[1]);
+        }),
+        newSyns,
+      ],
+      props.envSyn,
+      props.neuronPositions
+    );
+    props.pushSystem(system.matrices, system.positions, "Added a Synapse");
     setSynDestLabel(null);
     setSynSourceLabel(null);
     setSynSource(0);
