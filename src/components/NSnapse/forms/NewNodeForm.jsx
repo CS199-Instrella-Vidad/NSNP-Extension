@@ -5,6 +5,9 @@ import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
 import { PersonPlusFill } from "react-bootstrap-icons";
+import { systemStackPush } from "../../../utils/systemStackPush";
+import saveSystemtoStorage from "../../../utils/saveSystemtoStorage";
+
 function NewNodeForm(props) {
   const [numVars, setNumVars] = useState(1);
   const [numFuncs, setNumFuncs] = useState(1);
@@ -85,8 +88,6 @@ function NewNodeForm(props) {
     }
   }
   function addNewNeuron() {
-    // Add new neuron to the system
-
     // Change C
     let newC = props.C;
     newC = newC.concat(inputVars);
@@ -166,24 +167,41 @@ function NewNodeForm(props) {
     for (let i = 0; i < inputSynOut.length; i++) {
       newSyn.push([neuronNumber, inputSynOut[i].value + 1]);
     }
+
+    //TODO: Change T
+    let newT = props.T;
+
     setNumVars(1);
     setNumFuncs(1);
     setInputVars([]);
     setInputFuncs([]);
     setInputSynOut([]);
     setInputSynIn([]);
+
+    let system = systemStackPush(
+      newC,
+      newF,
+      newL,
+      newVL,
+      newT,
+      newSyn,
+      props.envSyn,
+      props.neuronPositions,
+      "Added new neuron"
+    );
+    props.pushSystem(system);
     handleClose();
-    const json = {
-      C: newC,
-      VL: newVL,
-      F: newF,
-      L: newL,
-      T: props.T,
-      syn: newSyn,
-      envSyn: props.envSyn,
-      neuronPositions: props.neuronPositions,
-    };
-    localStorage.setItem("Matrices", JSON.stringify(json));
+    saveSystemtoStorage(
+      props,
+      newF,
+      newL,
+      newC,
+      newVL,
+      newSyn,
+      props.envSyn,
+      props.neuronPositions,
+      newT
+    );
   }
 
   function handleAddVars(i, value) {
@@ -320,7 +338,7 @@ function NewNodeForm(props) {
             <div className="vargrid">
               {Array.from(Array(numVars).keys()).map((i) => {
                 return (
-                  <div>
+                  <div key={i}>
                     <label>x{props.VL.length + i + 1}</label>
                     <br />
                     <input
@@ -374,13 +392,13 @@ function NewNodeForm(props) {
                   <tbody>
                     {Array.from(Array(numFuncs).keys()).map((i) => {
                       return (
-                        <tr>
+                        <tr key={i}>
                           <th>
                             <label className="h4">Function {i + 1}</label>
                           </th>
                           {Array.from(Array(numVars).keys()).map((j) => {
                             return (
-                              <td>
+                              <td key={j}>
                                 <input
                                   type="number"
                                   className="inputs"

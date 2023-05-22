@@ -9,6 +9,8 @@ import {
 import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
+import { systemStackPush } from "../../../utils/systemStackPush";
+import saveSystemtoStorage from "../../../utils/saveSystemtoStorage";
 
 function DeleteForm(props) {
   const [nodeOptions, setNodeOptions] = useState([]);
@@ -23,6 +25,8 @@ function DeleteForm(props) {
   let newSyn = props.syn;
   let newVL = props.VL;
   let newEnvSyn = props.envSyn;
+  let newT = props.T;
+  let newNeuronPositions = props.neuronPositions;
 
   const show = () => setStatus(true);
   const hide = () => setStatus(false);
@@ -36,7 +40,22 @@ function DeleteForm(props) {
 
   const todelete = () => {
     let neuron = parseInt(props.selectedNode.slice(7));
+
     deleteNeuron(neuron);
+
+    // Adding to history
+    let system = systemStackPush(
+      newC,
+      newF,
+      newL,
+      newVL,
+      newT,
+      newSyn,
+      newEnvSyn,
+      newNeuronPositions,
+      "Deleted a Neuron"
+    );
+    props.pushSystem(system);
     hide();
   };
 
@@ -59,11 +78,25 @@ function DeleteForm(props) {
   }
 
   function massDelete() {
-    console.log("toDelete", toDelete);
+    // Adding to history
+
+    let message =
+      toDelete.length > 1 ? "Deleted multiple neurons" : "Deleted a neuron";
+    let system = systemStackPush(
+      newC,
+      newF,
+      newL,
+      newVL,
+      newT,
+      newSyn,
+      newEnvSyn,
+      message
+    );
 
     for (let i = 0; i < toDelete.length; i++) {
       deleteNeuron(toDelete[i]);
     }
+    props.pushSystem(system);
     handleClose();
   }
 
@@ -157,7 +190,8 @@ function DeleteForm(props) {
       }
     }
 
-    // CHANGE T
+    // TODO: CHANGE T depending on function, depending on function location == neuron
+    newT = newT.filter((item) => item[0] != neuron);
 
     // Adjust envsyn
     if (newEnvSyn > neuron - 1) {
@@ -165,43 +199,19 @@ function DeleteForm(props) {
     }
 
     // Change neuron Positions
-    let newNeuronPositions = adjustNeuronPositions(
-      neuron,
-      props.neuronPositions
-    );
+    newNeuronPositions = adjustNeuronPositions(neuron, props.neuronPositions);
 
-    saveSystem(newF, newL, newC, newVL, newSyn, newEnvSyn, newNeuronPositions);
-  }
-  function saveSystem(
-    newF,
-    newL,
-    newC,
-    newVL,
-    newSyn,
-    newEnvSyn,
-    newNeuronPositions
-  ) {
-    props.setF(newF);
-    props.setNeuronPositions(newNeuronPositions);
-    props.setVL(newVL);
-    props.setL(newL);
-    props.setC(newC);
-    props.setEnvSyn(newEnvSyn);
-    props.setSyn(newSyn);
-    props.setSelectedNode("");
-    const json = {
-      C: newC,
-      VL: newVL,
-      F: newF,
-      L: newL,
-      T: props.T,
-      syn: newSyn,
-      envSyn: newEnvSyn,
-      neuronPositions: newNeuronPositions,
-    };
-    localStorage.setItem("Matrices", JSON.stringify(json));
-    localStorage.setItem("positions", JSON.stringify(newNeuronPositions));
-    console.log("System", json);
+    saveSystemtoStorage(
+      props,
+      newF,
+      newL,
+      newC,
+      newVL,
+      newSyn,
+      newEnvSyn,
+      newNeuronPositions,
+      newT
+    );
   }
 
   function handleAddtoDelete(e) {

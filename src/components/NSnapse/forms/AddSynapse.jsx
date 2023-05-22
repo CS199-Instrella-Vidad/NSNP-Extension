@@ -9,6 +9,8 @@ import {
 import "./forms.css";
 import { Modal, Button, ModalBody, ModalFooter } from "react-bootstrap";
 import ModalHeader from "react-bootstrap/esm/ModalHeader";
+import { systemStackPush } from "../../../utils/systemStackPush";
+import saveSystemtoStorage from "../../../utils/saveSystemtoStorage";
 
 const AddSynapse = (props) => {
   const [sourceOptions, setSourceOptions] = useState([]);
@@ -54,21 +56,41 @@ const AddSynapse = (props) => {
     ]);
     console.log(props.syn);
     // Saving the matrices to local storage
-    let matrices = JSON.parse(localStorage.getItem("Matrices"));
-    if (matrices) {
-      matrices.syn = newSyns;
-    } else {
-      matrices = {
-        F: props.F,
-        C: props.C,
-        L: props.L,
-        syn: props.syn,
-        VL: props.VL,
-        T: props.T,
-        envSyn: props.envSyn,
-      };
-    }
-    localStorage.setItem("Matrices", JSON.stringify(matrices));
+
+    saveSystemtoStorage(
+      props,
+      props.F,
+      props.L,
+      props.C,
+      props.VL,
+      [
+        ...props.syn.filter((syn) => {
+          return !(syn[0] == newSyns[0] && syn[1] == newSyns[1]);
+        }),
+        newSyns,
+      ],
+      props.envSyn,
+      props.neuronPositions,
+      props.T
+    );
+    // Adding to history
+    let system = systemStackPush(
+      props.C,
+      props.F,
+      props.L,
+      props.VL,
+      props.T,
+      [
+        ...props.syn.filter((syn) => {
+          return !(syn[0] == newSyns[0] && syn[1] == newSyns[1]);
+        }),
+        newSyns,
+      ],
+      props.envSyn,
+      props.neuronPositions,
+      "Added a Synapse"
+    );
+    props.pushSystem(system);
     setSynDestLabel(null);
     setSynSourceLabel(null);
     setSynSource(0);

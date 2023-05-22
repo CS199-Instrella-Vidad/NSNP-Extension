@@ -1,26 +1,29 @@
 import "../../scss/custom.scss";
 import "./NSNP.css";
+
+import { useState, useEffect } from "react";
+import Menu from "../../components/NSnapse/Menu/Menu";
+import Matrices from "../../components/NSnapse/Matrices/Matrices";
+import WorkSpace from "../../components/NSnapse/WorkSpace/WorkSpace";
+import Graph from "../../components/NSnapse/Graph/Graph";
+import SubHeader from "../../components/NSnapse/SubHeader/SubHeader";
+
 import NewNodeForm from "../../components/NSnapse/forms/NewNodeForm";
 import NewInputForm from "../../components/NSnapse/forms/NewInputForm";
 import EditNodeForm from "../../components/NSnapse/forms/EditNeuronForm";
 import DeleteForm from "../../components/NSnapse/forms/DeleteForm";
-import { Button } from "react-bootstrap";
-import { useState, useEffect } from "react";
-import Menu from "../../components/Prototype/Menu/Menu";
-
-import { useViewer } from "../../utils/hooks/useViewer";
-import { useMatrixData } from "../../utils/hooks/useMatrixData";
-import localStorageMatrices from "../../utils/hooks/useLocalStorage";
-import Matrices from "../../components/Prototype/Matrices/Matrices";
-import WorkSpace from "../../components/Prototype/WorkSpace/WorkSpace";
-import Graph from "../../components/Prototype/Graph/Graph";
-import SubHeader from "../../components/Prototype/SubHeader/SubHeader";
-import generateConfigurations from "../../utils/SimAlgs/generateConfiguration";
-import { loadSystem, saveSystem } from "../../utils/saveload";
 import ClearAllForm from "../../components/NSnapse/forms/ClearAllForm";
 import NewOutputForm from "../../components/NSnapse/forms/NewOutputForm";
 import AddSynapse from "../../components/NSnapse/forms/AddSynapse";
 import DeleteSynForm from "../../components/NSnapse/forms/DeleteSynForm";
+
+import generateConfigurations from "../../utils/SimAlgs/generateConfiguration";
+import { loadSystem, saveSystem } from "../../utils/saveload";
+import { useViewer } from "../../utils/hooks/useViewer";
+import localStorageMatrices from "../../utils/hooks/useLocalStorage";
+import { useMatrixData } from "../../utils/hooks/useMatrixData";
+import HistoryMenu from "../../components/NSnapse/HistoryMenu/HistoryMenu";
+import { systemStackPush } from "../../utils/systemStackPush";
 
 function NSNP() {
   // Control States
@@ -32,9 +35,6 @@ function NSNP() {
   const [CHist, setCHist] = useState([]);
   const [SHist, setSHist] = useState([]);
   const [PHist, setPHist] = useState([]);
-
-  // State for System History
-  const [systemHistory, setSystemHistory] = useState([]);
 
   // States for the System
   const {
@@ -84,6 +84,55 @@ function NSNP() {
     localStorageMatrices(matrixProps);
   }, []);
 
+  // States for system history
+  const [systemStack, setSystemStack] = useState([
+    systemStackPush(
+      C,
+      F,
+      L,
+      VL,
+      T,
+      syn,
+      envSyn,
+      neuronPositions,
+      "Initial System"
+    ),
+  ]);
+  const [systemStackPointer, setSystemStackPointer] = useState(1);
+  console.log("System Stack: ", systemStack);
+
+  function pushSystem(system) {
+    console.log("Stack Pointer: " + systemStackPointer);
+    console.log("Stack Length: " + systemStack.length);
+    // If systemStackPointer is not at the end of the stack, remove all the elements after it
+    setSystemStackPointer(systemStack.length);
+
+    if (systemStackPointer < systemStack.length - 1) {
+      setSystemStack([...systemStack.slice(0, systemStackPointer), system]);
+    } else {
+      setSystemStack([...systemStack, system]);
+    }
+  }
+
+  function handleRewind(index) {
+    handleReset();
+    let newSystem = systemStack[index].matrices;
+    let newPositions = systemStack[index].positions;
+    console.log("System Stack: ", systemStack);
+    console.log("Index: ", index);
+    setC(newSystem.C);
+    setVL(newSystem.VL);
+    setF(newSystem.F);
+    setL(newSystem.L);
+    setT(newSystem.T);
+    setSyn(newSystem.syn);
+    setEnvSyn(newSystem.envSyn);
+    setNeuronPositions(newPositions);
+    // TODO1: Save to Localstorage as well
+
+    setSystemStackPointer(index);
+  }
+
   //States for Viewing WorkSpace components
   const {
     showNonSimMatrices,
@@ -100,7 +149,12 @@ function NSNP() {
 
   const [selectedNode, setSelectedNode] = useState("");
   const [selectedSyn, setSelectedSyn] = useState("");
-
+  function handleOpenHistory() {
+    setShowConfigHist(!showConfigHist);
+  }
+  function handleOpenSettings() {
+    setShowSettings(!showSettings);
+  }
   function handleGeneration() {
     let matrices = generateConfigurations(
       guidedMode,
@@ -161,23 +215,6 @@ function NSNP() {
     setTimeSteps(timeSteps - 1);
   }
 
-  function handleRewind(index) {
-    if (timeSteps == 0 || index > timeSteps) {
-      return;
-    }
-    let newC = CHist[index];
-    let newS = SHist[index];
-    let newP = PHist[index];
-    setC(newC);
-    setSV(newS);
-    setPM(newP);
-    setCHist(CHist.slice(0, index));
-    setPHist(PHist.slice(0, index));
-    setSHist(SHist.slice(0, index));
-    setEnvValue(envValue.slice(0, index));
-    setTimeSteps(index);
-  }
-
   function handleSave(matrixProps) {
     saveSystem(matrixProps);
   }
@@ -208,36 +245,63 @@ function NSNP() {
         save={handleSave}
         set={setDev}
         reset={resetDev}
+        showMenu={showSettings}
+        onClose={handleOpenSettings}
+      />
+
+      <HistoryMenu
+        open={showConfigHist}
+        onClose={handleOpenHistory}
+        list1={systemStack}
+        list2={CHist}
+        list3={[]}
+        itemAction={handleRewind}
       />
 
       <div className="body">
         <div className="nsnpheader">
-          <center>
+          <div className="top">
+            <button className="btn-c5 menubutton" onClick={handleOpenSettings}>
+              Options
+            </button>
+
             <h1>NSN P Simulator</h1>
-          </center>
+            <button className="btn-c5 menubutton" onClick={handleOpenHistory}>
+              History
+            </button>
+          </div>
           <div className="actionselector">
-            <NewNodeForm {...matrixProps} />
-            <NewInputForm />
+            <NewNodeForm
+              {...matrixProps}
+              pushSystem={pushSystem}
+              selectedNode={selectedNode}
+              setSelectedNode={setSelectedNode}
+            />
+            <NewInputForm pushSystem={pushSystem} />
             <NewOutputForm
               {...matrixProps}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
+              pushSystem={pushSystem}
             />
             {/* place holders */}
 
             <EditNodeForm
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
+              pushSystem={pushSystem}
             />
             <DeleteForm
               {...matrixProps}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
+              pushSystem={pushSystem}
             />
             <ClearAllForm
               {...matrixProps}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
+              pushSystem={pushSystem}
             />
           </div>
           <div className="actionselector">
@@ -247,11 +311,15 @@ function NSNP() {
               setSelectedNode={setSelectedNode}
               setSelectedSyn={setSelectedSyn}
               selectedSyn={selectedSyn}
+              pushSystem={pushSystem}
             />
             <DeleteSynForm
               {...matrixProps}
+              selectedNode={selectedNode}
               selectedSyn={selectedSyn}
+              setSelectedNode={setSelectedNode}
               setSelectedSyn={setSelectedSyn}
+              pushSystem={pushSystem}
             />
           </div>
           <SubHeader

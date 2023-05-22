@@ -141,7 +141,7 @@ export default function Graph(props) {
         cy={(cy) => (cyRef.current = cy)}
         minZoom={0.5}
         maxZoom={2}
-        style={{ width: "100vw", height: "100vh" }}
+        style={{ width: "100%", height: "70%" }}
       />
     </>
   );

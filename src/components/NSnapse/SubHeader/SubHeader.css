@@ -4,7 +4,7 @@
   width: 50px;
 }
 .subheaderbutton {
-  border: 1px solid rgba(189, 41, 243, 0.0);
+  border: 1px solid rgba(189, 41, 243, 0);
   border-radius: 5px;
   padding: 10px;
   transition: background-color 0.3s ease;
@@ -31,28 +31,27 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.play-area{
-  margin: 1em 0 1em 0;
+.play-area {
   align-items: center;
-  width: 100%;
+  width: 80%;
   /* background-color: yellow; */
-  display:flex;
+  display: flex;
   justify-content: space-between;
 }
-.main-area{
-  display:flex;
+.main-area {
+  display: flex;
 }
-.try{
+.try {
   color: yellow;
 }
 
-.play{
+.play {
   font-size: 3em;
-  color:var(--c2);
+  color: var(--c2);
 }
 
-.play-area .btn-c2, .play-area .btn-c2:active{
-  
+.play-area .btn-c2,
+.play-area .btn-c2:active {
   background-color: var(--c2);
   color: white;
   cursor: pointer;
@@ -60,23 +59,27 @@
   border-radius: 0.3em 0.3em 0.3em 0.3em;
   transition: hover 0.3 ease-in-out;
 }
-.play-area .btn-c2:hover{
+.play-area .btn-c2:hover {
   background-color: rgb(157, 81, 192);
   color: white;
 }
-.flexbox{
+.flexbox {
   display: flex;
 }
-
-.colored{
+.restart-button {
+  display: flex;
+  align-items: center;
+  margin: 1vh 1vw;
+}
+.colored {
   background-color: var(--c5);
-  padding:10%;
+  padding: 10%;
   border-radius: 5% 5% 5% 5%;
   width: 100%;
 }
 
-.speed{
-  background:var(--c5);
-  padding:1em;
+.speed {
+  background: var(--c5);
+  padding: 1em;
   border-radius: 15% 5% 15% 5%;
 }

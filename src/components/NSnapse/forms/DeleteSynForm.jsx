@@ -7,6 +7,8 @@ import {
 } from "@mui/material";
 import "./forms.css";
 import { Button } from "react-bootstrap";
+import { systemStackPush } from "../../../utils/systemStackPush";
+import saveSystemtoStorage from "../../../utils/saveSystemtoStorage";
 
 function DeleteSynForm(props) {
   // Modal visibility
@@ -32,18 +34,34 @@ function DeleteSynForm(props) {
       })
     );
 
-    let matrices = {
-      F: props.F,
-      C: props.C,
-      L: props.L,
-      syn: newSyn,
-      VL: props.VL,
-      T: props.T,
-      envSyn: props.envSyn,
-    };
+    // Adding to history
+    let system = systemStackPush(
+      props.C,
+      props.F,
+      props.L,
+      props.VL,
+      props.T,
+      newSyn,
+      props.envSyn,
+      props.neuronPositions,
+      "Deleted a Synapse"
+    );
+    props.pushSystem(system);
 
-    localStorage.setItem("Matrices", JSON.stringify(matrices));
+    saveSystemtoStorage(
+      props,
+      props.F,
+      props.L,
+      props.C,
+      props.VL,
+      newSyn,
+      props.envSyn,
+      props.neuronPositions,
+      props.T
+    );
+
     props.setSelectedSyn("");
+
     hide();
   };
 

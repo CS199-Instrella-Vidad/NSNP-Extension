@@ -1,27 +1,50 @@
 import { useState } from "react";
+import localStorageMatrices from "./useLocalStorage";
 
 export function useMatrixData() {
-  const [C, setC] = useState([1, 1, 2]);
-  const [VL, setVL] = useState([1, 1, 2]);
-  const [F, setF] = useState([
+  let storedMatrices = localStorage.getItem("Matrices");
+  let tempC = [1, 1, 2];
+  let tempVL = [1, 1, 2];
+  let tempF = [
     [1, 1, 0],
     [0.5, 0.5, 0],
     [0, 0, 1],
     [0, 0, 0.5],
-  ]);
-  const [L, setL] = useState([
+  ];
+  let tempL = [
     [1, 0],
     [1, 0],
     [0, 1],
     [0, 1],
-  ]);
-  const [T, setT] = useState([[4, 4]]);
-  const [syn, setSyn] = useState([
+  ];
+  let tempT = [[4, 4]];
+  let tempSyn = [
     [1, 2],
     [2, 1],
-  ]);
-  const [envValue, setEnvValue] = useState<number[]>([]);
-  const [envSyn, setEnvSyn] = useState<number>(VL[VL.length - 1]);
+  ];
+  let tempEnvSyn = tempVL[tempVL.length - 1];
+  let tempEnvValue = [];
+
+  if (storedMatrices !== null) {
+    let json = storedMatrices !== null ? JSON.parse(storedMatrices) : "";
+
+    tempC = json.C;
+    tempVL = json.VL;
+    tempF = json.F;
+    tempL = json.L;
+    tempT = json.T;
+    tempSyn = json.syn;
+    tempEnvSyn = json.envSyn;
+  }
+
+  const [C, setC] = useState(tempC);
+  const [VL, setVL] = useState(tempVL);
+  const [F, setF] = useState(tempF);
+  const [L, setL] = useState(tempL);
+  const [T, setT] = useState(tempT);
+  const [syn, setSyn] = useState(tempSyn);
+  const [envValue, setEnvValue] = useState<number[]>(tempEnvValue);
+  const [envSyn, setEnvSyn] = useState<number>(tempEnvSyn);
 
   const [SV, setSV] = useState<number[][]>([[]]);
   const [PM, setPM] = useState<number[][]>([[]]);
