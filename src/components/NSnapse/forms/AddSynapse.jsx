@@ -73,6 +73,8 @@ const AddSynapse = (props) => {
       props.neuronPositions,
       props.T
     );
+    props.setSelectedNode("");
+
     // Adding to history
     let system = systemStackPush(
       props.C,

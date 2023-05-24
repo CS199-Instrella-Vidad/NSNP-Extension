@@ -17,7 +17,6 @@ export default function saveSystemtoStorage(
   props.setEnvSyn(newEnvSyn);
   props.setSyn(newSyn);
   props.setT(newT);
-  props.setSelectedNode("");
   const json = {
     C: newC,
     VL: newVL,

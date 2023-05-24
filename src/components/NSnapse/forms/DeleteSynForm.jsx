@@ -59,7 +59,7 @@ function DeleteSynForm(props) {
       props.neuronPositions,
       props.T
     );
-
+    props.setSelectedNode("");
     props.setSelectedSyn("");
 
     hide();

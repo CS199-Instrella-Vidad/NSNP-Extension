@@ -7,14 +7,14 @@ export default function HistoryMenu(props) {
   const [listType, setListType] = useState("System");
   const [list, setList] = useState(
     props.list1.map((item) => {
-      return item.message;
+      return JSON.parse(item).message;
     })
   );
 
   useEffect(() => {
     if (listType === "System") {
       let messageList = props.list1.map((item) => {
-        return item.message;
+        return JSON.parse(item).message;
       });
       setList(messageList);
     } else if (listType === "Config") setList(props.list2);

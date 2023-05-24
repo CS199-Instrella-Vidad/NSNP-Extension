@@ -24,6 +24,7 @@ import localStorageMatrices from "../../utils/hooks/useLocalStorage";
 import { useMatrixData } from "../../utils/hooks/useMatrixData";
 import HistoryMenu from "../../components/NSnapse/HistoryMenu/HistoryMenu";
 import { systemStackPush } from "../../utils/systemStackPush";
+import saveSystemtoStorage from "../../utils/saveSystemtoStorage";
 
 function NSNP() {
   // Control States
@@ -58,8 +59,9 @@ function NSNP() {
     setSV,
     PM,
     setPM,
+    neuronPositions,
+    setNeuronPositions,
   } = useMatrixData();
-  const [neuronPositions, setNeuronPositions] = useState([]);
   let matrixProps = {
     C: C,
     VL: VL,
@@ -86,51 +88,66 @@ function NSNP() {
 
   // States for system history
   const [systemStack, setSystemStack] = useState([
-    systemStackPush(
-      C,
-      F,
-      L,
-      VL,
-      T,
-      syn,
-      envSyn,
-      neuronPositions,
-      "Initial System"
+    JSON.stringify(
+      systemStackPush(
+        C,
+        F,
+        L,
+        VL,
+        T,
+        syn,
+        envSyn,
+        neuronPositions,
+        "Initial System"
+      )
     ),
   ]);
-  const [systemStackPointer, setSystemStackPointer] = useState(1);
-  console.log("System Stack: ", systemStack);
+  const [systemStackPointer, setSystemStackPointer] = useState(0);
 
   function pushSystem(system) {
-    console.log("Stack Pointer: " + systemStackPointer);
-    console.log("Stack Length: " + systemStack.length);
-    // If systemStackPointer is not at the end of the stack, remove all the elements after it
-    setSystemStackPointer(systemStack.length);
+    setSystemStackPointer(systemStack.length - 1);
 
     if (systemStackPointer < systemStack.length - 1) {
-      setSystemStack([...systemStack.slice(0, systemStackPointer), system]);
+      setSystemStack([
+        ...systemStack.slice(1, systemStackPointer),
+        JSON.stringify(system),
+      ]);
     } else {
-      setSystemStack([...systemStack, system]);
+      setSystemStack([...systemStack, JSON.stringify(system)]);
     }
   }
 
   function handleRewind(index) {
+    // TODO: Reset history after saving and loading
     handleReset();
-    let newSystem = systemStack[index].matrices;
-    let newPositions = systemStack[index].positions;
-    console.log("System Stack: ", systemStack);
-    console.log("Index: ", index);
-    setC(newSystem.C);
-    setVL(newSystem.VL);
-    setF(newSystem.F);
-    setL(newSystem.L);
-    setT(newSystem.T);
-    setSyn(newSystem.syn);
-    setEnvSyn(newSystem.envSyn);
-    setNeuronPositions(newPositions);
-    // TODO1: Save to Localstorage as well
+    let newSystemParsed = systemStack;
+    let newSystem = JSON.parse(newSystemParsed[index]).matrices;
+    let newPositions = JSON.parse(newSystemParsed[index]).positions
+      .neuronPositions;
+    // setC(newSystem.C);
+    // setVL(newSystem.VL);
+    // setF(newSystem.F);
+    // setL(newSystem.L);
+    // setT(newSystem.T);
+    // setSyn(newSystem.syn);
+    // setEnvSyn(newSystem.envSyn);
+    // setNeuronPositions(newPositions);
+    console.log("System Stack: " + systemStack);
+    console.log("NEwsystem: VL " + newSystem.VL);
+    saveSystemtoStorage(
+      matrixProps,
+      newSystem.F,
+      newSystem.L,
+      newSystem.C,
+      newSystem.VL,
+      newSystem.syn,
+      newSystem.envSyn,
+      newPositions,
+      newSystem.T
+    );
 
     setSystemStackPointer(index);
+    console.log(systemStackPointer);
   }
 
   //States for Viewing WorkSpace components

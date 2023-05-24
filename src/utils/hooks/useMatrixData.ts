@@ -3,6 +3,7 @@ import localStorageMatrices from "./useLocalStorage";
 
 export function useMatrixData() {
   let storedMatrices = localStorage.getItem("Matrices");
+  let storedPositions = localStorage.getItem("positions");
   let tempC = [1, 1, 2];
   let tempVL = [1, 1, 2];
   let tempF = [
@@ -24,6 +25,8 @@ export function useMatrixData() {
   ];
   let tempEnvSyn = tempVL[tempVL.length - 1];
   let tempEnvValue = [];
+  let tempNeuronPositions =
+    storedPositions !== null ? JSON.parse(storedPositions) : [];
 
   if (storedMatrices !== null) {
     let json = storedMatrices !== null ? JSON.parse(storedMatrices) : "";
@@ -45,6 +48,7 @@ export function useMatrixData() {
   const [syn, setSyn] = useState(tempSyn);
   const [envValue, setEnvValue] = useState<number[]>(tempEnvValue);
   const [envSyn, setEnvSyn] = useState<number>(tempEnvSyn);
+  const [neuronPositions, setNeuronPositions] = useState(tempNeuronPositions);
 
   const [SV, setSV] = useState<number[][]>([[]]);
   const [PM, setPM] = useState<number[][]>([[]]);
@@ -71,5 +75,7 @@ export function useMatrixData() {
     setSV,
     PM,
     setPM,
+    neuronPositions,
+    setNeuronPositions,
   };
 }

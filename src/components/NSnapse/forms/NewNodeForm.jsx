@@ -189,6 +189,7 @@ function NewNodeForm(props) {
       props.neuronPositions,
       "Added new neuron"
     );
+    console.log("System: ", system);
     props.pushSystem(system);
     handleClose();
     saveSystemtoStorage(

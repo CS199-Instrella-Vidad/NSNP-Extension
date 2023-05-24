@@ -13,15 +13,17 @@ export function systemStackPush(
 
   const system = {
     matrices: {
-      C: newC,
-      F: newF,
-      L: newL,
-      VL: newVL,
-      T: newT,
-      syn: newSyn,
-      envSyn: newEnvSyn,
+      C: JSON.parse(JSON.stringify(newC)),
+      F: JSON.parse(JSON.stringify(newF)),
+      L: JSON.parse(JSON.stringify(newL)),
+      VL: JSON.parse(JSON.stringify(newVL)),
+      T: JSON.parse(JSON.stringify(newT)),
+      syn: JSON.parse(JSON.stringify(newSyn)),
+      envSyn: JSON.parse(JSON.stringify(newEnvSyn)),
     },
-    positions: { neuronPositions: newNeuronPositions },
+    positions: {
+      neuronPositions: JSON.parse(JSON.stringify(newNeuronPositions)),
+    },
     message,
   };
 

@@ -99,6 +99,7 @@ function ClearAllForm(props) {
       props.neuronPositions,
       newT
     );
+    props.setSelectedNode("");
   }
   return (
     <>
