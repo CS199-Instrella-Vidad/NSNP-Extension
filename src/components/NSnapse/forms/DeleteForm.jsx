@@ -56,6 +56,7 @@ function DeleteForm(props) {
       "Deleted a Neuron"
     );
     props.pushSystem(system);
+    props.setSelectedNode("");
     hide();
   };
 
@@ -97,6 +98,8 @@ function DeleteForm(props) {
       deleteNeuron(toDelete[i]);
     }
     props.pushSystem(system);
+    props.setSelectedNode("");
+
     handleClose();
   }
 
