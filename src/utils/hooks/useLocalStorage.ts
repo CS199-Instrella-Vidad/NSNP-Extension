@@ -2,7 +2,6 @@ function localStorageMatrices(props) {
   let storedMatrices = localStorage.getItem("Matrices");
   let json = storedMatrices !== null ? JSON.parse(storedMatrices) : "";
   if (json.length !== 0) {
-    console.log(json);
     props.setC(json.C);
     props.setVL(json.VL);
     props.setF(json.F);
@@ -11,7 +10,6 @@ function localStorageMatrices(props) {
     props.setSyn(json.syn);
     props.setEnvSyn(json.envSyn);
   } else {
-    console.log("No");
     props.setC([1, 1, 2]);
     props.setVL([1, 1, 2]);
     props.setF([

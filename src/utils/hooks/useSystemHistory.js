@@ -31,8 +31,6 @@ export function useSystemHistory(matrixProps) {
       system.message,
     ]);
     setSystemStackPointer(systemStack.length - 1);
-    console.log(systemStackPointer);
-    console.log(systemStack);
   }
 
   function undoSystemChange() {

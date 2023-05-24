@@ -128,7 +128,7 @@ export default function Graph(props) {
       }
 
       // set elements to newElements
-      // console.log(newElements);
+
       setElements(newElements);
     }
   }

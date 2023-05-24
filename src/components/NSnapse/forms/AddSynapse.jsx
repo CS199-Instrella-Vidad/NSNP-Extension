@@ -54,7 +54,6 @@ const AddSynapse = (props) => {
       }),
       newSyns,
     ]);
-    console.log(props.syn);
     // Saving the matrices to local storage
 
     saveSystemtoStorage(

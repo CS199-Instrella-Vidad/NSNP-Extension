@@ -139,7 +139,6 @@ function DeleteForm(props) {
       indices.push(idx);
       idx = newVL.indexOf(neuron, idx + 1);
     }
-    console.log("Neuron", neuron);
     // CHANGE VL
     newVL = newVL.filter((item) => item != neuron);
     // adjust the VL array so that no number is skipped
@@ -215,7 +214,6 @@ function DeleteForm(props) {
   }
 
   function handleAddtoDelete(e) {
-    console.log(e);
     let sortedArray = [];
     for (let i = 0; i < e.length; i++) {
       sortedArray.push(parseInt(e[i].value + 1));
@@ -223,7 +221,6 @@ function DeleteForm(props) {
     sortedArray.sort(function (a, b) {
       return b - a;
     });
-    console.log(sortedArray);
     setToDelete(sortedArray);
   }
 

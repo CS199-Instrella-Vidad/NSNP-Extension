@@ -52,7 +52,6 @@ const EditNeuronForm = ({ handleCloseModal, selectedNode }) => {
   }
   function addNewNeuron() {
     // Add new neuron to the system
-    console.log("adding Neuron");
     setNumVars(1);
     setNumFuncs(1);
     setInputVars([]);
@@ -60,7 +59,6 @@ const EditNeuronForm = ({ handleCloseModal, selectedNode }) => {
     setInputSynOut([]);
     setInputSynIn([]);
     handleClose();
-    console.log("added Neuron");
   }
 
   function handleAddVars(i, value) {

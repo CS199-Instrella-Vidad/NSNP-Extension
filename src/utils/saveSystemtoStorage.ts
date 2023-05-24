@@ -29,5 +29,4 @@ export default function saveSystemtoStorage(
   };
   localStorage.setItem("Matrices", JSON.stringify(json));
   localStorage.setItem("positions", JSON.stringify(newNeuronPositions));
-  console.log("System", json);
 }

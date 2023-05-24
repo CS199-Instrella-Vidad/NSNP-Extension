@@ -124,16 +124,6 @@ function NSNP() {
     let newSystem = JSON.parse(newSystemParsed[index]).matrices;
     let newPositions = JSON.parse(newSystemParsed[index]).positions
       .neuronPositions;
-    // setC(newSystem.C);
-    // setVL(newSystem.VL);
-    // setF(newSystem.F);
-    // setL(newSystem.L);
-    // setT(newSystem.T);
-    // setSyn(newSystem.syn);
-    // setEnvSyn(newSystem.envSyn);
-    // setNeuronPositions(newPositions);
-    console.log("System Stack: " + systemStack);
-    console.log("NEwsystem: VL " + newSystem.VL);
     saveSystemtoStorage(
       matrixProps,
       newSystem.F,
@@ -147,7 +137,11 @@ function NSNP() {
     );
 
     setSystemStackPointer(index);
-    console.log(systemStackPointer);
+  }
+
+  function clearSystemHistory() {
+    setSystemStack([JSON.stringify(systemStack[0])]);
+    setSystemStackPointer(0);
   }
 
   //States for Viewing WorkSpace components
@@ -234,10 +228,12 @@ function NSNP() {
 
   function handleSave(matrixProps) {
     saveSystem(matrixProps);
+    clearSystemHistory();
   }
 
   function handleLoad(target, matrixProps) {
     loadSystem(target, matrixProps);
+    clearSystemHistory();
   }
 
   function handleShowGraph() {
