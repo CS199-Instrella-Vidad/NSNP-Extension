@@ -40,6 +40,7 @@ function loadSystem(target, props) {
   reader.onerror = function () {
     console.log(reader.error);
   };
+  window.location.reload();
 }
 
 export { saveSystem, loadSystem };

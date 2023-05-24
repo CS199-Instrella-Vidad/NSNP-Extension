@@ -1,7 +1,7 @@
 import "../../scss/custom.scss";
 import "./NSNP.css";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Menu from "../../components/NSnapse/Menu/Menu";
 import Matrices from "../../components/NSnapse/Matrices/Matrices";
 import WorkSpace from "../../components/NSnapse/WorkSpace/WorkSpace";
@@ -103,24 +103,24 @@ function NSNP() {
     ),
   ]);
   const [systemStackPointer, setSystemStackPointer] = useState(0);
-
+  const stackPointer = useRef(0);
   function pushSystem(system) {
-    setSystemStackPointer(systemStack.length - 1);
-
-    if (systemStackPointer < systemStack.length - 1) {
+    if (stackPointer.current < systemStack.length - 1) {
       setSystemStack([
-        ...systemStack.slice(1, systemStackPointer),
+        ...systemStack.slice(stackPointer.current - 1),
         JSON.stringify(system),
       ]);
     } else {
       setSystemStack([...systemStack, JSON.stringify(system)]);
     }
+    stackPointer.current = systemStack.length;
+    // setSystemStackPointer(systemStack.length);
   }
 
   function handleRewind(index) {
-    // TODO: Reset history after saving and loading
     handleReset();
     let newSystemParsed = systemStack;
+    console.log(systemStack);
     let newSystem = JSON.parse(newSystemParsed[index]).matrices;
     let newPositions = JSON.parse(newSystemParsed[index]).positions
       .neuronPositions;
@@ -136,12 +136,28 @@ function NSNP() {
       newSystem.T
     );
 
-    setSystemStackPointer(index);
+    stackPointer.current = index;
   }
 
-  function clearSystemHistory() {
-    setSystemStack([JSON.stringify(systemStack[0])]);
-    setSystemStackPointer(0);
+  function clearSystemHistory(newMatrices) {
+    stackPointer.current = 0;
+    console.log(newMatrices);
+    setSystemStack([
+      JSON.stringify(
+        systemStackPush(
+          newMatrices.C,
+          newMatrices.F,
+          newMatrices.L,
+          newMatrices.VL,
+          newMatrices.T,
+          newMatrices.syn,
+          newMatrices.envSyn,
+          newMatrices.neuronPositions,
+          "Initial System"
+        )
+      ),
+    ]);
+    //TODO: Reset the initial values of the system
   }
 
   //States for Viewing WorkSpace components
@@ -228,12 +244,10 @@ function NSNP() {
 
   function handleSave(matrixProps) {
     saveSystem(matrixProps);
-    clearSystemHistory();
   }
 
-  function handleLoad(target, matrixProps) {
+  async function handleLoad(target, matrixProps) {
     loadSystem(target, matrixProps);
-    clearSystemHistory();
   }
 
   function handleShowGraph() {
