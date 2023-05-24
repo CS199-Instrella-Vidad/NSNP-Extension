@@ -46,44 +46,15 @@ let stylesheet: cytoscape.Stylesheet[] = [
     css: {
       "curve-style": "bezier",
       "target-arrow-shape": "triangle",
-      //"target-arrow-color": "black",
-       //"line-color": "black",
+      // "target-arrow-color": "black",
+      // "line-color": "black",
       "text-valign": "center",
       "text-halign": "center",
-      "text-background-color": "white",
+      "text-background-color": "",
       "text-background-opacity": 1,
       "text-background-shape": "roundrectangle",
       "text-rotation": "autorotate",
       "text-margin-y": -5,
-      "line-style":"dashed",
-      "line-dash-pattern":[8,4],
-    },
-  },
-  
-  {
-    selector: ".envi-contents",
-    css: {
-      events: "no",
-      "text-wrap": "wrap",
-      "background-image": function (ele) {
-        return mathJaxSvg(ele.data("label"));
-      },
-      "background-fit": "contain",
-      "background-color": "white",
-      "background-opacity": 1,
-
-      shape: "roundrectangle",
-      width: function (ele) {
-        let numBackslashes = (ele.data("label").match(/\\\\/g) || []).length;
-        let tentLength = (ele.data("label").length / numBackslashes) * 5;
-        return tentLength;
-      },
-      height: function (ele) {
-        let numBackslashes = (ele.data("label").match(/\\\\/g) || []).length;
-
-        let tentLength = numBackslashes * 25;
-        return tentLength;
-      },
     },
   },
 ];

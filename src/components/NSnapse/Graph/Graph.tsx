@@ -84,8 +84,10 @@ export default function Graph(props) {
           );
         }
       }
-
+      console.log("SET");
+      console.log(props.SNSet);  
       // From props.syn, create a list of edges where the source and target are the nodes in the list of nodes
+      console.log(props.syn);
       let edges = props.syn.map((synapse) => {
         return {
           data: {
@@ -94,10 +96,11 @@ export default function Graph(props) {
             target: "Neuron " + synapse[1],
             label: synapse[2],
             classes: "edge",
+            spike:0,
           },
+          
         };
       });
-
       if (props.envSyn !== 0) {
         let outputSource = "Neuron " + props.envSyn;
         let outputEdge = {
@@ -107,6 +110,7 @@ export default function Graph(props) {
             target: "Environment",
             label: "Output",
             classes: "edge",
+            spike:0,
           },
         };
         edges.push(outputEdge);
@@ -128,7 +132,7 @@ export default function Graph(props) {
       }
 
       // set elements to newElements
-      // console.log(newElements);
+       console.log(newElements);
       setElements(newElements);
     }
   }

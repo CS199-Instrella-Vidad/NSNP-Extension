@@ -17,7 +17,7 @@ function SubHeader(props) {
   const handlePlay = () => setPlay(true);
   const handlePause = () => setPlay(false);
   const handleToggle = () => {
-    playing ? setPlay(false) : setPlay(true);
+    
   };
   useEffect(() => {
     if (playing) {
@@ -41,7 +41,7 @@ function SubHeader(props) {
 
         <div
           className="d-flex align-items-center subheaderbutton mx-1"
-          onClick={handleToggle}
+          onClick={()=>{if (playing){setPlay(false);props.setSims(false);}else{ setPlay(true);props.setSims(true);}}}
         >
           {playing ? (
             <PauseCircleFill className="play" />

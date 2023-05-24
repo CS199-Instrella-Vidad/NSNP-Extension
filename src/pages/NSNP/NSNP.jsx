@@ -24,6 +24,7 @@ import localStorageMatrices from "../../utils/hooks/useLocalStorage";
 import { useMatrixData } from "../../utils/hooks/useMatrixData";
 import HistoryMenu from "../../components/NSnapse/HistoryMenu/HistoryMenu";
 import { systemStackPush } from "../../utils/systemStackPush";
+import { func } from "prop-types";
 
 function NSNP() {
   // Control States
@@ -60,6 +61,19 @@ function NSNP() {
     setPM,
   } = useMatrixData();
   const [neuronPositions, setNeuronPositions] = useState([]);
+  const [SNSet, setSNSet] = useState(new Set());
+  function handleSNSet(){
+    let SN=new Set();;
+    for (let i=0;i<SV.length;i++){
+      if (SV[i]==1){
+        console.log(VL[i]);
+        SN.add(VL[i]);
+      }
+    }
+    console.log("From NSNP");
+    console.log(SN);
+    setSNSet(SN);
+  }
   let matrixProps = {
     C: C,
     VL: VL,
@@ -129,7 +143,8 @@ function NSNP() {
     setEnvSyn(newSystem.envSyn);
     setNeuronPositions(newPositions);
     // TODO1: Save to Localstorage as well
-
+    console.log("rewind");
+    handleSNSet();
     setSystemStackPointer(index);
   }
 
@@ -178,7 +193,8 @@ function NSNP() {
     setPHist((PHist) => [...PHist, newP]);
     setSHist((SHist) => [...SHist, newS]);
     setEnvValue((envValue) => [...envValue, matrices.finalEnvValue]);
-
+    console.log("generate");
+    handleSNSet();
     setShowNonSimMatrices(false);
     setShowSPMatrices(true);
     setTimeSteps(timeSteps + 1);
@@ -194,6 +210,7 @@ function NSNP() {
     setCHist([]);
     setPHist([]);
     setSHist([]);
+    handleSNSet();
     setTimeSteps(0);
     setEnvValue([]);
   }
@@ -213,6 +230,7 @@ function NSNP() {
     setSHist(SHist.slice(0, timeSteps - 1));
     setEnvValue(envValue.slice(0, timeSteps - 1));
     setTimeSteps(timeSteps - 1);
+    handleSNSet();
   }
 
   function handleSave(matrixProps) {
@@ -236,7 +254,7 @@ function NSNP() {
     setShowNonSimMatrices(false);
     setShowSPMatrices(false);
   }
-
+  
   return (
     <>
       <Menu
@@ -331,6 +349,7 @@ function NSNP() {
             checked={showGraph}
             checkbox={handleShowGraph}
             dev={isDev}
+            setSims={setIsSimulating}
           />
         </div>
 
@@ -346,6 +365,8 @@ function NSNP() {
             selectedSyn={selectedSyn}
             setSelectedNode={setSelectedNode}
             setSelectedSyn={setSelectedSyn}
+            isSims={isSimulating}
+            SNSet={SNSet}
           />
         )}
         {/* Matrix Outputs */}
