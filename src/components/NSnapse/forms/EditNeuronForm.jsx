@@ -126,7 +126,7 @@ const EditNeuronForm = ({ handleCloseModal, selectedNode }) => {
 
   return (
     <>
-      <Button variant="c2" onClick={handleShow}>
+      <Button variant="c2" onClick={handleShow} disabled={true}>
         Edit {selectedNode}
       </Button>
       <Modal

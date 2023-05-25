@@ -107,7 +107,7 @@ function NSNP() {
   function pushSystem(system) {
     if (stackPointer.current < systemStack.length - 1) {
       setSystemStack([
-        ...systemStack.slice(0, stackPointer.current - 1),
+        ...systemStack.slice(0, stackPointer.current + 1),
         JSON.stringify(system),
       ]);
     } else {
@@ -137,6 +137,7 @@ function NSNP() {
     );
 
     stackPointer.current = index;
+    console.log("stackPointer: ", stackPointer.current);
   }
 
   //States for Viewing WorkSpace components
