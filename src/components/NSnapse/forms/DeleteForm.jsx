@@ -83,6 +83,11 @@ function DeleteForm(props) {
 
     let message =
       toDelete.length > 1 ? "Deleted multiple neurons" : "Deleted a neuron";
+
+    for (let i = 0; i < toDelete.length; i++) {
+      deleteNeuron(toDelete[i]);
+    }
+
     let system = systemStackPush(
       newC,
       newF,
@@ -91,12 +96,9 @@ function DeleteForm(props) {
       newT,
       newSyn,
       newEnvSyn,
+      newNeuronPositions,
       message
     );
-
-    for (let i = 0; i < toDelete.length; i++) {
-      deleteNeuron(toDelete[i]);
-    }
     props.pushSystem(system);
     props.setSelectedNode("");
 
