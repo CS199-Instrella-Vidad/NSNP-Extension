@@ -14,6 +14,8 @@ function NewNodeForm(props) {
   const [nodeOptions, setNodeOptions] = useState([]);
   const [inputVars, setInputVars] = useState([]);
   const [inputFuncs, setInputFuncs] = useState([]);
+  const [inputThreshold, setInputThreshold] = useState([]);
+
   const [inputSynOut, setInputSynOut] = useState([]);
   const [inputSynIn, setInputSynIn] = useState([]);
 
@@ -101,12 +103,21 @@ function NewNodeForm(props) {
     }
     props.setVL(newVL);
 
-    // Change F
+    // Change F and T
+    let newT = props.T;
     let newF = props.F;
     if (newF.length > 0) {
       for (let i = 0; i < newF.length; i++) {
         for (let j = 0; j < numVars; j++) {
           newF[i].push(0);
+        }
+        if (inputThreshold[i] !== undefined) {
+          if (inputThreshold[i][0] === i) {
+            newT.push([
+              newF.length + inputThreshold[i][0] + 1,
+              inputThreshold[i][1],
+            ]);
+          }
         }
       } //Push an array the length of the number of elements in a row of newF
       for (let i = 0; i < numFuncs; i++) {
@@ -124,6 +135,9 @@ function NewNodeForm(props) {
         let newFRow = [];
         for (let j = 0; j < numVars; j++) {
           newFRow.push(inputFuncs[i][j]);
+        }
+        if (inputThreshold[i][0] === i) {
+          newT.push([inputThreshold[i][0] + 1, inputThreshold[i][1]]);
         }
 
         newF.push(newFRow);
@@ -169,7 +183,6 @@ function NewNodeForm(props) {
     }
 
     //TODO: Change T
-    let newT = props.T;
 
     setNumVars(1);
     setNumFuncs(1);
@@ -177,6 +190,7 @@ function NewNodeForm(props) {
     setInputFuncs([]);
     setInputSynOut([]);
     setInputSynIn([]);
+    setInputThreshold([]);
 
     let system = systemStackPush(
       newC,
@@ -216,6 +230,14 @@ function NewNodeForm(props) {
     setInputFuncs(newFuncs);
   }
 
+  function handleAddThreshold(i, e) {
+    let newThreshold = inputThreshold;
+    newThreshold[i] = [i, e];
+    console.log("Threshold index: ", i);
+    console.log("current threshold: ", newThreshold[i]);
+    setInputThreshold(newThreshold);
+  }
+
   function handleAddSynOut(e) {
     setInputSynOut(e);
   }
@@ -240,12 +262,14 @@ function NewNodeForm(props) {
     setInputVars(newInputVars);
   }, [numVars]);
 
-  // Change size of inputFuncs when numFuncs changes
+  // Change size of inputFuncs and when numFuncs changes
   useEffect(() => {
     let newInputFuncs = inputFuncs;
+    let newInputThreshold = inputThreshold;
     if (inputFuncs.length < numFuncs) {
       for (let i = newInputFuncs.length; i < numFuncs; i++) {
         newInputFuncs.push([]);
+        newInputThreshold.push([]);
         for (let j = 0; j < numVars; j++) {
           newInputFuncs[i].push(0);
         }
@@ -253,10 +277,12 @@ function NewNodeForm(props) {
     } else if (inputFuncs.length > numFuncs) {
       for (let i = newInputFuncs.length; i > numFuncs; i--) {
         newInputFuncs.pop();
+        newInputThreshold.pop();
       }
     }
 
     setInputFuncs(newInputFuncs);
+    setInputThreshold(newInputThreshold);
   }, [numFuncs, showModal]);
 
   useEffect(() => {
@@ -414,6 +440,16 @@ function NewNodeForm(props) {
                               </td>
                             );
                           })}
+                          <td>
+                            Threshold
+                            <input
+                              type="number"
+                              onChange={(e) => {
+                                handleAddThreshold(i, parseInt(e.target.value));
+                                checkEmpty();
+                              }}
+                            />
+                          </td>
                         </tr>
                       );
                     })}
