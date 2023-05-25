@@ -107,7 +107,7 @@ function NSNP() {
   function pushSystem(system) {
     if (stackPointer.current < systemStack.length - 1) {
       setSystemStack([
-        ...systemStack.slice(stackPointer.current - 1),
+        ...systemStack.slice(0, stackPointer.current - 1),
         JSON.stringify(system),
       ]);
     } else {
@@ -137,27 +137,6 @@ function NSNP() {
     );
 
     stackPointer.current = index;
-  }
-
-  function clearSystemHistory(newMatrices) {
-    stackPointer.current = 0;
-    console.log(newMatrices);
-    setSystemStack([
-      JSON.stringify(
-        systemStackPush(
-          newMatrices.C,
-          newMatrices.F,
-          newMatrices.L,
-          newMatrices.VL,
-          newMatrices.T,
-          newMatrices.syn,
-          newMatrices.envSyn,
-          newMatrices.neuronPositions,
-          "Initial System"
-        )
-      ),
-    ]);
-    //TODO: Reset the initial values of the system
   }
 
   //States for Viewing WorkSpace components
