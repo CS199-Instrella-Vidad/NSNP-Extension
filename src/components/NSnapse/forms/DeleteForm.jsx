@@ -177,6 +177,19 @@ function DeleteForm(props) {
       newL[i].splice(neuron - 1, 1);
     }
 
+    // CHANGE T
+    newT = newT.filter((item) => !fIndices.includes(item[0] - 1));
+    console.log("New T: ", newT);
+
+    // adjust the T array so that no number is skipped
+    for (let i = 0; i < newT.length; i++) {
+      for (let j = 0; j < fIndices.length; j++) {
+        if (newT[i][0] > fIndices[j]) {
+          newT[i][0] = newT[i][0] - 1;
+        }
+      }
+    }
+
     // Adjust neuron locations in L
     newL = newL.filter((item, index) => !fIndices.includes(index));
 
@@ -191,9 +204,6 @@ function DeleteForm(props) {
         }
       }
     }
-
-    // TODO: CHANGE T depending on function, depending on function location == neuron
-    newT = newT.filter((item) => item[0] != neuron);
 
     // Adjust envsyn
     if (newEnvSyn > neuron - 1) {
