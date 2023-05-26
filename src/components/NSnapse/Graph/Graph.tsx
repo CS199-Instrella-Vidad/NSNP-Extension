@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { ElementDefinition } from "cytoscape";
 import { createEnvNode, createNeuron } from "../../../utils/helper";
 import stylesheet from "./stylesheet";
+import getSpikingNeurons from "../../../utils/getSpikingNeurons";
 
 export default function Graph(props) {
   // Cytoscape reference
@@ -14,6 +15,39 @@ export default function Graph(props) {
   useEffect(() => {
     setElements([]);
     createSystem();
+    const cy = cyRef.current;
+    // for each edge in the graph, set the style to be dashed if the source is a spiking neuron
+    if (props.SV !== undefined) {
+      let edges = cy.edges().map((edge, index) => {
+        return {
+          id: edge.id(),
+          source: edge.source().id(),
+          target: edge.target().id(),
+          edge: edge,
+        };
+      });
+      cy.edges().style({
+        "line-style": "solid",
+        "line-color": "gray",
+      });
+
+      let spikingNeurons = getSpikingNeurons(props.SV, props.L, props.PM);
+      // Get the outputneuron
+      let outputValue = props.envValue[props.envValue.length - 1];
+      if (outputValue !== 0 && outputValue !== undefined) {
+        spikingNeurons.push(props.envSyn);
+      }
+      for (let j = 0; j < spikingNeurons.length; j++) {
+        for (let i = 0; i < edges.length; i++) {
+          if (edges[i].source === "Neuron " + spikingNeurons[j]) {
+            edges[i].edge.style({
+              "line-style": "dashed",
+              "line-color": "#ff00ee",
+            });
+          }
+        }
+      }
+    }
   }, [props]);
 
   // Track events on the graph

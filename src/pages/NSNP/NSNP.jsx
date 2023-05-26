@@ -353,6 +353,8 @@ function NSNP() {
             selectedSyn={selectedSyn}
             setSelectedNode={setSelectedNode}
             setSelectedSyn={setSelectedSyn}
+            SV={SV}
+            PM={PM}
           />
         )}
         {/* Matrix Outputs */}
