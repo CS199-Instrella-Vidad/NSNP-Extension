@@ -186,6 +186,8 @@ function NewNodeForm(props) {
 
     setNumVars(1);
     setNumFuncs(1);
+    setValue(1);
+    setFunc(1);
     setInputVars([]);
     setInputFuncs([]);
     setInputSynOut([]);
