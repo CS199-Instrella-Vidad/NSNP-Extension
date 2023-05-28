@@ -71,6 +71,26 @@
   align-items: center;
   margin: 1vh 1vw;
 }
+.layout-button {
+  display: flex;
+  align-items: center;
+  margin: 1vh 1vw;
+}
+
+.play-area .btn-c5,
+.play-area .btn-c5:active {
+  background-color: var(--c5);
+  color: white;
+  cursor: pointer;
+  padding: 0.5em;
+  border-radius: 0.3em 0.3em 0.3em 0.3em;
+  transition: hover 0.3 ease-in-out;
+}
+
+.play-area .btn-c5:hover {
+  background-color: rgb(24, 255, 201);
+  color: white;
+}
 .colored {
   background-color: var(--c5);
   padding: 10%;

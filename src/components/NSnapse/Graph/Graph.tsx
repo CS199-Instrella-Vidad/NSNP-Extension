@@ -11,6 +11,17 @@ export default function Graph(props) {
   const cyRef = useRef(cytoscape());
   const [elements, setElements] = useState(new Array<ElementDefinition>());
 
+  function setLayout() {
+    let layout = cyRef.current.layout({
+      name: "cose-bilkent",
+    });
+    layout.run();
+  }
+
+  useEffect(() => {
+    setLayout();
+  }, [props.runLayout]);
+
   // Create the system when the component is mounted
   useEffect(() => {
     setElements([]);

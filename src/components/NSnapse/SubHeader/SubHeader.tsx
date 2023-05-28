@@ -27,9 +27,14 @@ function SubHeader(props) {
   });
   return (
     <div className="play-area">
-      <div className="restart-button btn-c2" onClick={props.reset}>
-        <ReplayIcon fontSize="small" sx={{ color: lightBlue[500] }} />
-        Restart Simulation
+      <div>
+        <div className="restart-button btn-c2" onClick={props.reset}>
+          <ReplayIcon fontSize="small" sx={{ color: lightBlue[500] }} />
+          Restart Simulation
+        </div>
+        <div className="btn-c5 layout-button" onClick={props.layout}>
+          Layout
+        </div>
       </div>
       <div className="main-area">
         <div

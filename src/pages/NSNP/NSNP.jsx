@@ -32,6 +32,7 @@ function NSNP() {
   const [guidedMode, setGuidedMode] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
   const [isDev, setDev] = useState(false);
+  const [runLayout, setRunLayout] = useState(false);
   // States for the History
   const [CHist, setCHist] = useState([]);
   const [SHist, setSHist] = useState([]);
@@ -244,6 +245,10 @@ function NSNP() {
     setShowSPMatrices(false);
   }
 
+  function handleLayout() {
+    setRunLayout(!runLayout);
+  }
+
   return (
     <>
       <Menu
@@ -338,6 +343,7 @@ function NSNP() {
             checked={showGraph}
             checkbox={handleShowGraph}
             dev={isDev}
+            layout={handleLayout}
           />
         </div>
 
@@ -355,6 +361,7 @@ function NSNP() {
             setSelectedSyn={setSelectedSyn}
             SV={SV}
             PM={PM}
+            runLayout={runLayout}
           />
         )}
         {/* Matrix Outputs */}

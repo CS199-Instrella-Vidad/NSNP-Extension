@@ -5,8 +5,11 @@ import "./index.css";
 import "./fonts/Peace Sans.otf";
 import cytoscape from "cytoscape";
 import gridGuide from "cytoscape-grid-guide";
+import coseBilkent from "cytoscape-cose-bilkent";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 gridGuide(cytoscape);
+coseBilkent(cytoscape);
+
 const router = createBrowserRouter([
   {
     path: "/",
