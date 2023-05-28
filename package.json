@@ -36,6 +36,7 @@
     "react-burger-menu": "^3.0.9",
     "react-cytoscapejs": "^2.0.0",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.7",
     "react-router-dom": "^6.8.2",
     "react-select": "^5.7.0",
     "styled-components": "^5.3.9",
