@@ -34,7 +34,18 @@ function EditNeuronForm(props) {
   let newSyn = props.syn;
   let newEnvSyn = props.envSyn;
   let newNeuronPositions = props.neuronPositions;
+  let neuron = parseInt(props.selectedNode.slice(7));
 
+  // Closing and Opening Modals
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleShow = () => {
+    setInitialValues();
+    setShow(true);
+  };
+
+  // Get indices of variables in neuron
   function getNeuronVars(neuron) {
     // From VL, determine which variables are in the neuron
     let neuronVars = [];
@@ -46,6 +57,7 @@ function EditNeuronForm(props) {
     return neuronVars;
   }
 
+  // Get indices of functions in neuron
   function getNeuronFuncs(neuron) {
     // From L, determine which functions are in the neuron
     let neuronFuncs = [];
@@ -57,57 +69,95 @@ function EditNeuronForm(props) {
     return neuronFuncs;
   }
 
-  //for modals
+  function setInitialValues() {
+    let varIndices = getNeuronVars(neuron); // Indices of variables of neuron in C
+    let funcIndices = getNeuronFuncs(neuron); // Indices of functions of neuron in F
+    setNumVars(varIndices.length);
+    setNumFuncs(funcIndices.length);
+    setValue(varIndices.length);
+    setFunc(funcIndices.length);
 
-  const handleClose = () => {
-    setShow(false);
-  };
-  const handleShow = () => {
-    // setNumVars(getNeuronFuncs(parseInt(props.selectedNode.slice(7))));
-    // setNumFuncs(getNeuronFuncs(parseInt(props.selectedNode.slice(7))));
-    // setValue(getNeuronVars(parseInt(props.selectedNode.slice(7))));
-    // setFunc(getNeuronFuncs(parseInt(props.selectedNode.slice(7))));
-    // Set default values of variables in form based on C
-    // set default values of functions in form based on F
-    // set default values of threshold in form
-    // set default values of synapses in form
-    setShow(true);
-  };
+    // Set default values of inputVars
+
+    let tempInputVars = [];
+    for (let i = 0; i < varIndices.length; i++) {
+      tempInputVars.push(props.C[varIndices[i]]);
+    }
+    setInputVars(tempInputVars);
+
+    // set default values of inputFuncs
+
+    let tempInputFuncs = [];
+    for (let i = 0; i < funcIndices.length; i++) {
+      tempInputFuncs.push(props.F[funcIndices[i]]);
+    }
+    setInputFuncs(tempInputFuncs);
+
+    // set default values of inputThreshold
+    let tempT = props.T.filter((item) => funcIndices.includes(item[0] - 1));
+    setInputThreshold(tempT);
+
+    // set default values of inputSynIn
+    let tempSynIn = props.syn.filter((item) => item[1] == neuron);
+    setInputSynIn(tempSynIn);
+
+    // set default values of inputSynOut
+
+    let tempSynOut = props.syn.filter((x) => x[0] == neuron);
+    setInputSynOut(tempSynOut);
+  }
+
+  function deleteInitialValues() {}
+
+  function insertNewValues() {}
+
+  // Duplicate neuron will use setInitialValues and insert the values at the end
 
   const toEdit = () => {
-    // This will insert values needed to be inserted or concatenated into matrices
-    // Variables:
-    //TODO   delete all variables that contain the neuron, then add variables stored in inputVars
-    // Functions:
-    //TODO   delete all functions that contain the neuron, then add functions stored in inputFuncs
-    // Threshold:
-    //  delete all thresholds that contain the neuron, then add threshold stored in inputThreshold
-    // Synapses:
-    //   delete all synapses that contain the neuron, then add synapses stored in inputsynin and out
-
-    let neuron = parseInt(props.selectedNode.slice(7));
     let varIndices = getNeuronVars(neuron); // Indices of variables of neuron in C
-
     let funcIndices = getNeuronFuncs(neuron); // Indices of functions of neuron in F
-    console.log("varIndices", varIndices);
 
-    // editNeuron(neuron);
+    //! Read this when you return
+    //! Next step is to delete the neuron from the matrices (here in toEdit)
+    // TODO Delete neuron from matrices
+    deleteInitialValues();
 
-    // // Adding to history
-    // let system = systemStackPush(
-    //   newC,
-    //   newF,
-    //   newL,
-    //   newVL,
-    //   newT,
-    //   newSyn,
-    //   newEnvSyn,
-    //   newNeuronPositions,
-    //   "Deleted a Neuron"
-    // );
-    // props.pushSystem(system);
-    // props.setSelectedNode("");
-    // hide();
+    //! And then insert the new values (but actually just the placeholder, same values)
+    // TODO Insert inputVars, inputFuncs, into matrices based on their initial indices (syn and T can be inserted as is)
+    insertNewValues();
+
+    //! Once working, then we can adjust the values based on form
+    //! First, we try resetting the form, replacing all the old values with new values
+    // TODO 2. Add as placeholder in form
+    //! Once working, we try to use the placeholder values and store into the form so that we can edit them
+    // TODO 3. Adjust inputVars, inputFuncs, inputThreshold, inputSynIn, inputSynOut as needed from edit
+
+    // Adding to history
+    let system = systemStackPush(
+      newC,
+      newF,
+      newL,
+      newVL,
+      newT,
+      newSyn,
+      newEnvSyn,
+      newNeuronPositions,
+      "Edited a Neuron"
+    );
+    saveSystemtoStorage(
+      props,
+      newF,
+      newL,
+      newC,
+      newVL,
+      newSyn,
+      props.envSyn,
+      props.neuronPositions,
+      newT
+    );
+    props.pushSystem(system);
+    props.setSelectedNode("");
+    handleClose();
   };
 
   function editNeuron(neuron) {
@@ -362,134 +412,131 @@ function EditNeuronForm(props) {
     setInputSynIn(e);
   }
 
-  const handlevarSliderChange = async (event, newValue) => {
-    setNumVars(parseInt(newValue));
-    setValue(newValue);
-    checkEmpty();
-  };
+  // function checkEmpty() {
+  //   const tb = document.getElementsByClassName("inputs");
+  //   let empty = false;
+  //   for (let i = 0; i < tb.length; i++) {
+  //     if (tb.item(i).value == "") {
+  //       empty = true;
+  //       break;
+  //     }
+  //   }
+  //   if (empty == true) {
+  //     document.getElementById("submitbutton").disabled = true;
+  //     setAble(true);
+  //   } else {
+  //     document.getElementById("submitbutton").disabled = false;
+  //     setAble(false);
+  //   }
+  // }
 
-  //for button
-  let disabledbutton = true;
+  // const handlevarSliderChange = async (event, newValue) => {
+  //   setNumVars(parseInt(newValue));
+  //   setValue(newValue);
+  //   checkEmpty();
+  // };
 
-  function checkEmpty() {
-    const tb = document.getElementsByClassName("inputs");
-    let empty = false;
-    for (let i = 0; i < tb.length; i++) {
-      if (tb.item(i).value == "") {
-        empty = true;
-        break;
-      }
-    }
-    if (empty == true) {
-      document.getElementById("submitbutton").disabled = true;
-      setAble(true);
-    } else {
-      document.getElementById("submitbutton").disabled = false;
-      setAble(false);
-    }
-  }
+  // const handlevarInputChange = async (event) => {
+  //   event.target.value === ""
+  //     ? setNumVars(1)
+  //     : setNumVars(parseInt(event.target.value));
+  //   setValue(event.target.value === "" ? "" : Number(event.target.value));
+  //   checkEmpty();
+  // };
 
-  const handlevarInputChange = async (event) => {
-    event.target.value === ""
-      ? setNumVars(1)
-      : setNumVars(parseInt(event.target.value));
-    setValue(event.target.value === "" ? "" : Number(event.target.value));
-    checkEmpty();
-  };
+  // const handlefuncSliderChange = async (event, newValue) => {
+  //   setNumFuncs(parseInt(newValue));
+  //   setFunc(newValue);
+  //   checkEmpty();
+  // };
 
-  const handlefuncSliderChange = async (event, newValue) => {
-    setNumFuncs(parseInt(newValue));
-    setFunc(newValue);
-    checkEmpty();
-  };
+  // const handlefuncInputChange = async (event) => {
+  //   event.target.value === ""
+  //     ? setNumFuncs(1)
+  //     : setNumFuncs(parseInt(event.target.value));
+  //   setFunc(event.target.value === "" ? "" : Number(event.target.value));
+  //   checkEmpty();
+  // };
 
-  const handlefuncInputChange = async (event) => {
-    event.target.value === ""
-      ? setNumFuncs(1)
-      : setNumFuncs(parseInt(event.target.value));
-    setFunc(event.target.value === "" ? "" : Number(event.target.value));
-    checkEmpty();
-  };
+  // const handleBlur = () => {
+  //   if (value < 1) {
+  //     setValue(1);
+  //   }
+  // };
 
-  const handleBlur = () => {
-    if (value < 1) {
-      setValue(1);
-    }
-  };
-
-  const handlefuncBlur = () => {
-    if (value < 1) {
-      setFunc(1);
-    }
-  };
+  // const handlefuncBlur = () => {
+  //   if (value < 1) {
+  //     setFunc(1);
+  //   }
+  // };
 
   // Change size of inputVars when numVars changes
-  useEffect(() => {
-    let newInputVars = inputVars;
-    if (inputVars.length < numVars) {
-      for (let i = newInputVars.length; i < numVars; i++) {
-        newInputVars.push(0);
-      }
-    } else if (inputVars.length > numVars) {
-      for (let i = newInputVars.length; i > numVars; i--) {
-        newInputVars.pop();
-      }
-    }
+  // useEffect(() => {
+  //   let newInputVars = inputVars;
+  //   if (inputVars.length < numVars) {
+  //     for (let i = newInputVars.length; i < numVars; i++) {
+  //       newInputVars.push(0);
+  //     }
+  //   } else if (inputVars.length > numVars) {
+  //     for (let i = newInputVars.length; i > numVars; i--) {
+  //       newInputVars.pop();
+  //     }
+  //   }
 
-    setInputVars(newInputVars);
-  }, [numVars]);
+  //   setInputVars(newInputVars);
+  // }, [numVars]);
 
   // Change size of inputFuncs and when numFuncs changes
-  useEffect(() => {
-    let newInputFuncs = inputFuncs;
-    let newInputThreshold = inputThreshold;
-    if (inputFuncs.length < numFuncs) {
-      for (let i = newInputFuncs.length; i < numFuncs; i++) {
-        newInputFuncs.push([]);
-        newInputThreshold.push([]);
-        for (let j = 0; j < numVars; j++) {
-          newInputFuncs[i].push(0);
-        }
-      }
-    } else if (inputFuncs.length > numFuncs) {
-      for (let i = newInputFuncs.length; i > numFuncs; i--) {
-        newInputFuncs.pop();
-        newInputThreshold.pop();
-      }
-    }
+  // useEffect(() => {
+  //   let newInputFuncs = inputFuncs;
+  //   let newInputThreshold = inputThreshold;
+  //   if (inputFuncs.length < numFuncs) {
+  //     for (let i = newInputFuncs.length; i < numFuncs; i++) {
+  //       newInputFuncs.push([]);
+  //       newInputThreshold.push([]);
+  //       for (let j = 0; j < numVars; j++) {
+  //         newInputFuncs[i].push(0);
+  //       }
+  //     }
+  //   } else if (inputFuncs.length > numFuncs) {
+  //     for (let i = newInputFuncs.length; i > numFuncs; i--) {
+  //       newInputFuncs.pop();
+  //       newInputThreshold.pop();
+  //     }
+  //   }
 
-    setInputFuncs(newInputFuncs);
-    setInputThreshold(newInputThreshold);
-  }, [numFuncs, showModal]);
+  //   setInputFuncs(newInputFuncs);
+  //   setInputThreshold(newInputThreshold);
+  // }, [numFuncs, showModal]);
 
-  useEffect(() => {
-    let newOptions = [];
-    if (props.L.length > 0) {
-      for (let i = 0; i < props.L[0].length; i++) {
-        newOptions.push({ value: i, label: "Neuron " + (i + 1) });
-      }
-    }
+  // useEffect(() => {
+  //   let newOptions = [];
+  //   if (props.L.length > 0) {
+  //     for (let i = 0; i < props.L[0].length; i++) {
+  //       newOptions.push({ value: i, label: "Neuron " + (i + 1) });
+  //     }
+  //   }
 
-    setNodeOptions(newOptions);
-  }, [props]);
-
-  return (
-    <>
-      <Button variant="c5" onClick={handleShow}>
-        Edit Neuron
-      </Button>
-      <Modal
-        dialogclassname="modalcustom"
-        keyboard={false}
-        size="xl"
-        backdrop="static"
-        show={showModal}
-        onHide={handleClose}
-      >
-        <Modal.Header closeButton className="sticktop">
-          <h1>Create New Neuron</h1>
-        </Modal.Header>
-        <Modal.Body className="bodymodal">
+  //   setNodeOptions(newOptions);
+  // }, [props]);
+  if (props.selectedNode !== "") {
+    return (
+      <>
+        <Button variant="c1" onClick={handleShow}>
+          Edit {props.selectedNode}
+        </Button>
+        <Modal
+          dialogclassname="modalcustom"
+          keyboard={false}
+          size="xl"
+          backdrop="static"
+          show={showModal}
+          onHide={handleClose}
+        >
+          <Modal.Header closeButton className="sticktop">
+            <h1>Edit {props.selectedNode}</h1>
+          </Modal.Header>
+          {/* <Modal.Body className="bodymodal">
           <div className="section">
             <h4>Variables</h4>
             <div className="sliders">
@@ -572,7 +619,6 @@ function EditNeuronForm(props) {
             </div>
             <div>
               <div className="fxn">
-                {/* // Add a function selector based on the number of variables the neuron has */}
                 <table>
                   <tbody>
                     {Array.from(Array(numFuncs).keys()).map((i) => {
@@ -641,20 +687,29 @@ function EditNeuronForm(props) {
               />
             </div>
           </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            disabled={isdisabled}
-            onClick={toEdit}
-            id="submitbutton"
-            variant="c5"
-          >
-            Add Neuron
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
+        </Modal.Body> */}
+          <Modal.Footer>
+            <Button
+              disabled={false}
+              onClick={toEdit}
+              id="submitbutton"
+              variant="c5"
+            >
+              Save
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Button variant="c5" disabled={true}>
+          Edit Neuron
+        </Button>
+      </>
+    );
+  }
 }
 
 export default EditNeuronForm;
