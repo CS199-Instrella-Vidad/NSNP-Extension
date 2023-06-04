@@ -91,18 +91,23 @@ function EditNeuronForm(props) {
     for (let i = 0; i < funcIndices.length; i++) {
       tempInputFuncs.push(JSON.parse(JSON.stringify(props.F[funcIndices[i]])));
     }
-    //TODO: slice each row to be only length of variables (varIndices.length)
+
+    console.log(Math.min(varIndices));
     for (let i = 0; i < tempInputFuncs.length; i++) {
-      tempInputFuncs[i] = tempInputFuncs[i].slice(0, varIndices.length);
+      tempInputFuncs[i] = tempInputFuncs[i].slice(
+        Math.min(...varIndices),
+        Math.min(...varIndices) + varIndices.length
+      );
     }
-    console.log("tempInputFuncs: ", tempInputFuncs);
     setInputFuncs(tempInputFuncs);
 
     // set default values of inputThreshold
     let tempT = props.T.filter((item) => funcIndices.includes(item[0] - 1));
+    let minFuncIndex = Math.min(...funcIndices);
     // adjust the first element of each elemen in tempT to be -1 of the original
     for (let i = 0; i < tempT.length; i++) {
-      tempT[i][0] = tempT[i][0] - 1;
+      tempT[i][0] = tempT[i][1] - 1;
+      tempT[i][1] = tempT[i][0] - minFuncIndex;
     }
     setInputThreshold(tempT);
 
@@ -170,6 +175,7 @@ function EditNeuronForm(props) {
     newSyn = newSyn.filter((item) => !item.includes(neuron));
   }
 
+  //! Fix F, L, and T
   function insertNewValues(varIndices, funcIndices) {
     // Insert inputVars into C and for each element, insert a column in F and an element in VL
     // Insert new variables into C, neuron per var in VL, and 0 per var in each F row
@@ -191,7 +197,7 @@ function EditNeuronForm(props) {
     }
 
     // TODO: Fix F, L, T
-    console.log("OldL: " + JSON.parse(JSON.stringify(newL)));
+    console.log("OldT: ", JSON.parse(JSON.stringify(newT)));
     // Functions, Function location, T
     let minFuncIndex = Math.min(...funcIndices);
     // insert inputFuncs into F
@@ -202,10 +208,10 @@ function EditNeuronForm(props) {
       newL[minFuncIndex + i][neuron - 1] = 1;
       // insert new row in T
       for (let j = 0; j < inputThreshold.length; j++) {
-        newT.push([inputThreshold[j][0] + 1, inputThreshold[j][1]]);
+        newT.push([minFuncIndex + i + 1, inputThreshold[j][1]]);
       }
     }
-    console.log("newL: ", JSON.parse(JSON.stringify(newL)));
+    console.log("newT: ", JSON.parse(JSON.stringify(newT)));
 
     // Synapses
     for (let i = 0; i < inputSynIn.length; i++) {
@@ -298,6 +304,7 @@ function EditNeuronForm(props) {
   function handleAddThreshold(i, e) {
     let newThreshold = inputThreshold;
     newThreshold[i] = [i, e];
+    console.log("newThreshold", newThreshold);
     setInputThreshold(newThreshold);
   }
 
