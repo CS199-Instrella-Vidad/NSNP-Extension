@@ -100,6 +100,7 @@ function EditNeuronForm(props) {
     for (let i = 0; i < tempT.length; i++) {
       tempT[i][0] = tempT[i][0] - 1;
     }
+    console.log("TempT: ", tempT);
     setInputThreshold(tempT);
 
     // set default values of inputSynIn
@@ -158,7 +159,9 @@ function EditNeuronForm(props) {
 
     // CHANGE T
 
+    console.log("OldT: ", newT);
     newT = newT.filter((item) => !fIndices.includes(item[0]));
+    console.log("NewT: ", newT);
 
     //! Not needed because we will need it later
     // adjust the T array so that no number is skipped
