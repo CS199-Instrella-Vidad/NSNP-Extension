@@ -102,12 +102,22 @@ function EditNeuronForm(props) {
     setInputThreshold(tempT);
 
     // set default values of inputSynIn
-    let tempSynIn = props.syn.filter((item) => item[1] == neuron);
+    let tempSynIn = JSON.parse(
+      JSON.stringify(props.syn.filter((item) => item[1] == neuron))
+    );
+    for (let i = 0; i < tempSynIn.length; i++) {
+      tempSynIn[i] = { value: tempSynIn[i][0] - 1 };
+    }
     setInputSynIn(tempSynIn);
 
     // set default values of inputSynOut
 
-    let tempSynOut = props.syn.filter((x) => x[0] == neuron);
+    let tempSynOut = JSON.parse(
+      JSON.stringify(props.syn.filter((x) => x[0] == neuron))
+    );
+    for (let i = 0; i < tempSynOut.length; i++) {
+      tempSynOut[i] = { value: tempSynOut[i][1] - 1 };
+    }
     setInputSynOut(tempSynOut);
   }
 
@@ -158,32 +168,42 @@ function EditNeuronForm(props) {
   function insertNewValues(varIndices, funcIndices) {
     // Insert inputVars into C and for each element, insert a column in F and an element in VL
     // Insert new variables into C, neuron per var in VL, and 0 per var in each F row
+    // get min index of varIndices
+    console.log("inputVars", inputVars);
+    console.log("inputFuncs", inputFuncs);
+    console.log("inputThreshold", inputThreshold);
+    console.log("inputSynIn", inputSynIn);
+    console.log("inputSynOut", inputSynOut);
+
+    let minVarIndex = Math.min(...varIndices);
     for (let i = 0; i < inputVars.length; i++) {
-      newC.splice(varIndices[i], 0, inputVars[i]);
-      newVL.splice(varIndices[i], 0, neuron);
+      newC.splice(minVarIndex + i, 0, inputVars[i]);
+      newVL.splice(minVarIndex + i, 0, neuron);
       for (let j = 0; j < newF.length; j++) {
-        newF[j].splice(varIndices[i], 0, 0);
+        newF[j].splice(minVarIndex + i, 0, 0);
       }
     }
 
+    // TODO: Fix F, L, T
+    let minFuncIndex = Math.min(...funcIndices);
     // insert inputFuncs into F
     for (let i = 0; i < inputFuncs.length; i++) {
-      newF.splice(funcIndices[i], 0, inputFuncs[i]);
+      newF.splice(minFuncIndex + i, 0, inputFuncs[i]);
       // insert new row in L
-      newL.splice(funcIndices[i], 0, new Array(newC.length).fill(0));
-      newL[funcIndices[i]][neuron - 1] = 1;
+      newL.splice(minFuncIndex + i, 0, new Array(newC.length).fill(0));
+      newL[minFuncIndex + i][neuron - 1] = 1;
       // insert new row in T
       for (let j = 0; j < inputThreshold.length; j++) {
         newT.push([inputThreshold[j][0] + 1, inputThreshold[j][1]]);
       }
     }
 
-    // insert inputSynIn and inputSynOut into syn
     for (let i = 0; i < inputSynIn.length; i++) {
-      newSyn.push(inputSynIn[i]);
+      newSyn.push([inputSynIn[i].value + 1, neuron]);
     }
+
     for (let i = 0; i < inputSynOut.length; i++) {
-      newSyn.push(inputSynOut[i]);
+      newSyn.push([neuron, inputSynOut[i].value + 1]);
     }
   }
 
@@ -252,230 +272,6 @@ function EditNeuronForm(props) {
     handleClose();
   };
 
-  function editNeuron(neuron) {
-    let neuronVars = getNeuronVars(neuron);
-
-    let indices = [];
-    let idx = newVL.indexOf(neuron);
-    while (idx != -1) {
-      indices.push(idx);
-      idx = newVL.indexOf(neuron, idx + 1);
-    }
-    // CHANGE VL
-    newVL = newVL.filter((item) => item != neuron);
-    // adjust the VL array so that no number is skipped
-    for (let i = 0; i < newVL.length; i++) {
-      if (newVL[i] > neuron) {
-        newVL[i] = newVL[i] - 1;
-      }
-    }
-
-    // Delete Variables in C and F\
-    for (let i = 0; i < indices.length; i++) {
-      newC.splice(indices[i] - i, 1);
-      for (let j = 0; j < newF.length; j++) {
-        newF[j].splice(indices[i] - i, 1);
-      }
-    }
-
-    // Delete Functions in F based on L
-    let fIndices = [];
-    for (let i = 0; i < newL.length; i++) {
-      // for each row
-      if (newL[i][neuron - 1] == 1) {
-        fIndices.push(i);
-      }
-    }
-
-    // Filter newF
-    newF = newF.filter((item, index) => !fIndices.includes(index));
-
-    // Adjust function locations (L)
-
-    for (let i = 0; i < newL.length; i++) {
-      newL[i].splice(neuron - 1, 1);
-    }
-
-    // CHANGE T
-    newT = newT.filter((item) => !fIndices.includes(item[0] - 1));
-    console.log("New T: ", newT);
-
-    // adjust the T array so that no number is skipped
-    for (let i = 0; i < newT.length; i++) {
-      for (let j = 0; j < fIndices.length; j++) {
-        if (newT[i][0] > fIndices[j]) {
-          newT[i][0] = newT[i][0] - 1;
-        }
-      }
-    }
-
-    // Adjust neuron locations in L
-    newL = newL.filter((item, index) => !fIndices.includes(index));
-
-    // CHANGE syn
-    // remove all elements that contain neuron
-    newSyn = newSyn.filter((item) => !item.includes(neuron));
-    // adjust the syn array so that no number is skipped
-    for (let i = 0; i < newSyn.length; i++) {
-      for (let j = 0; j < newSyn[i].length; j++) {
-        if (newSyn[i][j] > neuron) {
-          newSyn[i][j] = newSyn[i][j] - 1;
-        }
-      }
-    }
-
-    // Adjust envsyn
-    if (newEnvSyn > neuron - 1) {
-      newEnvSyn = newEnvSyn - 1;
-    }
-
-    // Change neuron Positions
-    newNeuronPositions = adjustNeuronPositions(neuron, props.neuronPositions);
-
-    saveSystemtoStorage(
-      props,
-      newF,
-      newL,
-      newC,
-      newVL,
-      newSyn,
-      newEnvSyn,
-      newNeuronPositions,
-      newT
-    );
-  }
-
-  function editNeuron1() {
-    // Change C
-    let newC = props.C;
-    newC = newC.concat(inputVars);
-    props.setC(newC);
-
-    // Change VL
-    let neuronNum = props.L.length === 0 ? 1 : props.L[0].length + 1;
-    let newVL = props.VL;
-    for (let i = 0; i < numVars; i++) {
-      newVL.push(neuronNum);
-    }
-    props.setVL(newVL);
-
-    // Change F and T
-    let newT = props.T;
-    let newF = props.F;
-    if (newF.length > 0) {
-      for (let i = 0; i < newF.length; i++) {
-        for (let j = 0; j < numVars; j++) {
-          newF[i].push(0);
-        }
-        if (inputThreshold[i] !== undefined) {
-          if (inputThreshold[i][0] === i) {
-            newT.push([
-              newF.length + inputThreshold[i][0] + 1,
-              inputThreshold[i][1],
-            ]);
-          }
-        }
-      } //Push an array the length of the number of elements in a row of newF
-      for (let i = 0; i < numFuncs; i++) {
-        let newFRow = [];
-        for (let i = 0; i < newF[0].length; i++) {
-          newFRow.push(0);
-        }
-        for (let j = 0; j < numVars; j++) {
-          newFRow[newFRow.length - numVars + j] = inputFuncs[i][j];
-        }
-        newF.push(newFRow);
-      }
-    } else {
-      for (let i = 0; i < numFuncs; i++) {
-        let newFRow = [];
-        for (let j = 0; j < numVars; j++) {
-          newFRow.push(inputFuncs[i][j]);
-        }
-        if (inputThreshold[i][0] === i) {
-          newT.push([inputThreshold[i][0] + 1, inputThreshold[i][1]]);
-        }
-
-        newF.push(newFRow);
-      }
-    }
-
-    props.setF(newF);
-
-    // Change L
-    let newL = props.L;
-    if (newL.length > 0) {
-      for (let i = 0; i < newL.length; i++) {
-        newL[i].push(0);
-      }
-      for (let i = 0; i < numFuncs; i++) {
-        let newLRow = [];
-        for (let i = 0; i < newL[0].length; i++) {
-          newLRow.push(0);
-        }
-        newLRow[newLRow.length - 1] = 1;
-        newL.push(newLRow);
-      }
-    } else {
-      for (let i = 0; i < numFuncs; i++) {
-        let newLRow = [];
-        newLRow.push(1);
-        newL.push(newLRow);
-      }
-    }
-    // Create a new column in L for the new neuron
-
-    //Push an array the length of the number of elements in a row of newF
-
-    props.setL(newL);
-
-    //Change syn
-    let newSyn = props.syn;
-    for (let i = 0; i < inputSynIn.length; i++) {
-      newSyn.push([inputSynIn[i].value + 1, neuronNumber]);
-    }
-    for (let i = 0; i < inputSynOut.length; i++) {
-      newSyn.push([neuronNumber, inputSynOut[i].value + 1]);
-    }
-
-    //TODO: Change T
-
-    setNumVars(1);
-    setValue(1);
-    setFunc(1);
-    setNumFuncs(1);
-    setInputVars([]);
-    setInputFuncs([]);
-    setInputSynOut([]);
-    setInputSynIn([]);
-    setInputThreshold([]);
-
-    let system = systemStackPush(
-      newC,
-      newF,
-      newL,
-      newVL,
-      newT,
-      newSyn,
-      props.envSyn,
-      props.neuronPositions,
-      "Added new neuron"
-    );
-    props.pushSystem(system);
-    handleClose();
-    saveSystemtoStorage(
-      props,
-      newF,
-      newL,
-      newC,
-      newVL,
-      newSyn,
-      props.envSyn,
-      props.neuronPositions,
-      newT
-    );
-  }
-
   function handleAddVars(i, value) {
     let newVars = inputVars;
     newVars[i] = value;
@@ -488,39 +284,40 @@ function EditNeuronForm(props) {
     setInputFuncs(newFuncs);
   }
 
+  // Every time threshold is changed, we need to update inputThreshold
   function handleAddThreshold(i, e) {
     let newThreshold = inputThreshold;
     newThreshold[i] = [i, e];
-    console.log("Threshold index: ", i);
-    console.log("current threshold: ", newThreshold[i]);
     setInputThreshold(newThreshold);
   }
 
+  // Every time synout is changed, we need to update inputSynOut
   function handleAddSynOut(e) {
     setInputSynOut(e);
   }
 
+  // Every time synin is changed, we need to update inputSynIn
   function handleAddSynIn(e) {
     setInputSynIn(e);
   }
 
-  // function checkEmpty() {
-  //   const tb = document.getElementsByClassName("inputs");
-  //   let empty = false;
-  //   for (let i = 0; i < tb.length; i++) {
-  //     if (tb.item(i).value == "") {
-  //       empty = true;
-  //       break;
-  //     }
-  //   }
-  //   if (empty == true) {
-  //     document.getElementById("submitbutton").disabled = true;
-  //     setAble(true);
-  //   } else {
-  //     document.getElementById("submitbutton").disabled = false;
-  //     setAble(false);
-  //   }
-  // }
+  function checkEmpty() {
+    // const tb = document.getElementsByClassName("inputs");
+    // let empty = false;
+    // for (let i = 0; i < tb.length; i++) {
+    //   if (tb.item(i).value == "") {
+    //     empty = true;
+    //     break;
+    //   }
+    // }
+    // if (empty == true) {
+    //   document.getElementById("submitbutton").disabled = true;
+    //   setAble(true);
+    // } else {
+    //   document.getElementById("submitbutton").disabled = false;
+    //   setAble(false);
+    // }
+  }
 
   // const handlevarSliderChange = async (event, newValue) => {
   //   setNumVars(parseInt(newValue));
@@ -528,13 +325,13 @@ function EditNeuronForm(props) {
   //   checkEmpty();
   // };
 
-  // const handlevarInputChange = async (event) => {
-  //   event.target.value === ""
-  //     ? setNumVars(1)
-  //     : setNumVars(parseInt(event.target.value));
-  //   setValue(event.target.value === "" ? "" : Number(event.target.value));
-  //   checkEmpty();
-  // };
+  const handlevarInputChange = async (event) => {
+    event.target.value === ""
+      ? setNumVars(1)
+      : setNumVars(parseInt(event.target.value));
+    // setValue(event.target.value === "" ? "" : Number(event.target.value));
+    checkEmpty();
+  };
 
   // const handlefuncSliderChange = async (event, newValue) => {
   //   setNumFuncs(parseInt(newValue));
@@ -542,75 +339,75 @@ function EditNeuronForm(props) {
   //   checkEmpty();
   // };
 
-  // const handlefuncInputChange = async (event) => {
-  //   event.target.value === ""
-  //     ? setNumFuncs(1)
-  //     : setNumFuncs(parseInt(event.target.value));
-  //   setFunc(event.target.value === "" ? "" : Number(event.target.value));
-  //   checkEmpty();
-  // };
+  const handlefuncInputChange = async (event) => {
+    event.target.value === ""
+      ? setNumFuncs(1)
+      : setNumFuncs(parseInt(event.target.value));
+    // setFunc(event.target.value === "" ? "" : Number(event.target.value));
+    checkEmpty();
+  };
 
-  // const handleBlur = () => {
-  //   if (value < 1) {
-  //     setValue(1);
-  //   }
-  // };
+  const handleBlur = () => {
+    if (value < 1) {
+      setValue(1);
+    }
+  };
 
-  // const handlefuncBlur = () => {
-  //   if (value < 1) {
-  //     setFunc(1);
-  //   }
-  // };
+  const handlefuncBlur = () => {
+    if (value < 1) {
+      setFunc(1);
+    }
+  };
 
   // Change size of inputVars when numVars changes
-  // useEffect(() => {
-  //   let newInputVars = inputVars;
-  //   if (inputVars.length < numVars) {
-  //     for (let i = newInputVars.length; i < numVars; i++) {
-  //       newInputVars.push(0);
-  //     }
-  //   } else if (inputVars.length > numVars) {
-  //     for (let i = newInputVars.length; i > numVars; i--) {
-  //       newInputVars.pop();
-  //     }
-  //   }
+  useEffect(() => {
+    let newInputVars = inputVars;
+    if (inputVars.length < numVars) {
+      for (let i = newInputVars.length; i < numVars; i++) {
+        newInputVars.push(0);
+      }
+    } else if (inputVars.length > numVars) {
+      for (let i = newInputVars.length; i > numVars; i--) {
+        newInputVars.pop();
+      }
+    }
 
-  //   setInputVars(newInputVars);
-  // }, [numVars]);
+    setInputVars(newInputVars);
+  }, [numVars]);
 
   // Change size of inputFuncs and when numFuncs changes
-  // useEffect(() => {
-  //   let newInputFuncs = inputFuncs;
-  //   let newInputThreshold = inputThreshold;
-  //   if (inputFuncs.length < numFuncs) {
-  //     for (let i = newInputFuncs.length; i < numFuncs; i++) {
-  //       newInputFuncs.push([]);
-  //       newInputThreshold.push([]);
-  //       for (let j = 0; j < numVars; j++) {
-  //         newInputFuncs[i].push(0);
-  //       }
-  //     }
-  //   } else if (inputFuncs.length > numFuncs) {
-  //     for (let i = newInputFuncs.length; i > numFuncs; i--) {
-  //       newInputFuncs.pop();
-  //       newInputThreshold.pop();
-  //     }
-  //   }
+  useEffect(() => {
+    let newInputFuncs = inputFuncs;
+    let newInputThreshold = inputThreshold;
+    if (inputFuncs.length < numFuncs) {
+      for (let i = newInputFuncs.length; i < numFuncs; i++) {
+        newInputFuncs.push([]);
+        newInputThreshold.push([]);
+        for (let j = 0; j < numVars; j++) {
+          newInputFuncs[i].push(0);
+        }
+      }
+    } else if (inputFuncs.length > numFuncs) {
+      for (let i = newInputFuncs.length; i > numFuncs; i--) {
+        newInputFuncs.pop();
+        newInputThreshold.pop();
+      }
+    }
 
-  //   setInputFuncs(newInputFuncs);
-  //   setInputThreshold(newInputThreshold);
-  // }, [numFuncs, showModal]);
+    setInputFuncs(newInputFuncs);
+    setInputThreshold(newInputThreshold);
+  }, [numFuncs, showModal]);
 
-  // useEffect(() => {
-  //   let newOptions = [];
-  //   if (props.L.length > 0) {
-  //     for (let i = 0; i < props.L[0].length; i++) {
-  //       newOptions.push({ value: i, label: "Neuron " + (i + 1) });
-  //     }
-  //   }
+  useEffect(() => {
+    let newOptions = [];
+    if (props.L.length > 0) {
+      for (let i = 0; i < props.L[0].length; i++) {
+        newOptions.push({ value: i, label: "Neuron " + (i + 1) });
+      }
+    }
 
-  //   setNodeOptions(newOptions);
-  // }, [props]);
+    setNodeOptions(newOptions);
+  }, [props]);
   if (props.selectedNode !== "") {
     return (
       <>
@@ -628,158 +425,161 @@ function EditNeuronForm(props) {
           <Modal.Header closeButton className="sticktop">
             <h1>Edit {props.selectedNode}</h1>
           </Modal.Header>
-          {/* <Modal.Body className="bodymodal">
-          <div className="section">
-            <h4>Variables</h4>
-            <div className="sliders">
-              <label>Number of Variables:</label>
-              <Grid container spacing={2} alignItems="center">
-                <Grid item xs>
-                  <Slider
+          <Modal.Body className="bodymodal">
+            <div className="section">
+              <h4>Variables</h4>
+              <div className="sliders">
+                <label>Number of Variables:</label>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs>
+                    {/* <Slider
                     value={typeof varVal === "number" ? varVal : 1}
                     min={1}
                     max={5}
                     onChange={handlevarSliderChange}
                     aria-labelledby="input-slider"
-                  />
-                </Grid>
-                <Grid item>
-                  <Input
-                    value={varVal}
-                    margin="dense"
-                    onChange={handlevarInputChange}
-                    onBlur={handleBlur}
-                    inputProps={{
-                      min: 1,
-                      max: 30,
-                      type: "number",
-                      "aria-labelledby": "input-slider",
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            </div>
-            <div className="vargrid">
-              {Array.from(Array(numVars).keys()).map((i) => {
-                return (
-                  <div key={i}>
-                    <label>x{i + 1}</label>
-                    <br />
-                    <input
-                      className="inputs"
-                      type="number"
-                      onChange={(e) => {
-                        handleAddVars(i, parseInt(e.target.value));
-                        checkEmpty();
+                  /> */}
+                  </Grid>
+                  <Grid item>
+                    <Input
+                      value={varVal}
+                      margin="dense"
+                      onChange={handlevarInputChange}
+                      // onBlur={handleBlur}
+                      inputProps={{
+                        min: 1,
+                        max: 30,
+                        type: "number",
+                        "aria-labelledby": "input-slider",
                       }}
                     />
-                  </div>
-                );
-              })}
+                  </Grid>
+                </Grid>
+              </div>
+              <div className="vargrid">
+                {Array.from(Array(numVars).keys()).map((i) => {
+                  return (
+                    <div key={i}>
+                      <label>x{i + 1}</label>
+                      <br />
+                      <input
+                        className="inputs"
+                        type="number"
+                        onChange={(e) => {
+                          handleAddVars(i, parseInt(e.target.value));
+                          checkEmpty();
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-          <div className="section">
-            <h4>Functions</h4>
-            <div className="sliders">
-              <label>Number of Functions</label>
-              <Grid container spacing={2} alignItems="center">
-                <Grid item xs>
-                  <Slider
+            <div className="section">
+              <h4>Functions</h4>
+              <div className="sliders">
+                <label>Number of Functions</label>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs>
+                    {/* <Slider
                     min={1}
                     max={30}
                     defaultValue={funcVal}
                     aria-label="Default"
                     valueLabelDisplay="on"
                     onChangeCommitted={handlefuncSliderChange}
-                  />
+                  /> */}
+                  </Grid>
+                  <Grid item>
+                    <Input
+                      value={funcVal}
+                      margin="dense"
+                      onChange={handlefuncInputChange}
+                      // onBlur={handlefuncBlur}
+                      inputProps={{
+                        min: 1,
+                        max: 30,
+                        type: "number",
+                        "aria-labelledby": "input-slider",
+                      }}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Input
-                    value={funcVal}
-                    margin="dense"
-                    onChange={handlefuncInputChange}
-                    onBlur={handlefuncBlur}
-                    inputProps={{
-                      min: 1,
-                      max: 30,
-                      type: "number",
-                      "aria-labelledby": "input-slider",
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            </div>
-            <div>
-              <div className="fxn">
-                <table>
-                  <tbody>
-                    {Array.from(Array(numFuncs).keys()).map((i) => {
-                      return (
-                        <tr key={i}>
-                          <th>
-                            <label className="h4">Function {i + 1}</label>
-                          </th>
-                          {Array.from(Array(numVars).keys()).map((j) => {
-                            return (
-                              <td key={j}>
-                                <input
-                                  type="number"
-                                  className="inputs"
-                                  onChange={(e) => {
-                                    handleAddFuncs(
-                                      i,
-                                      j,
-                                      parseInt(e.target.value)
-                                    );
-                                    checkEmpty();
-                                  }}
-                                />
-                              </td>
-                            );
-                          })}
-                          <td>
-                            Threshold
-                            <input
-                              type="number"
-                              onChange={(e) => {
-                                handleAddThreshold(i, parseInt(e.target.value));
-                                checkEmpty();
-                              }}
-                            />
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+              </div>
+              <div>
+                <div className="fxn">
+                  <table>
+                    <tbody>
+                      {Array.from(Array(numFuncs).keys()).map((i) => {
+                        return (
+                          <tr key={i}>
+                            <th>
+                              <label className="h4">Function {i + 1}</label>
+                            </th>
+                            {Array.from(Array(numVars).keys()).map((j) => {
+                              return (
+                                <td key={j}>
+                                  <input
+                                    type="number"
+                                    className="inputs"
+                                    onChange={(e) => {
+                                      handleAddFuncs(
+                                        i,
+                                        j,
+                                        parseInt(e.target.value)
+                                      );
+                                      checkEmpty();
+                                    }}
+                                  />
+                                </td>
+                              );
+                            })}
+                            <td>
+                              Threshold
+                              <input
+                                type="number"
+                                onChange={(e) => {
+                                  handleAddThreshold(
+                                    i,
+                                    parseInt(e.target.value)
+                                  );
+                                  checkEmpty();
+                                }}
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="section">
-            <h4>Connections</h4>
-            <div>
-              <label>Outgoing Connections</label>
+            <div className="section">
+              <h4>Connections</h4>
+              <div>
+                <label>Outgoing Connections</label>
 
-              <Select
-                options={nodeOptions}
-                isMulti={true}
-                onChange={(e) => {
-                  handleAddSynOut(e);
-                }}
-              />
+                <Select
+                  options={nodeOptions}
+                  isMulti={true}
+                  onChange={(e) => {
+                    handleAddSynOut(e);
+                  }}
+                />
+              </div>
+              <div>
+                <label>Incoming Connections</label>
+                <Select
+                  options={nodeOptions}
+                  isMulti={true}
+                  onChange={(e) => {
+                    handleAddSynIn(e);
+                  }}
+                />
+              </div>
             </div>
-            <div>
-              <label>Incoming Connections</label>
-              <Select
-                options={nodeOptions}
-                isMulti={true}
-                onChange={(e) => {
-                  handleAddSynIn(e);
-                }}
-              />
-            </div>
-          </div>
-        </Modal.Body> */}
+          </Modal.Body>
           <Modal.Footer>
             <Button
               disabled={false}
