@@ -428,7 +428,7 @@ function EditNeuronForm(props) {
   if (props.selectedNode !== "") {
     return (
       <>
-        <Button variant="c1" onClick={handleShow}>
+        <Button variant="c1" onClick={handleShow} disabled={true}>
           Edit {props.selectedNode}
         </Button>
         <Modal
