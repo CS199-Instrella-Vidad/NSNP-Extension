@@ -10,7 +10,7 @@ import SubHeader from "../../components/NSnapse/SubHeader/SubHeader";
 
 import NewNodeForm from "../../components/NSnapse/forms/NewNodeForm";
 import NewInputForm from "../../components/NSnapse/forms/NewInputForm";
-import EditNodeForm from "../../components/NSnapse/forms/EditNeuronForm";
+import EditNeuronForm from "../../components/NSnapse/forms/EditNeuronForm";
 import DeleteForm from "../../components/NSnapse/forms/DeleteForm";
 import ClearAllForm from "../../components/NSnapse/forms/ClearAllForm";
 import NewOutputForm from "../../components/NSnapse/forms/NewOutputForm";
@@ -298,10 +298,11 @@ function NSNP() {
             />
             {/* place holders */}
 
-            <EditNodeForm
+            <EditNeuronForm
+              {...matrixProps}
+              pushSystem={pushSystem}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
-              pushSystem={pushSystem}
             />
             <DeleteForm
               {...matrixProps}
