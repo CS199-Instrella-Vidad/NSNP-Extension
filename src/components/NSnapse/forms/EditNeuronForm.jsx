@@ -92,7 +92,6 @@ function EditNeuronForm(props) {
       tempInputFuncs.push(JSON.parse(JSON.stringify(props.F[funcIndices[i]])));
     }
     setInputFuncs(tempInputFuncs);
-    console.log("tempInputFuncs: ", tempInputFuncs);
 
     // set default values of inputThreshold
     let tempT = props.T.filter((item) => funcIndices.includes(item[0] - 1));
@@ -100,7 +99,6 @@ function EditNeuronForm(props) {
     for (let i = 0; i < tempT.length; i++) {
       tempT[i][0] = tempT[i][0] - 1;
     }
-    console.log("TempT: ", tempT);
     setInputThreshold(tempT);
 
     // set default values of inputSynIn
@@ -195,14 +193,14 @@ function EditNeuronForm(props) {
     let varIndices = getNeuronVars(neuron); // Indices of variables of neuron in C
     let funcIndices = getNeuronFuncs(neuron); // Indices of functions of neuron in F
 
-    //! Next step is to delete the neuron from the matrices (here in toEdit)
-    // TODO Delete neuron from matrices
+    //* Next step is to delete the neuron from the matrices (here in toEdit)
+    //? DONE 1. Delete neuron from matrices
     deleteInitialValues(neuron);
-    // varIndices
+    //* varIndices
     //    C, delete all elements of varIndices
     //    VL, delete all elements in indices of varIndices
     //    F, delete elements each row in varIndices
-    // funcIndices
+    //* funcIndices
     //    F, delete all indices in funcIndices
     //    L, delete all indices in funcIndices
     //    L, no need to adjust neuron location in L
@@ -210,8 +208,8 @@ function EditNeuronForm(props) {
     // T, filter T such that neuron is not included
     // syn, filter syn such that neuron is not included
 
-    //! And then insert the new values (but actually just the placeholder, same values)
-    // TODO Insert inputVars, inputFuncs, into matrices based on their initial indices (syn and T can be inserted as is)
+    //* And then insert the new values (but actually just the placeholder, same values)
+    //? DONE 2. Insert inputVars, inputFuncs, into matrices based on their initial indices (syn and T can be inserted as is)
     insertNewValues(varIndices, funcIndices);
     // C, get minimum index in varIndices, then insert array elements from there
     // VL, get minimum index in varIndices, then insert neuron number * variables from there
@@ -222,9 +220,9 @@ function EditNeuronForm(props) {
 
     //! Once working, then we can adjust the values based on form
     //! First, we try resetting the form, replacing all the old values with new values
-    // TODO 2. Add as placeholder in form
-    //! Once working, we try to use the placeholder values and store into the form so that we can edit them
     // TODO 3. Adjust inputVars, inputFuncs, inputThreshold, inputSynIn, inputSynOut as needed from edit
+    //! Once working, we try to use the placeholder values and store into the form so that we can edit them
+    // TODO 4. Add as placeholder in form
 
     // Adding to history
     let system = systemStackPush(
