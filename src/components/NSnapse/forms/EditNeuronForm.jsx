@@ -124,13 +124,6 @@ function EditNeuronForm(props) {
     // CHANGE VL
     newVL = newVL.filter((item) => item != neuron);
 
-    //! Not Needed because we will need it later
-    // for (let i = 0; i < newVL.length; i++) {
-    //   if (newVL[i] > neuron) {
-    //     newVL[i] = newVL[i] - 1;
-    //   }
-    // }
-
     // Delete Variables in C and F
     for (let i = 0; i < indices.length; i++) {
       newC.splice(indices[i] - i, 1);
@@ -151,46 +144,17 @@ function EditNeuronForm(props) {
     // Filter newF
     newF = newF.filter((item, index) => !fIndices.includes(index));
 
-    // Adjust function locations (L), changing neuron number
-
-    // for (let i = 0; i < newL.length; i++) {
-    //   newL[i].splice(neuron - 1, 1);
-    // }
-
     // CHANGE T
+    // remove all T elements that are for functions in findices
 
-    console.log("OldT: ", newT);
     newT = newT.filter((item) => !fIndices.includes(item[0]));
-    console.log("NewT: ", newT);
 
-    //! Not needed because we will need it later
-    // adjust the T array so that no number is skipped
-    // for (let i = 0; i < newT.length; i++) {
-    //   for (let j = 0; j < fIndices.length; j++) {
-    //     if (newT[i][0] > fIndices[j]) {
-    //       newT[i][0] = newT[i][0] - 1;
-    //     }
-    //   }
-    // }
-
-    // Adjust neuron locations in L
-
+    // Remove functions from L
     newL = newL.filter((item, index) => !fIndices.includes(index));
 
     // CHANGE syn
     // remove all elements that contain neuron
-
     newSyn = newSyn.filter((item) => !item.includes(neuron));
-
-    //! Not needed because we will need it later
-    // adjust the syn array so that no number is skipped
-    // for (let i = 0; i < newSyn.length; i++) {
-    //   for (let j = 0; j < newSyn[i].length; j++) {
-    //     if (newSyn[i][j] > neuron) {
-    //       newSyn[i][j] = newSyn[i][j] - 1;
-    //     }
-    //   }
-    // }
   }
 
   function insertNewValues(varIndices, funcIndices) {
