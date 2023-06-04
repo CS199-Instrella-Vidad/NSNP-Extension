@@ -81,7 +81,7 @@ function EditNeuronForm(props) {
 
     let tempInputVars = [];
     for (let i = 0; i < varIndices.length; i++) {
-      tempInputVars.push(props.C[varIndices[i]]);
+      tempInputVars.push(JSON.parse(JSON.stringify(props.C[varIndices[i]])));
     }
     setInputVars(tempInputVars);
 
@@ -89,12 +89,17 @@ function EditNeuronForm(props) {
 
     let tempInputFuncs = [];
     for (let i = 0; i < funcIndices.length; i++) {
-      tempInputFuncs.push(props.F[funcIndices[i]]);
+      tempInputFuncs.push(JSON.parse(JSON.stringify(props.F[funcIndices[i]])));
     }
     setInputFuncs(tempInputFuncs);
+    console.log("tempInputFuncs: ", tempInputFuncs);
 
     // set default values of inputThreshold
     let tempT = props.T.filter((item) => funcIndices.includes(item[0] - 1));
+    // adjust the first element of each elemen in tempT to be -1 of the original
+    for (let i = 0; i < tempT.length; i++) {
+      tempT[i][0] = tempT[i][0] - 1;
+    }
     setInputThreshold(tempT);
 
     // set default values of inputSynIn
@@ -107,9 +112,115 @@ function EditNeuronForm(props) {
     setInputSynOut(tempSynOut);
   }
 
-  function deleteInitialValues() {}
+  function deleteInitialValues(neuron) {
+    let indices = [];
+    let idx = newVL.indexOf(neuron);
+    while (idx != -1) {
+      indices.push(idx);
+      idx = newVL.indexOf(neuron, idx + 1);
+    }
 
-  function insertNewValues() {}
+    // CHANGE VL
+    newVL = newVL.filter((item) => item != neuron);
+
+    //! Not Needed because we will need it later
+    // for (let i = 0; i < newVL.length; i++) {
+    //   if (newVL[i] > neuron) {
+    //     newVL[i] = newVL[i] - 1;
+    //   }
+    // }
+
+    // Delete Variables in C and F
+    for (let i = 0; i < indices.length; i++) {
+      newC.splice(indices[i] - i, 1);
+      for (let j = 0; j < newF.length; j++) {
+        newF[j].splice(indices[i] - i, 1);
+      }
+    }
+
+    // Delete Functions in F based on L
+    let fIndices = [];
+    for (let i = 0; i < newL.length; i++) {
+      // for each row
+      if (newL[i][neuron - 1] == 1) {
+        fIndices.push(i);
+      }
+    }
+
+    // Filter newF
+    newF = newF.filter((item, index) => !fIndices.includes(index));
+
+    // Adjust function locations (L), changing neuron number
+
+    // for (let i = 0; i < newL.length; i++) {
+    //   newL[i].splice(neuron - 1, 1);
+    // }
+
+    // CHANGE T
+
+    newT = newT.filter((item) => !fIndices.includes(item[0]));
+
+    //! Not needed because we will need it later
+    // adjust the T array so that no number is skipped
+    // for (let i = 0; i < newT.length; i++) {
+    //   for (let j = 0; j < fIndices.length; j++) {
+    //     if (newT[i][0] > fIndices[j]) {
+    //       newT[i][0] = newT[i][0] - 1;
+    //     }
+    //   }
+    // }
+
+    // Adjust neuron locations in L
+
+    newL = newL.filter((item, index) => !fIndices.includes(index));
+
+    // CHANGE syn
+    // remove all elements that contain neuron
+
+    newSyn = newSyn.filter((item) => !item.includes(neuron));
+
+    //! Not needed because we will need it later
+    // adjust the syn array so that no number is skipped
+    // for (let i = 0; i < newSyn.length; i++) {
+    //   for (let j = 0; j < newSyn[i].length; j++) {
+    //     if (newSyn[i][j] > neuron) {
+    //       newSyn[i][j] = newSyn[i][j] - 1;
+    //     }
+    //   }
+    // }
+  }
+
+  function insertNewValues(varIndices, funcIndices) {
+    // Insert inputVars into C and for each element, insert a column in F and an element in VL
+    // Insert new variables into C, neuron per var in VL, and 0 per var in each F row
+    for (let i = 0; i < inputVars.length; i++) {
+      newC.splice(varIndices[i], 0, inputVars[i]);
+      newVL.splice(varIndices[i], 0, neuron);
+      for (let j = 0; j < newF.length; j++) {
+        newF[j].splice(varIndices[i], 0, 0);
+      }
+    }
+
+    // insert inputFuncs into F
+    for (let i = 0; i < inputFuncs.length; i++) {
+      newF.splice(funcIndices[i], 0, inputFuncs[i]);
+      // insert new row in L
+      newL.splice(funcIndices[i], 0, new Array(newC.length).fill(0));
+      newL[funcIndices[i]][neuron - 1] = 1;
+      // insert new row in T
+      for (let j = 0; j < inputThreshold.length; j++) {
+        newT.push([inputThreshold[j][0] + 1, inputThreshold[j][1]]);
+      }
+    }
+
+    // insert inputSynIn and inputSynOut into syn
+    for (let i = 0; i < inputSynIn.length; i++) {
+      newSyn.push(inputSynIn[i]);
+    }
+    for (let i = 0; i < inputSynOut.length; i++) {
+      newSyn.push(inputSynOut[i]);
+    }
+  }
 
   // Duplicate neuron will use setInitialValues and insert the values at the end
 
@@ -117,14 +228,30 @@ function EditNeuronForm(props) {
     let varIndices = getNeuronVars(neuron); // Indices of variables of neuron in C
     let funcIndices = getNeuronFuncs(neuron); // Indices of functions of neuron in F
 
-    //! Read this when you return
     //! Next step is to delete the neuron from the matrices (here in toEdit)
     // TODO Delete neuron from matrices
-    deleteInitialValues();
+    deleteInitialValues(neuron);
+    // varIndices
+    //    C, delete all elements of varIndices
+    //    VL, delete all elements in indices of varIndices
+    //    F, delete elements each row in varIndices
+    // funcIndices
+    //    F, delete all indices in funcIndices
+    //    L, delete all indices in funcIndices
+    //    L, no need to adjust neuron location in L
+
+    // T, filter T such that neuron is not included
+    // syn, filter syn such that neuron is not included
 
     //! And then insert the new values (but actually just the placeholder, same values)
     // TODO Insert inputVars, inputFuncs, into matrices based on their initial indices (syn and T can be inserted as is)
-    insertNewValues();
+    insertNewValues(varIndices, funcIndices);
+    // C, get minimum index in varIndices, then insert array elements from there
+    // VL, get minimum index in varIndices, then insert neuron number * variables from there
+    // F, get minimum index in funcIndices, then insert array elements from there
+    // L, get minimum index in funcIndices, then insert array elements from there
+    // T, insert new T at end
+    // syn, insert new syns at end
 
     //! Once working, then we can adjust the values based on form
     //! First, we try resetting the form, replacing all the old values with new values
