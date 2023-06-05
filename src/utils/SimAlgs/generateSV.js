@@ -88,6 +88,9 @@ function selectOne(guidedMode, possible) {
         let answer = prompt(
           "Select a function for neuron " + (i + 1) + " from " + activeFunctions
         );
+        if (answer === null) {
+          answer = 0;
+        }
 
         console.log("Selected Function: ", answer);
         selected = parseInt(answer);
