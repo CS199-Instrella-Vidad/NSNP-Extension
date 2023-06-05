@@ -24,7 +24,7 @@ function functionToString(F: number[], j: number, vars, threshold) {
 
   // Threshold addition
 
-  if (threshold != 0) {
+  if (!Array.isArray(threshold)) {
     string += "\\,|_" + threshold;
   }
   return string;
@@ -55,7 +55,7 @@ export function createNeuron(VL, C, F, L, i, T) {
   let funCounter = 1;
   for (let j = 0; j < L.length; j++) {
     if (L[j][i] === 1) {
-      let threshold: number = 0;
+      let threshold = [];
       for (let k = 0; k < T.length; k++) {
         if (T[k][0] === j + 1) threshold = T[k][1];
       }
