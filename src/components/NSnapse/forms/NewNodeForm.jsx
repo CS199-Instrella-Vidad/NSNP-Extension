@@ -367,7 +367,7 @@ function NewNodeForm(props) {
               {Array.from(Array(numVars).keys()).map((i) => {
                 return (
                   <div key={i}>
-                    <label>x{props.VL.length + i + 1}</label>
+                    <label>x{i + 1}</label>
                     <br />
                     <input
                       className="inputs"
