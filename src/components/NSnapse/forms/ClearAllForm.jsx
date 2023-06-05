@@ -112,9 +112,9 @@ function ClearAllForm(props) {
           You are about to delete all neurons and synapses connected to them.
         </DialogContent>
         <DialogActions>
-          <Button onClick={hide}>Disagree</Button>
+          <Button onClick={hide}>Cancel</Button>
           <Button onClick={todelete} autoFocus>
-            Agree
+            Yes
           </Button>
         </DialogActions>
       </Dialog>

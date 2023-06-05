@@ -114,6 +114,15 @@ function Menu(props) {
             />
             Dev Mode
           </div>
+          <div>
+            <Switch
+              onChange={(e) => {
+                props.set1(e.target.checked);
+                
+              }}
+            />
+            Guided Mode
+          </div>
           {/*<div>
             <Switch
               onChange={(e) => {

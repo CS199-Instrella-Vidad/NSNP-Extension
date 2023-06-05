@@ -141,9 +141,10 @@ const NewOutputForm = (props) => {
             This means that this neuron will send values to the environment.
           </DialogContent>
           <DialogActions>
-            <Button onClick={hide}>Disagree</Button>
+            <Button onClick={hide}
+            >Cancel</Button>
             <Button onClick={toAssign} autoFocus>
-              Agree
+              Yes
             </Button>
           </DialogActions>
         </Dialog>

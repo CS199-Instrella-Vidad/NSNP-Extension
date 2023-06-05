@@ -257,6 +257,7 @@ function NSNP() {
         save={handleSave}
         set={setDev}
         reset={resetDev}
+        set1={setGuidedMode}
         showMenu={showSettings}
         onClose={handleOpenSettings}
       />
