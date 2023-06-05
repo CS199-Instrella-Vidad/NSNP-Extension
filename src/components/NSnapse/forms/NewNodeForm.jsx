@@ -85,8 +85,21 @@ function NewNodeForm(props) {
       document.getElementById("submitbutton").disabled = true;
       setAble(true);
     } else {
-      document.getElementById("submitbutton").disabled = false;
-      setAble(false);
+      // check if input funcs has a 0
+      let hasZero = false;
+      for (let i = 0; i < inputFuncs.length; i++) {
+        for (let j = 0; j < inputFuncs[i].length; j++) {
+          if (inputFuncs[i][j] === 0) {
+            hasZero = true;
+            setAble(true);
+            break;
+          }
+        }
+      }
+      if (!hasZero) {
+        document.getElementById("submitbutton").disabled = false;
+        setAble(false);
+      }
     }
   }
   function addNewNeuron() {
@@ -193,6 +206,7 @@ function NewNodeForm(props) {
     setInputSynOut([]);
     setInputSynIn([]);
     setInputThreshold([]);
+    setAble(true);
 
     let system = systemStackPush(
       newC,
