@@ -248,9 +248,16 @@ function NewNodeForm(props) {
 
   function handleAddThreshold(i, e) {
     let newThreshold = inputThreshold;
-    newThreshold[i] = [i, e];
+    if (isNaN(e) || e === "") {
+      // remove threshold from array
+      newThreshold[i] = undefined;
+    } else {
+      newThreshold[i] = [i, e];
+    }
+
     console.log("Threshold index: ", i);
     console.log("current threshold: ", newThreshold[i]);
+    console.log("inputThreshold: ", inputThreshold);
     setInputThreshold(newThreshold);
   }
 
