@@ -9,7 +9,7 @@ export default function getSpikingNeurons(SV, L, PM) {
       if (SV[0][i] === 0) {
         continue;
       }
-      for (let j = 0; j < PM.length; j++) {
+      for (let j = 0; j < PM[0].length; j++) {
         if (PM[i][j] !== 0) {
           spiking = true;
         }
@@ -18,6 +18,7 @@ export default function getSpikingNeurons(SV, L, PM) {
         spikingFunctions.push(i);
       }
     }
+    console.log("spikingFunctions", spikingFunctions);
     spikingFunctions.forEach((element) => {
       L.forEach((e, index) => {
         if (index === element) {
@@ -27,5 +28,6 @@ export default function getSpikingNeurons(SV, L, PM) {
       });
     });
   }
+  console.log("spikingNeurons", spikingNeurons);
   return spikingNeurons;
 }
