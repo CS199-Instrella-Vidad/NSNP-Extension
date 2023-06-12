@@ -212,7 +212,13 @@ function NSNP() {
     }
     let newC = CHist[timeSteps - 1];
     let newS = SHist[timeSteps - 1];
+    if (timeSteps == 1) {
+      newS = [];
+    }
     let newP = PHist[timeSteps - 1];
+    if (timeSteps == 1) {
+      newP = [];
+    }
     setC(newC);
     setSV(newS);
     setPM(newP);
