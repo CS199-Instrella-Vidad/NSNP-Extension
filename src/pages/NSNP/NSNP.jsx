@@ -296,7 +296,7 @@ function NSNP() {
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
             />
-            <NewInputForm pushSystem={pushSystem} />
+            {/* <NewInputForm pushSystem={pushSystem} /> */}
             <NewOutputForm
               {...matrixProps}
               selectedNode={selectedNode}
@@ -305,12 +305,12 @@ function NSNP() {
             />
             {/* place holders */}
 
-            <EditNeuronForm
+            {/* <EditNeuronForm
               {...matrixProps}
               pushSystem={pushSystem}
               selectedNode={selectedNode}
               setSelectedNode={setSelectedNode}
-            />
+            /> */}
             <DeleteForm
               {...matrixProps}
               selectedNode={selectedNode}

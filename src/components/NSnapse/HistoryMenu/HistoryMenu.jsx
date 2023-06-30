@@ -38,9 +38,9 @@ export default function HistoryMenu(props) {
           <button className="HistoryType" onClick={() => setListType("Config")}>
             Config
           </button>
-          <button className="HistoryType" onClick={() => setListType("Choice")}>
+          {/* <button className="HistoryType" onClick={() => setListType("Choice")}>
             Choice
-          </button>
+          </button> */}
         </div>
 
         <center>

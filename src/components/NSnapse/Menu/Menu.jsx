@@ -29,6 +29,16 @@ function Menu(props) {
       <div className="ListPane">
         <h1>Options</h1>
         <center>
+          <div className="btncontainer">
+            <Link
+              to="https://romantic-area-46a.notion.site/bd0b6c1c97f345398b2ea2a43972d66c?v=52241364e1b54970888ab28b29521551&pvs=4"
+              target="_blank"
+            >
+              <div className="btnMode">
+                <b>TUTORIAL/HELP PAGE</b>
+              </div>
+            </Link>
+          </div>
           <Form className="menuform">
             <Form.Control
               type="file"
@@ -72,11 +82,14 @@ function Menu(props) {
                 href="../../../../samples/[1,1,1,0,0,2].json"
                 download
               >
-                Ex1 - 3k+3 Spiker
+                Sample NSN P System from Wu et al.
+              </Dropdown.Item>
+              <Dropdown.Item href="../../../../samples/[1,1,2].json" download>
+                Sample NSN P System from Ballesteros et al.
               </Dropdown.Item>
             </DropdownButton>
           </div>
-          <div className="btncontainer">
+          {/* <div className="btncontainer">
             <Link
               to="#"
               id="restart-tour"
@@ -85,13 +98,13 @@ function Menu(props) {
             >
               <div className="btnMode">Restart Tutorial</div>
             </Link>
-          </div>
+          </div> */}
           <div className="btncontainer">
             <Link to="https://snapse.website/">
               <div className="btnMode">Return to Main Menu</div>
             </Link>
           </div>
-          <div>
+          {/* <div>
             <Form className="menuform">
               <Form.Check
                 type="checkbox"
@@ -102,7 +115,7 @@ function Menu(props) {
                 }}
               />
             </Form>
-          </div>
+          </div> */}
           <div>
             <Switch
               onChange={(e) => {
@@ -118,7 +131,6 @@ function Menu(props) {
             <Switch
               onChange={(e) => {
                 props.set1(e.target.checked);
-                
               }}
             />
             Guided Mode
@@ -135,7 +147,7 @@ function Menu(props) {
             Dark Mode
           </div> */}
           <div className="btncontainer">
-            <Link to="https://github.com/CS199-Instrella-Vidad">
+            <Link to="https://github.com/CS199-Instrella-Vidad" target="_blank">
               <div className="btnMode">
                 <b>GITHUB LINK</b>
               </div>
