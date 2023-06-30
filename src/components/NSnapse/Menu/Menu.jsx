@@ -147,7 +147,10 @@ function Menu(props) {
             Dark Mode
           </div> */}
           <div className="btncontainer">
-            <Link to="https://github.com/CS199-Instrella-Vidad" target="_blank">
+            <Link
+              to="https://github.com/CS199-Instrella-Vidad/NSNP-Extension"
+              target="_blank"
+            >
               <div className="btnMode">
                 <b>GITHUB LINK</b>
               </div>
