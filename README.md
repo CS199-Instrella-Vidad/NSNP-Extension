@@ -1,5 +1,5 @@
-# NSNP-Extension
-NSNP Component of WebSnapse 2.1
+# NSnapse - NSNP System Simulator
+A static web application for simulating Numerical Spiking Neural P Systems
 
 ## Requirements for Installation
 - Node (we are using v19.7.0)
