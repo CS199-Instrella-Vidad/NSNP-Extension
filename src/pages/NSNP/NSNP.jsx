@@ -284,7 +284,7 @@ function NSNP() {
               Options
             </button>
 
-            <h1>NSN P Simulator</h1>
+            <h1>NSnapse</h1>
             <button className="btn-c5 menubutton" onClick={handleOpenHistory}>
               History
             </button>
@@ -373,7 +373,9 @@ function NSNP() {
           />
         )}
         {/* Matrix Outputs */}
-        {showSPMatrices && !showGraph && <WorkSpace C={C} SV={SV} PM={PM} />}
+        {showSPMatrices && !showGraph && (
+          <WorkSpace C={C} SV={SV} PM={PM} env={envValue} />
+        )}
       </div>
     </>
   );

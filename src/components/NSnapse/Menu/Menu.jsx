@@ -79,12 +79,12 @@ function Menu(props) {
           <div>
             <DropdownButton id="file-dropdown" title="Download samples">
               <Dropdown.Item
-                href="../../../../samples/[1,1,1,0,0,2].json"
+                href="/samples/[1,1,1,0,0,2].json"
                 download
               >
                 Sample NSN P System from Wu et al.
               </Dropdown.Item>
-              <Dropdown.Item href="../../../../samples/[1,1,2].json" download>
+              <Dropdown.Item href="/samples/[1,1,2].json" download>
                 Sample NSN P System from Ballesteros et al.
               </Dropdown.Item>
             </DropdownButton>

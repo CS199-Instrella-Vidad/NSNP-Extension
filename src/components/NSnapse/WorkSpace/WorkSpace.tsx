@@ -38,6 +38,12 @@ function WorkSpace(props) {
             <MathComponent tex={matrixToString(props.PM)} />
           </div>
         </div>
+        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-2 text-center justify-content-center">
+          <div className="d-flex row my-5 justify-content-center">
+            <h2>Environment Output</h2>
+            <MathComponent tex={matrixToString([props.env])} />
+          </div>
+        </div>
       </div>
     </div>
   );
