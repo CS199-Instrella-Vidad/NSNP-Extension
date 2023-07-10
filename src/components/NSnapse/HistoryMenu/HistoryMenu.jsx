@@ -54,7 +54,11 @@ export default function HistoryMenu(props) {
               onClick={() => props.itemAction(index)}
             >
               <h4 className="ListItemIndex">{index}</h4>
-              {item}
+              {listType === "Config" ? (
+                <MathComponent tex={matrixToString([item])} />
+              ) : (
+                item
+              )}
               <div></div>
             </div>
           );
